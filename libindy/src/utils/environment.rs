@@ -1,13 +1,25 @@
 use std::env;
 use std::path::PathBuf;
+use std::fs;
 
 pub struct EnvironmentUtils {}
 
 impl EnvironmentUtils {
     pub fn indy_home_path() -> PathBuf {
         // TODO: FIXME: Provide better handling for the unknown home path case!!!
+
         let mut path = env::home_dir().unwrap_or(PathBuf::from("/home/indy"));
-        path.push(if cfg!(target_os = "ios") { "Documents/.indy_client" } else { ".indy_client" });
+        let mut indy_client_dir = ".indy_client";
+        if cfg!(target_os = "ios"){
+            indy_client_dir = "Documents/.indy_client";
+        }
+        path.push(indy_client_dir);
+
+        if cfg!(target_os = "android"){
+            let android_dir = env::var("EXTERNAL_STORAGE").unwrap() + "/.indy_client";
+            fs::create_dir_all(&android_dir).unwrap();
+            path = PathBuf::from(android_dir);
+        }
         path
     }
 
