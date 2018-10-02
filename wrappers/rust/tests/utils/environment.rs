@@ -31,8 +31,8 @@ pub fn indy_home_path() -> PathBuf {
 
 #[cfg(target_os = "android")]
 pub fn indy_home_path() -> PathBuf {
-    android_create_indy_client_dir();
-    android_indy_client_dir_path()
+    android::create_indy_client_dir();
+    android::indy_client_dir_path()
 }
 
 #[cfg(target_os = "android")]
