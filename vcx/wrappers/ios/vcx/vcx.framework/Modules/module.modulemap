@@ -4,3 +4,8 @@ framework module vcx {
   export *
   module * { export * }
 }
+
+module vcx.Swift {
+    header "vcx-Swift.h"
+    requires objc
+}

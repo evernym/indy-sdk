@@ -10,6 +10,6 @@ package-lock.json
 .DS_Store
 Podfile.lock
 .vscode
-
+.DS_Store
 
 /wrappers/python/venv/

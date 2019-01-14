@@ -24,6 +24,45 @@
 		91E754A820F3DB4200D9CE79 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD858CC420A53DD7004B3CB5 /* libresolv.tbd */; };
 		91E754A920F3DB4D00D9CE79 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD858CC220A53DCB004B3CB5 /* libstdc++.tbd */; };
 		91E754AD20F3DC9800D9CE79 /* libvcx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91E754AC20F3DC9800D9CE79 /* libvcx.a */; };
+		A6118C9A21E9498B004C1E95 /* Indy.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118C9921E9498B004C1E95 /* Indy.h */; };
+		A6118CA621E953C8004C1E95 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6118C9E21E953C8004C1E95 /* DictionaryExtension.swift */; };
+		A6118CA721E953C8004C1E95 /* NSDictionary+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118C9F21E953C8004C1E95 /* NSDictionary+JSON.h */; };
+		A6118CA821E953C8004C1E95 /* NSDictionary+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = A6118CA021E953C8004C1E95 /* NSDictionary+JSON.m */; };
+		A6118CA921E953C8004C1E95 /* NSString+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = A6118CA121E953C8004C1E95 /* NSString+JSON.m */; };
+		A6118CAA21E953C8004C1E95 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6118CA221E953C8004C1E95 /* StringExtensions.swift */; };
+		A6118CAB21E953C8004C1E95 /* NSError+IndyError.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CA321E953C8004C1E95 /* NSError+IndyError.h */; };
+		A6118CAC21E953C8004C1E95 /* NSError+IndyError.m in Sources */ = {isa = PBXBuildFile; fileRef = A6118CA421E953C8004C1E95 /* NSError+IndyError.m */; };
+		A6118CAD21E953C8004C1E95 /* NSString+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CA521E953C8004C1E95 /* NSString+JSON.h */; };
+		A6118CB421E953F0004C1E95 /* IndyLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CAE21E953EF004C1E95 /* IndyLogger.h */; };
+		A6118CB521E953F0004C1E95 /* IndySequenceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CAF21E953EF004C1E95 /* IndySequenceUtils.h */; };
+		A6118CB621E953F0004C1E95 /* IndyCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CB021E953EF004C1E95 /* IndyCallbacks.h */; };
+		A6118CB721E953F0004C1E95 /* IndyLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = A6118CB121E953EF004C1E95 /* IndyLogger.m */; };
+		A6118CB821E953F0004C1E95 /* IndySequenceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A6118CB221E953EF004C1E95 /* IndySequenceUtils.m */; };
+		A6118CB921E953F0004C1E95 /* IndyCallbacks.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CB321E953F0004C1E95 /* IndyCallbacks.mm */; };
+		A6118CD421E95406004C1E95 /* IndyPool.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CBA21E95405004C1E95 /* IndyPool.h */; };
+		A6118CD521E95406004C1E95 /* IndyUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CBB21E95405004C1E95 /* IndyUtils.h */; };
+		A6118CD621E95406004C1E95 /* IndyErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CBC21E95405004C1E95 /* IndyErrors.h */; };
+		A6118CD721E95406004C1E95 /* IndyLedger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CBD21E95405004C1E95 /* IndyLedger.mm */; };
+		A6118CD921E95406004C1E95 /* IndyPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CBF21E95405004C1E95 /* IndyPayment.h */; };
+		A6118CDA21E95406004C1E95 /* IndyWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC021E95405004C1E95 /* IndyWallet.mm */; };
+		A6118CDB21E95406004C1E95 /* IndyBlobStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC121E95405004C1E95 /* IndyBlobStorage.mm */; };
+		A6118CDC21E95406004C1E95 /* IndyUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC221E95405004C1E95 /* IndyUtils.mm */; };
+		A6118CDD21E95406004C1E95 /* IndyPairwise.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC321E95405004C1E95 /* IndyPairwise.mm */; };
+		A6118CDE21E95406004C1E95 /* IndyTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CC421E95405004C1E95 /* IndyTypes.h */; };
+		A6118CDF21E95406004C1E95 /* IndyAnoncreds.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC521E95405004C1E95 /* IndyAnoncreds.mm */; };
+		A6118CE021E95406004C1E95 /* IndyCrypto.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CC621E95405004C1E95 /* IndyCrypto.mm */; };
+		A6118CE121E95406004C1E95 /* IndyBlobStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CC721E95405004C1E95 /* IndyBlobStorage.h */; };
+		A6118CE221E95406004C1E95 /* IndyAnoncreds.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CC821E95405004C1E95 /* IndyAnoncreds.h */; };
+		A6118CE321E95406004C1E95 /* IndyPairwise.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CC921E95405004C1E95 /* IndyPairwise.h */; };
+		A6118CE421E95406004C1E95 /* IndyPayment.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CCA21E95406004C1E95 /* IndyPayment.mm */; };
+		A6118CE521E95406004C1E95 /* IndyNonSecrets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CCB21E95406004C1E95 /* IndyNonSecrets.h */; };
+		A6118CE621E95406004C1E95 /* IndyDid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CCC21E95406004C1E95 /* IndyDid.mm */; };
+		A6118CE821E95406004C1E95 /* IndyNonSecrets.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CCE21E95406004C1E95 /* IndyNonSecrets.mm */; };
+		A6118CE921E95406004C1E95 /* IndyLedger.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CCF21E95406004C1E95 /* IndyLedger.h */; };
+		A6118CEA21E95406004C1E95 /* IndyWallet.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CD021E95406004C1E95 /* IndyWallet.h */; };
+		A6118CEB21E95406004C1E95 /* IndyDid.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CD121E95406004C1E95 /* IndyDid.h */; };
+		A6118CEC21E95406004C1E95 /* IndyPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6118CD221E95406004C1E95 /* IndyPool.mm */; };
+		A6118CED21E95406004C1E95 /* IndyCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = A6118CD321E95406004C1E95 /* IndyCrypto.h */; };
 		DD2566F8209705E3002EBEBA /* vcx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2566EE209705E3002EBEBA /* vcx.framework */; };
 		DD2566FD209705E3002EBEBA /* vcxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2566FC209705E3002EBEBA /* vcxTests.m */; };
 		DD2566FF209705E3002EBEBA /* vcx.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2566F1209705E3002EBEBA /* vcx.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -96,6 +135,45 @@
 
 /* Begin PBXFileReference section */
 		91E754AC20F3DC9800D9CE79 /* libvcx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvcx.a; path = lib/libvcx.a; sourceTree = "<group>"; };
+		A6118C9921E9498B004C1E95 /* Indy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Indy.h; sourceTree = "<group>"; };
+		A6118C9E21E953C8004C1E95 /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		A6118C9F21E953C8004C1E95 /* NSDictionary+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JSON.h"; sourceTree = "<group>"; };
+		A6118CA021E953C8004C1E95 /* NSDictionary+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JSON.m"; sourceTree = "<group>"; };
+		A6118CA121E953C8004C1E95 /* NSString+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JSON.m"; sourceTree = "<group>"; };
+		A6118CA221E953C8004C1E95 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		A6118CA321E953C8004C1E95 /* NSError+IndyError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+IndyError.h"; sourceTree = "<group>"; };
+		A6118CA421E953C8004C1E95 /* NSError+IndyError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+IndyError.m"; sourceTree = "<group>"; };
+		A6118CA521E953C8004C1E95 /* NSString+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSON.h"; sourceTree = "<group>"; };
+		A6118CAE21E953EF004C1E95 /* IndyLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyLogger.h; sourceTree = "<group>"; };
+		A6118CAF21E953EF004C1E95 /* IndySequenceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndySequenceUtils.h; sourceTree = "<group>"; };
+		A6118CB021E953EF004C1E95 /* IndyCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyCallbacks.h; sourceTree = "<group>"; };
+		A6118CB121E953EF004C1E95 /* IndyLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndyLogger.m; sourceTree = "<group>"; };
+		A6118CB221E953EF004C1E95 /* IndySequenceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndySequenceUtils.m; sourceTree = "<group>"; };
+		A6118CB321E953F0004C1E95 /* IndyCallbacks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyCallbacks.mm; sourceTree = "<group>"; };
+		A6118CBA21E95405004C1E95 /* IndyPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyPool.h; sourceTree = "<group>"; };
+		A6118CBB21E95405004C1E95 /* IndyUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyUtils.h; sourceTree = "<group>"; };
+		A6118CBC21E95405004C1E95 /* IndyErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyErrors.h; sourceTree = "<group>"; };
+		A6118CBD21E95405004C1E95 /* IndyLedger.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyLedger.mm; sourceTree = "<group>"; };
+		A6118CBF21E95405004C1E95 /* IndyPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyPayment.h; sourceTree = "<group>"; };
+		A6118CC021E95405004C1E95 /* IndyWallet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyWallet.mm; sourceTree = "<group>"; };
+		A6118CC121E95405004C1E95 /* IndyBlobStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyBlobStorage.mm; sourceTree = "<group>"; };
+		A6118CC221E95405004C1E95 /* IndyUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyUtils.mm; sourceTree = "<group>"; };
+		A6118CC321E95405004C1E95 /* IndyPairwise.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyPairwise.mm; sourceTree = "<group>"; };
+		A6118CC421E95405004C1E95 /* IndyTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyTypes.h; sourceTree = "<group>"; };
+		A6118CC521E95405004C1E95 /* IndyAnoncreds.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyAnoncreds.mm; sourceTree = "<group>"; };
+		A6118CC621E95405004C1E95 /* IndyCrypto.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyCrypto.mm; sourceTree = "<group>"; };
+		A6118CC721E95405004C1E95 /* IndyBlobStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyBlobStorage.h; sourceTree = "<group>"; };
+		A6118CC821E95405004C1E95 /* IndyAnoncreds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyAnoncreds.h; sourceTree = "<group>"; };
+		A6118CC921E95405004C1E95 /* IndyPairwise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyPairwise.h; sourceTree = "<group>"; };
+		A6118CCA21E95406004C1E95 /* IndyPayment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyPayment.mm; sourceTree = "<group>"; };
+		A6118CCB21E95406004C1E95 /* IndyNonSecrets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyNonSecrets.h; sourceTree = "<group>"; };
+		A6118CCC21E95406004C1E95 /* IndyDid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyDid.mm; sourceTree = "<group>"; };
+		A6118CCE21E95406004C1E95 /* IndyNonSecrets.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyNonSecrets.mm; sourceTree = "<group>"; };
+		A6118CCF21E95406004C1E95 /* IndyLedger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyLedger.h; sourceTree = "<group>"; };
+		A6118CD021E95406004C1E95 /* IndyWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyWallet.h; sourceTree = "<group>"; };
+		A6118CD121E95406004C1E95 /* IndyDid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyDid.h; sourceTree = "<group>"; };
+		A6118CD221E95406004C1E95 /* IndyPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndyPool.mm; sourceTree = "<group>"; };
+		A6118CD321E95406004C1E95 /* IndyCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndyCrypto.h; sourceTree = "<group>"; };
 		DD2566EE209705E3002EBEBA /* vcx.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = vcx.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2566F1209705E3002EBEBA /* vcx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vcx.h; sourceTree = "<group>"; };
 		DD2566F2209705E3002EBEBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -177,9 +255,80 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A6118C9821E9486D004C1E95 /* Indy */ = {
+			isa = PBXGroup;
+			children = (
+				A6118C9D21E95336004C1E95 /* Wrapper */,
+				A6118C9B21E95315004C1E95 /* Utils */,
+				A6118C9921E9498B004C1E95 /* Indy.h */,
+			);
+			path = Indy;
+			sourceTree = "<group>";
+		};
+		A6118C9B21E95315004C1E95 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A6118CB021E953EF004C1E95 /* IndyCallbacks.h */,
+				A6118CB321E953F0004C1E95 /* IndyCallbacks.mm */,
+				A6118CAE21E953EF004C1E95 /* IndyLogger.h */,
+				A6118CB121E953EF004C1E95 /* IndyLogger.m */,
+				A6118CAF21E953EF004C1E95 /* IndySequenceUtils.h */,
+				A6118CB221E953EF004C1E95 /* IndySequenceUtils.m */,
+				A6118C9C21E95324004C1E95 /* Extensions */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A6118C9C21E95324004C1E95 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6118C9E21E953C8004C1E95 /* DictionaryExtension.swift */,
+				A6118C9F21E953C8004C1E95 /* NSDictionary+JSON.h */,
+				A6118CA021E953C8004C1E95 /* NSDictionary+JSON.m */,
+				A6118CA321E953C8004C1E95 /* NSError+IndyError.h */,
+				A6118CA421E953C8004C1E95 /* NSError+IndyError.m */,
+				A6118CA521E953C8004C1E95 /* NSString+JSON.h */,
+				A6118CA121E953C8004C1E95 /* NSString+JSON.m */,
+				A6118CA221E953C8004C1E95 /* StringExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A6118C9D21E95336004C1E95 /* Wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				A6118CC821E95405004C1E95 /* IndyAnoncreds.h */,
+				A6118CC521E95405004C1E95 /* IndyAnoncreds.mm */,
+				A6118CC721E95405004C1E95 /* IndyBlobStorage.h */,
+				A6118CC121E95405004C1E95 /* IndyBlobStorage.mm */,
+				A6118CD321E95406004C1E95 /* IndyCrypto.h */,
+				A6118CC621E95405004C1E95 /* IndyCrypto.mm */,
+				A6118CD121E95406004C1E95 /* IndyDid.h */,
+				A6118CCC21E95406004C1E95 /* IndyDid.mm */,
+				A6118CBC21E95405004C1E95 /* IndyErrors.h */,
+				A6118CCF21E95406004C1E95 /* IndyLedger.h */,
+				A6118CBD21E95405004C1E95 /* IndyLedger.mm */,
+				A6118CCB21E95406004C1E95 /* IndyNonSecrets.h */,
+				A6118CCE21E95406004C1E95 /* IndyNonSecrets.mm */,
+				A6118CC921E95405004C1E95 /* IndyPairwise.h */,
+				A6118CC321E95405004C1E95 /* IndyPairwise.mm */,
+				A6118CBF21E95405004C1E95 /* IndyPayment.h */,
+				A6118CCA21E95406004C1E95 /* IndyPayment.mm */,
+				A6118CBA21E95405004C1E95 /* IndyPool.h */,
+				A6118CD221E95406004C1E95 /* IndyPool.mm */,
+				A6118CC421E95405004C1E95 /* IndyTypes.h */,
+				A6118CBB21E95405004C1E95 /* IndyUtils.h */,
+				A6118CC221E95405004C1E95 /* IndyUtils.mm */,
+				A6118CD021E95406004C1E95 /* IndyWallet.h */,
+				A6118CC021E95405004C1E95 /* IndyWallet.mm */,
+			);
+			path = Wrapper;
+			sourceTree = "<group>";
+		};
 		DD2566E4209705E3002EBEBA = {
 			isa = PBXGroup;
 			children = (
+				A6118C9821E9486D004C1E95 /* Indy */,
 				DD858CB520A4AF0A004B3CB5 /* utils */,
 				DD858C9D20A45C11004B3CB5 /* ConnectMeVcx.h */,
 				DD858C9C20A45C11004B3CB5 /* ConnectMeVcx.m */,
@@ -291,13 +440,33 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6118C9A21E9498B004C1E95 /* Indy.h in Headers */,
+				A6118CE321E95406004C1E95 /* IndyPairwise.h in Headers */,
 				DD858CBC20A4AF7C004B3CB5 /* VcxCallbacks.h in Headers */,
+				A6118CDE21E95406004C1E95 /* IndyTypes.h in Headers */,
+				A6118CA721E953C8004C1E95 /* NSDictionary+JSON.h in Headers */,
+				A6118CE221E95406004C1E95 /* IndyAnoncreds.h in Headers */,
+				A6118CEB21E95406004C1E95 /* IndyDid.h in Headers */,
+				A6118CAD21E953C8004C1E95 /* NSString+JSON.h in Headers */,
+				A6118CE921E95406004C1E95 /* IndyLedger.h in Headers */,
 				DD858CC020A4AF7C004B3CB5 /* NSError+VcxError.h in Headers */,
 				DD858C9F20A45C11004B3CB5 /* ConnectMeVcx.h in Headers */,
+				A6118CD921E95406004C1E95 /* IndyPayment.h in Headers */,
+				A6118CD521E95406004C1E95 /* IndyUtils.h in Headers */,
 				DD2566FF209705E3002EBEBA /* vcx.h in Headers */,
 				DD858CBD20A4AF7C004B3CB5 /* VcxErrors.h in Headers */,
+				A6118CED21E95406004C1E95 /* IndyCrypto.h in Headers */,
 				DDCC82A821C23D6D00413CCC /* VcxLogger.h in Headers */,
+				A6118CE521E95406004C1E95 /* IndyNonSecrets.h in Headers */,
+				A6118CE121E95406004C1E95 /* IndyBlobStorage.h in Headers */,
+				A6118CB621E953F0004C1E95 /* IndyCallbacks.h in Headers */,
 				DD858CBF20A4AF7C004B3CB5 /* VcxTypes.h in Headers */,
+				A6118CD621E95406004C1E95 /* IndyErrors.h in Headers */,
+				A6118CB421E953F0004C1E95 /* IndyLogger.h in Headers */,
+				A6118CB521E953F0004C1E95 /* IndySequenceUtils.h in Headers */,
+				A6118CEA21E95406004C1E95 /* IndyWallet.h in Headers */,
+				A6118CD421E95406004C1E95 /* IndyPool.h in Headers */,
+				A6118CAB21E953C8004C1E95 /* NSError+IndyError.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +575,7 @@
 				TargetAttributes = {
 					DD2566ED209705E3002EBEBA = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					DD2566F6209705E3002EBEBA = {
@@ -517,9 +687,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6118CB921E953F0004C1E95 /* IndyCallbacks.mm in Sources */,
+				A6118CAA21E953C8004C1E95 /* StringExtensions.swift in Sources */,
 				DD858CBE20A4AF7C004B3CB5 /* VcxCallbacks.mm in Sources */,
+				A6118CDF21E95406004C1E95 /* IndyAnoncreds.mm in Sources */,
+				A6118CE821E95406004C1E95 /* IndyNonSecrets.mm in Sources */,
+				A6118CE421E95406004C1E95 /* IndyPayment.mm in Sources */,
 				DD858C9E20A45C11004B3CB5 /* ConnectMeVcx.m in Sources */,
+				A6118CAC21E953C8004C1E95 /* NSError+IndyError.m in Sources */,
+				A6118CEC21E95406004C1E95 /* IndyPool.mm in Sources */,
+				A6118CDD21E95406004C1E95 /* IndyPairwise.mm in Sources */,
+				A6118CA921E953C8004C1E95 /* NSString+JSON.m in Sources */,
+				A6118CB821E953F0004C1E95 /* IndySequenceUtils.m in Sources */,
+				A6118CA821E953C8004C1E95 /* NSDictionary+JSON.m in Sources */,
+				A6118CE621E95406004C1E95 /* IndyDid.mm in Sources */,
+				A6118CA621E953C8004C1E95 /* DictionaryExtension.swift in Sources */,
+				A6118CDC21E95406004C1E95 /* IndyUtils.mm in Sources */,
+				A6118CDB21E95406004C1E95 /* IndyBlobStorage.mm in Sources */,
+				A6118CE021E95406004C1E95 /* IndyCrypto.mm in Sources */,
+				A6118CD721E95406004C1E95 /* IndyLedger.mm in Sources */,
+				A6118CB721E953F0004C1E95 /* IndyLogger.m in Sources */,
 				DD858CC120A4AF7C004B3CB5 /* NSError+VcxError.m in Sources */,
+				A6118CDA21E95406004C1E95 /* IndyWallet.mm in Sources */,
 				DDCC82A621C23D5C00413CCC /* VcxLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -721,6 +910,7 @@
 					armv7s,
 				);
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -746,9 +936,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "co.evernym.vcx-objc.vcx";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos11.2;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
@@ -762,6 +954,7 @@
 					armv7s,
 				);
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -787,9 +980,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "co.evernym.vcx-objc.vcx";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos11.2;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
@@ -798,6 +992,7 @@
 		DD256706209705E3002EBEBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FBKAURK5R6;
 				INFOPLIST_FILE = vcxTests/Info.plist;
@@ -811,6 +1006,7 @@
 		DD256707209705E3002EBEBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FBKAURK5R6;
 				INFOPLIST_FILE = vcxTests/Info.plist;
@@ -842,6 +1038,7 @@
 		DD2567402097138F002EBEBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -870,6 +1067,7 @@
 		DD2567412097138F002EBEBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

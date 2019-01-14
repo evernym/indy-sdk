@@ -1,19 +1,14 @@
 //
-//  VcxLogger.h
-//  vcx
-//
-//  Created by Evernym on 12/13/18.
-//  Copyright © 2018 GuestUser. All rights reserved.
+//  IndyLogger.h
+//  libindy
 //
 
 #import <Foundation/Foundation.h>
-#import "vcx.h"
-#include "vcx.h"
 
-@interface VcxLogger : NSObject
+@interface IndyLogger : NSObject
 
 /**
- Set default libvcx logger implementation.
+ Set default libindy logger implementation.
 
  Allows library user use `env_logger` logger as default implementation.
  More details about `env_logger` and its customization can be found here: https://crates.io/crates/env_logger
@@ -26,7 +21,7 @@
 + (void)setDefaultLogger:(NSString *)pattern;
 
 /**
- Set custom libvcx log function.
+ Set custom libindy log function.
 
  NOTE: Logger can be set only once.
 
@@ -34,13 +29,13 @@
  */
 + (void)setLogger:(id)logCb;
 
-+ (VcxLogger *)sharedInstance;
++ (IndyLogger *)sharedInstance;
 
-- (VcxLogger *)init;
+- (IndyLogger *)init;
 
 @end
 
-void vcxLogCallback(const void *context,
+void logCallback(const void *context,
         uint32_t level,
         const char *target,
         const char *message,
