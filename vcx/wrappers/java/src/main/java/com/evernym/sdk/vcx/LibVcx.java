@@ -27,6 +27,12 @@ public abstract class LibVcx {
         public int vcx_reset();
 
     /**
+     * Sovtoken & nullpay
+     */
+        public int sovtoken_init();
+    //    public int nullpay_init();
+
+    /**
      * Helper API for testing purposes.
      */
         public void vcx_set_next_agency_response(int msg);
