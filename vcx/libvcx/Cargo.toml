@@ -16,6 +16,8 @@ crate-type = ["staticlib","rlib", "cdylib"]
 default = []
 pool_tests = []
 agency = []
+sovtoken = []
+nullpay = []
 # Causes the build to fail on all warnings
 fatal_warnings = []
 
