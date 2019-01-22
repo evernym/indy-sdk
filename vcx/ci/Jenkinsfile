@@ -120,7 +120,7 @@ def mainUbuntu() {
                 buildLibindy()
             }
             stage('Build Libvcx Image, Tests Rust Code') {
-                def RUST_VERSION = rustVersion()
+                RUST_VERSION = rustVersion()
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${RUST_VERSION} -f ${libvcxDockerfile} .")
                 libvcx.inside() {
                     sh "vcx/ci/scripts/package.sh ${rustTestFlag}"
