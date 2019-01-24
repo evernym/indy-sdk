@@ -6,6 +6,11 @@
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
 #
 
+# NOTE: UPDATE ME: versions of libraries in this cocoapod
+# libindy 1.6.8 stable
+# libnullpay 1.6.8 stable
+# libvcx 0.1.2097319
+
 Pod::Spec.new do |s|
   s.name             = 'vcx'
   s.version          = '0.0.76'
