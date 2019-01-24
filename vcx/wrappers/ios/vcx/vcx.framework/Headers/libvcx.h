@@ -352,6 +352,10 @@ vcx_error_t vcx_ledger_get_fees(vcx_command_handle_t command_handle, void(*cb)(v
 
 /** For testing purposes only */
 void vcx_set_next_agency_response(int);
+
+/** Logging **/
+vcx_error_t vcx_set_default_logger(const char* pattern);
+
 #ifdef __cplusplus
 }
 #endif
