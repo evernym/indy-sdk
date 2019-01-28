@@ -48,19 +48,19 @@ static String rustVersion() {
 }
 
 static String libindyVersion() {
-    indyTag=indyTag()
-    if (indyTag != "") {
-        indyTag = "~" + indyTag
+    tag=indyTag()
+    if (tag != "") {
+        tag = "~" + tag
     }
-    return "1.7.0" + indyTag
+    return "1.7.0" + tag
 }
 
 static String libnullVersion() {
-    indyTag=indyTag()
-    if (indyTag != "") {
-        indyTag = "~" + indyTag
+    tag=indyTag()
+    if (tag != "") {
+        tag = "~" + tag
     }
-    return "1.7.0" + indyTag
+    return "1.7.0" + tag
 }
 
 static String indyTag() {
