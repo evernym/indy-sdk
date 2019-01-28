@@ -18,8 +18,7 @@ RUN yes | .//home/android/android-sdk-linux/tools/bin/sdkmanager "ndk-bundle"
 
 RUN echo "android ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers 
 
-# Todo: I thing this ARG can be removed. It is set in the Jenkins file
-ARG RUST_VER=1.31.1
+ARG RUST_VER
 USER android
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain ${RUST_VER}
 ENV PATH /home/android/.cargo/bin:$PATH

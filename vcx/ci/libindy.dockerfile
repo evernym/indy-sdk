@@ -66,8 +66,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 68DB5E88 && \
 
 # these are default values if they are not passed into the environment with 
 # the --build-arg flag from 'docker build' command.
-ARG LIBINDY_VER="1.7.0"
-ARG LIBNULL_VER="1.7.0"
+ARG LIBINDY_VER
+ARG LIBNULL_VER
 
 ARG LIBSOVTOKEN_VER="0.9.6~-1.126"
 RUN apt-get update && apt-get install -y \
