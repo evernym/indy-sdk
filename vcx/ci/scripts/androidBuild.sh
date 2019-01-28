@@ -99,7 +99,7 @@ get_libindy() {
 		SIMPLE_LIBINDY_VERSION=$(echo ${LIBINDY_VERSION} | cut -f1 -d'-')
         if [ ! -d "libindy_${ARCH}" ]; then
 
-            wget https://repo.sovrin.org/android/libindy/${LIBINDY_BRANCH}/${LIBINDY_VERSION}/libindy_android_${ARCH}_${LIBINDY_VERSION}.zip
+            wget https://repo.sovrin.org/android/libindy/${LIBINDY_BRANCH}/${LIBINDY_VERSION}/libindy_android_${ARCH}_${SIMPLE_LIBINDY_VERSION}.zip
             unzip libindy_android_${ARCH}_${SIMPLE_LIBINDY_VERSION}.zip
 
         fi
@@ -129,7 +129,7 @@ get_libnullpay() {
 		SIMPLE_LIBINDY_VERSION=$(echo ${LIBINDY_VERSION} | cut -f1 -d'-')
         if [ ! -d "libnullpay_${ARCH}" ]; then
 
-            wget https://repo.sovrin.org/android/libindy/${LIBINDY_BRANCH}/${LIBINDY_VERSION}/libnullpay_android_${ARCH}_${LIBINDY_VERSION}.zip
+            wget https://repo.sovrin.org/android/libindy/${LIBINDY_BRANCH}/${LIBINDY_VERSION}/libnullpay_android_${ARCH}_${SIMPLE_LIBINDY_VERSION}.zip
             unzip libnullpay_android_${ARCH}_${SIMPLE_LIBINDY_VERSION}.zip
 
         fi
