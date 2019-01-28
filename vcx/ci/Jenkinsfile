@@ -96,6 +96,7 @@ def buildLibindyDocker() {
 }
 
 def buildAndroidDocker() {
+    def uid= sh(returnStdout: true, script: 'id -u').trim()
     android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
 }
 
@@ -239,7 +240,6 @@ def android() {
         try {
             checkout scm
 
-            def uid= sh(returnStdout: true, script: 'id -u').trim()
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
                 buildLibindyDocker()
@@ -318,7 +318,6 @@ def buildAndroid(arch) {
         try {
             checkout scm
 
-            def uid= sh(returnStdout: true, script: 'id -u').trim()
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
                 buildLibindyDocker()
