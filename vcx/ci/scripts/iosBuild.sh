@@ -13,36 +13,13 @@ SOVTOKEN_ZIP=$3
 #IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
 #IOS_ARCHS="x86_64,i386"
 
-
-function printStartProgress {
-		echo "=================="
-		echo "Starting"
-		echo $1
-		echo "=================="
-		echo
-}
-
-function printEndProgress {
-		echo
-		echo "+++++++++++++++++"
-		echo "Finished"
-		echo $1
-		echo "+++++++++++++++++"
-}
-
-function progress {
-		printStartProgress $1
-		$1
-		printEndProgress $1
-}
-
 cd ${SCRIPTS_PATH}
 
-progress ./mac.01.libindy.setup.sh
-progress ./mac.02.libindy.env.sh
-progress ./mac.03.libindy.build.sh ${INDY_BRANCH} ${INDY_VERSION} ${SOVTOKEN_ZIP}
+./mac.01.libindy.setup.sh
+./mac.02.libindy.env.sh
+./mac.03.libindy.build.sh ${INDY_BRANCH} ${INDY_VERSION} ${SOVTOKEN_ZIP}
 #./mac.04.libvcx.setup.sh
-progress 'source ./mac.05.libvcx.env.sh'
+'source ./mac.05.libvcx.env.sh'
 cp -rf ~/OpenSSL-for-iPhone ${BASE_DIR}/.macosbuild
 cp -rf ~/libzmq-ios ${BASE_DIR}/.macosbuild
 cp -rf ~/combine-libs ${BASE_DIR}/.macosbuild

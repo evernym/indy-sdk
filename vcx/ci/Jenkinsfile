@@ -88,11 +88,15 @@ static String indyBranch() {
 }
 
 
-def buildLibindy() {
+def buildLibindyDocker() {
     docker.build("libindy", "--build-arg LIBINDY_VER=${libindyVersion()} \
             --build-arg LIBNULL_VER=${libnullVersion()} \
             --build-arg LIBSOVTOKEN_VER=${libsovtokenVersion()} \
             -f ${libindyDockerfile()} .")
+}
+
+def buildAndroidDocker() {
+    android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
 }
 
 
@@ -125,7 +129,7 @@ def mainUbuntu() {
             stage('Build Libindy Image') {
                 
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
-                buildLibindy()
+                buildLibindyDocker()
             }
             stage('Build Libvcx Image, Tests Rust Code') {
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f ${libvcxDockerfile} .")
@@ -238,9 +242,9 @@ def android() {
             def uid= sh(returnStdout: true, script: 'id -u').trim()
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
-                buildLibindy()
+                buildLibindyDocker()
             }
-            android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
+            buildAndroidDocker()
             stage('Android Packaging') {
                 //Package .so files into .aar
                 packageAndroid(android)
@@ -317,10 +321,10 @@ def buildAndroid(arch) {
             def uid= sh(returnStdout: true, script: 'id -u').trim()
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
-                buildLibindy()
+                buildLibindyDocker()
             }
             stage('Build and Publish Android') {
-                android = docker.build("android", "--build-arg uid=${uid} -f vcx/wrappers/java/ci/android.dockerfile .")
+                buildAndroidDocker()
                 android.inside {
                     ANDROID_SCRIPT_PATH = 'vcx/ci/scripts/androidBuild.sh'
 
@@ -343,7 +347,7 @@ def buildAndroid(arch) {
             sh 'docker system df'
             step([$class: 'WsCleanup'])
         }
-}
+    }
 }
 
 def packageAndroid(android) {
