@@ -19,7 +19,7 @@ cd ${SCRIPTS_PATH}
 ./mac.02.libindy.env.sh
 ./mac.03.libindy.build.sh ${INDY_BRANCH} ${INDY_VERSION} ${SOVTOKEN_ZIP}
 #./mac.04.libvcx.setup.sh
-'source ./mac.05.libvcx.env.sh'
+./mac.05.libvcx.env.sh
 cp -rf ~/OpenSSL-for-iPhone ${BASE_DIR}/.macosbuild
 cp -rf ~/libzmq-ios ${BASE_DIR}/.macosbuild
 cp -rf ~/combine-libs ${BASE_DIR}/.macosbuild
