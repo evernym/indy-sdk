@@ -26,7 +26,7 @@ function retrieveLib() {
     else
         mkdir -p ${BUILD_CACHE}/${library}/${version}
         cd ${BUILD_CACHE}/${library}/${version}
-        curl -o ${version}-${file} ${url}
+        curl --insecure -o ${version}-${file} ${url}
 
         if [[ ${extension} == "zip" ]]; then
             unzip ${version}-${file}
