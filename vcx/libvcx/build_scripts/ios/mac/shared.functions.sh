@@ -1,8 +1,8 @@
 #!/bin/sh
 
-INDY_BRANCH=$1
-INDY_VERSION=$2
-SOVTOKEN_ZIP=$3
+${INDY_BRANCH:?"Indy branch needs to be set i.e (stbale or master)"}
+${INDY_VERSION:?"Indy version needs to be set"}
+${SOVTOKEN_ZIP:?"Sovtoken zip file needs to be set"}
 
 export LIBSOVTOKEN_IOS_BUILD_URL="https://repo.sovrin.org/ios/libsovtoken/stable/${SOVTOKEN_ZIP}"
 export LIBINDY_IOS_BUILD_URL="https://repo.sovrin.org/ios/libindy/${INDY_BRANCH}/libindy-core/${INDY_VERSION}/libindy.tar.gz"

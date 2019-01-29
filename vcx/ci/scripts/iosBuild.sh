@@ -7,9 +7,9 @@ export WRAPPER_BASE="vcx/wrappers/ios/vcx"
 export WRAPPER_LIBS="vcx/wrappers/ios/vcx/lib"
 IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
 IOS_ARCHS="arm64,armv7,i386,x86_64"
-INDY_BRANCH=$1
-INDY_VERSION=$2
-SOVTOKEN_ZIP=$3
+export INDY_BRANCH=$1
+export INDY_VERSION=$2
+export SOVTOKEN_ZIP=$3
 #IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
 #IOS_ARCHS="x86_64,i386"
 
@@ -17,7 +17,7 @@ cd ${SCRIPTS_PATH}
 
 ./mac.01.libindy.setup.sh
 ./mac.02.libindy.env.sh
-./mac.03.libindy.build.sh ${INDY_BRANCH} ${INDY_VERSION} ${SOVTOKEN_ZIP}
+./mac.03.libindy.build.sh
 #./mac.04.libvcx.setup.sh
 ./mac.05.libvcx.env.sh
 cp -rf ~/OpenSSL-for-iPhone ${BASE_DIR}/.macosbuild
