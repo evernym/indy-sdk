@@ -10,12 +10,13 @@ IOS_ARCHS="arm64,armv7,i386,x86_64"
 export INDY_BRANCH=$1
 export INDY_VERSION=$2
 export SOVTOKEN_ZIP=$3
+export RUST_VERSION=$4
 #IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
 #IOS_ARCHS="x86_64,i386"
 
 cd ${SCRIPTS_PATH}
 
-./mac.01.libindy.setup.sh
+./mac.01.libindy.setup.sh ${RUST_VERSION}
 ./mac.02.libindy.env.sh
 ./mac.03.libindy.build.sh
 #./mac.04.libvcx.setup.sh

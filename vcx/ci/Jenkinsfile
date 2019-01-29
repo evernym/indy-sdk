@@ -275,7 +275,7 @@ def ios() {
                 def tag=indyTag()
                 if (tag != "") { tag = "-" + tag }
 
-                sh "source vcx/ci/scripts/iosBuild.sh ${indyBranch()} ${libindyVersion()}${tag} ${iosSovtokenArtifact()}"
+                sh "source vcx/ci/scripts/iosBuild.sh ${indyBranch()} ${libindyVersion()}${tag} ${iosSovtokenArtifact()} ${rustVersion()}"
 
                 // Publish to Kraken
                 if (env.BRANCH_NAME == "master") {
