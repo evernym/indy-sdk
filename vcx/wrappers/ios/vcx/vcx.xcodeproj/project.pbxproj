@@ -923,7 +923,7 @@
 				DEVELOPMENT_TEAM = FBKAURK5R6;
 				INFOPLIST_FILE = "vcx-demoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/vcx.framework/lib";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lvcx",
@@ -944,7 +944,7 @@
 				DEVELOPMENT_TEAM = FBKAURK5R6;
 				INFOPLIST_FILE = "vcx-demoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/vcx.framework/lib";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lvcx",
