@@ -53,16 +53,16 @@ do
     cp -rp vcx.framework vcx.framework.previousbuild
 done
 
-export GEM_HOME=${HOME}/.gem
-export PATH=${GEM_HOME}/bin:$PATH
+#export GEM_HOME=${HOME}/.gem
+#export PATH=${GEM_HOME}/bin:$PATH
 # Test the libvcx.a file if the ${IOS_ARCHS} contains i386 or x86_64
 if [[ "${IOS_ARCHS}" == *"i386"* ]] || [[ "${IOS_ARCHS}" == *"x86_64"* ]]; then
     xcodebuild -project vcx.xcodeproj -scheme vcx-demo -sdk iphonesimulator build-for-testing
     ## Need to do:
     ## a) gem install cocoapods -- sudo may be needed
-    if [ -z "$(which pod)" ]; then
-        gem install cocoapods
-    fi
+    #if [ -z "$(which pod)" ]; then
+    #    gem install cocoapods
+    #fi
     ## b) pod setup
     if [ ! -d "${HOME}/.cocoapods/repos/master" ]; then
         pod setup
