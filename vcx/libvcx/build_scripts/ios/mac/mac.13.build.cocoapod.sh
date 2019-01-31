@@ -53,6 +53,25 @@ do
     cp -rp vcx.framework vcx.framework.previousbuild
 done
 
+# Test the libvcx.a file if the ${IOS_ARCHS} contains i386 or x86_64
+if [[ "${IOS_ARCHS}" == *"i386"* ]] || [[ "${IOS_ARCHS}" == *"x86_64"* ]]; then
+    xcodebuild -project vcx.xcodeproj -scheme vcx-demo -sdk iphonesimulator build-for-testing
+    ## Need to do:
+    ## a) sudo gem install cocoapods
+    if [ -z "$(which pod)" ]; then
+        sudo gem install cocoapods
+    fi
+    ## b) pod setup
+    if [ ! -d "$HOME/.cocoapods/repos/master" ]; then
+        pod setup
+    fi
+    ## c) brew install xctool
+    if [ -z "$(which xctool)" ]; then
+        brew install xctool
+    fi
+    xctool -project vcx.xcodeproj -scheme vcx-demo run-tests -sdk iphonesimulator
+fi
+
 #mv lib/libvcx.a.original lib/libvcx.a
 rm lib/libvcx.a
 rm -rf vcx.framework.previousbuild
