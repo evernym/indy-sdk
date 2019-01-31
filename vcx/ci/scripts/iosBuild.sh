@@ -47,7 +47,7 @@ fi
 ./mac.12.combine.static.libs.sh libvcxall delete nodebug "${IOS_ARCHS}"
 ./mac.13.build.cocoapod.sh libvcxall
 
-Package for armv7 and arm64
+# Package for armv7 and arm64
 IOS_ARCHS="arm64,armv7"
 ./mac.11.copy.static.libs.to.app.sh
 ./mac.12.combine.static.libs.sh libvcxpartial delete nodebug "${IOS_ARCHS}"
