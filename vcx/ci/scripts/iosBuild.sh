@@ -5,14 +5,14 @@ export SCRIPTS_PATH="vcx/libvcx/build_scripts/ios/mac"
 export BASE_DIR="../../../../.."
 export WRAPPER_BASE="vcx/wrappers/ios/vcx"
 export WRAPPER_LIBS="vcx/wrappers/ios/vcx/lib"
-IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
-IOS_ARCHS="arm64,armv7,i386,x86_64"
+#IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
+#IOS_ARCHS="arm64,armv7,i386,x86_64"
 export INDY_BRANCH=$1
 export INDY_VERSION=$2
 export SOVTOKEN_ZIP=$3
 export RUST_VERSION=$4
-#IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
-#IOS_ARCHS="x86_64,i386"
+IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
+IOS_ARCHS="x86_64,i386"
 
 cd ${SCRIPTS_PATH}
 
@@ -48,8 +48,8 @@ fi
 ./mac.13.build.cocoapod.sh libvcxall
 
 # Package for armv7 and arm64
-IOS_ARCHS="arm64,armv7"
-./mac.11.copy.static.libs.to.app.sh
-./mac.12.combine.static.libs.sh libvcxpartial delete nodebug "${IOS_ARCHS}"
-./mac.13.build.cocoapod.sh libvcxpartial "${IOS_ARCHS}"
+# IOS_ARCHS="arm64,armv7"
+# ./mac.11.copy.static.libs.to.app.sh
+# ./mac.12.combine.static.libs.sh libvcxpartial delete nodebug "${IOS_ARCHS}"
+# ./mac.13.build.cocoapod.sh libvcxpartial "${IOS_ARCHS}"
 

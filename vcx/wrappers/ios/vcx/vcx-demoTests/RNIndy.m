@@ -30,7 +30,7 @@
             currentConfig[obj] = parsedValues[obj];
         }
     }
-    
+
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:currentConfig
        options:(NSJSONWritingOptions) (0)
          error:&error];
@@ -40,7 +40,7 @@
 -(void)simpleInit: (NSString *)config
        completion:(void (^)(BOOL success))successful
 {
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
         [[[ConnectMeVcx alloc] init] initWithConfig:config completion:^(NSError *error) {
             if (error != nil && error.code != 0 && error.code != 1044)
@@ -67,7 +67,7 @@
 {
 
     config = [RNIndy updateInitConfig:config withValues:[self lastOneTimeInfo]];
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
         [[[ConnectMeVcx alloc] init] initWithConfig:config completion:^(NSError *error) {
             if (error != nil && error.code != 0 && error.code != 1044)
@@ -176,6 +176,14 @@
     [self setLastShutdownVcx:[[[ConnectMeVcx alloc] init] vcxShutdown: deletePool]];
 }
 
+-(int)initNullPay {
+    //return [[[ConnectMeVcx alloc] init] initNullPay];
+    return 0;
+}
+
+-(int)initSovToken {
+    return [[[ConnectMeVcx alloc] init] initSovToken];
+}
 
 -(void)credentialCreateWithMsgId: (NSString *) sourceId
                   withConnectionHandle: (VcxHandle) connectionHandle
@@ -331,7 +339,7 @@
 {
     // pass a config as json string
     // callback would get an error code and a json string back in case of success
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
         [[[ConnectMeVcx alloc] init] agentProvisionAsync:config completion:^(NSError *error, NSString *oneTimeInfo) {
             NSLog(@"applicationDidBecomeActive callback:%@",oneTimeInfo);
@@ -353,7 +361,7 @@
                 });
             }
         }];
-        
+
     });
 }
 
@@ -393,7 +401,7 @@
     [[[ConnectMeVcx alloc] init] connectionConnect:connectionHandle
         connectionType:connectionType
             completion:^(NSError *error, NSString *inviteDetails) {
-                
+
                 if (error != nil && error.code != 0)
                 {
                     NSString *indyErrorCode = [NSString stringWithFormat:@"Error occurred while accepitng connection: %@ :: %ld", error.domain, (long)error.code];
@@ -677,7 +685,7 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
     NSString *recordType = @"record_type";
-    
+
     [[[ConnectMeVcx alloc] init] updateRecordWallet:recordType
        withRecordId:key
     withRecordValue:value
@@ -708,8 +716,8 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
     [[[ConnectMeVcx alloc] init] downloadMessages: messageStatus uid_s:uid_s pwdids:pwdids completion:^(NSError *error, NSString *messages) {
-        
-        
+
+
         if (error != nil && error.code !=0) {
             NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
             //reject(indyErrorCode, @"Error occured while downloading messages", error);
@@ -870,7 +878,7 @@
     // it would return a string
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
         [[[ConnectMeVcx alloc] init] getTokenInfo:paymentHandle withCompletion:^(NSError *error, NSString *tokenInfo) {
-            
+
             if (error != nil && error.code != 0)
             {
                 NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
@@ -889,7 +897,7 @@
         }];
 
     });
-                   
+
 }
 
 @end

@@ -920,7 +920,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FBKAURK5R6;
+				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				INFOPLIST_FILE = "vcx-demoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
@@ -941,7 +941,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FBKAURK5R6;
+				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				INFOPLIST_FILE = "vcx-demoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
@@ -960,7 +960,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FBKAURK5R6;
+				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				INFOPLIST_FILE = "vcx-demoUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "co.evernym.vcx-objc.vcx-demoUITests";
@@ -974,7 +974,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FBKAURK5R6;
+				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				INFOPLIST_FILE = "vcx-demoUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "co.evernym.vcx-objc.vcx-demoUITests";

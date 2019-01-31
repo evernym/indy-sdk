@@ -26,7 +26,8 @@ fi
 
 # removing 'armv7s-apple-ios' from the master build, as its not currently
 # required, just a 'nice to have'
-IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
+#IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
+IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
 if [ ! -z "$2" ]; then
     IOS_TARGETS=$2
 fi
@@ -74,6 +75,16 @@ do
 
     libtool="/usr/bin/libtool"
     libindy_dir="${BUILD_CACHE}/libindy/${LIBINDY_VERSION}"
+    libsovtoken_dir="${BUILD_CACHE}/libsovtoken-ios/${LIBSOVTOKEN_VERSION}/libsovtoken"
+
+    if [ -e ${libsovtoken_dir}/${target_arch}/libsovtoken.a ]; then
+        echo "${target_arch} libsovtoken architecture already extracted"
+    else
+        mkdir -p ${libsovtoken_dir}/${target_arch}
+        lipo -extract $target_arch ${libsovtoken_dir}/universal/libsovtoken.a -o ${libsovtoken_dir}/${target_arch}/libsovtoken.a
+        ${libtool} -static ${libsovtoken_dir}/${target_arch}/libsovtoken.a -o ${libsovtoken_dir}/${target_arch}/libsovtoken_libtool.a
+        mv ${libsovtoken_dir}/${target_arch}/libsovtoken_libtool.a ${libsovtoken_dir}/${target_arch}/libsovtoken.a
+    fi
 
     if [ -e ${libindy_dir}/${target_arch}/libindy.a ]; then
         echo "${target_arch} libindy architecture already extracted"
@@ -88,6 +99,7 @@ do
     export IOS_SODIUM_LIB=$WORK_DIR/libzmq-ios/libsodium-ios/dist/ios/lib/${target_arch}
     export IOS_ZMQ_LIB=$WORK_DIR/libzmq-ios/dist/ios/lib/${target_arch}
     export LIBINDY_DIR=${libindy_dir}/${target_arch}
+    export LIBSOVTOKEN_DIR=${libsovtoken_dir}/${target_arch}
 
     cargo build --target "${target}" --release --no-default-features --features "ci"
     to_combine="${to_combine} ./target/${target}/release/libvcx.a"

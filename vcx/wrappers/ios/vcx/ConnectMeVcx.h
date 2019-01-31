@@ -75,9 +75,9 @@ extern void VcxWrapperCommonNumberStringCallback(vcx_command_handle_t xcommand_h
 
 @interface ConnectMeVcx : NSObject
 
-//- (int)initSovToken;
+- (int)initSovToken;
 
-- (int)initNullPay;
+//- (int)initNullPay;
 
 - (int)setDefaultLogger:(NSString *)logLevel;
 

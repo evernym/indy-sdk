@@ -101,4 +101,7 @@
 -(void)getTokenInfo: (vcx_payment_handle_t)paymentHandle
                     completion:(void (^)(BOOL success))successful;
 
+-(int)initNullPay;
+-(int)initSovToken;
+
 @end
