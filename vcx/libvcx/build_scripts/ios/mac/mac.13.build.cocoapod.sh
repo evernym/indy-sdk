@@ -15,8 +15,8 @@ COMBINED_LIB=$1
 
 DATETIME=$(date +"%Y%m%d.%H%M")
 
-#IOS_ARCHS="arm64,armv7,i386,x86_64"
-IOS_ARCHS="i386,x86_64"
+IOS_ARCHS="arm64,armv7,i386,x86_64"
+#IOS_ARCHS="i386,x86_64"
 if [ ! -z "$2" ]; then
     IOS_ARCHS=$2
 fi
