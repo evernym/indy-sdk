@@ -177,12 +177,12 @@
 }
 
 -(int)initNullPay {
-    //return [[[ConnectMeVcx alloc] init] initNullPay];
-    return 0;
+    return [[[ConnectMeVcx alloc] init] initNullPay];
 }
 
 -(int)initSovToken {
-    return [[[ConnectMeVcx alloc] init] initSovToken];
+    //return [[[ConnectMeVcx alloc] init] initSovToken];
+    return 0;
 }
 
 -(void)credentialCreateWithMsgId: (NSString *) sourceId

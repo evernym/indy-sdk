@@ -44,8 +44,8 @@ typedef enum
 //
 // #Returns
 // Success
-vcx_error_t sovtoken_init();
-//vcx_error_t nullpay_init();
+//vcx_error_t sovtoken_init();
+vcx_error_t nullpay_init();
 
 // Reset libvcx to a pre-configured state, releasing/deleting any handles and freeing memory
 //
