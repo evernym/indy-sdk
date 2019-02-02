@@ -1,8 +1,8 @@
 #!/bin/bash
 
 libvcx_version() {
-    CARGO_LOCATION="../../libvcx/Cargo.toml"
-    return $(./toml_utils.py ${CARGO_LOCATION})
+    CARGO_LOCATION="vcx/libvcx/Cargo.toml"
+    return $(./vcx/ci/scripts/toml_utils.py ${CARGO_LOCATION})
 }
 
 setup_env() {
