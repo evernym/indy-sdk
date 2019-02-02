@@ -62,7 +62,7 @@ build_cocoapod() {
     ./mac.13.build.cocoapod.sh ${LIBVCX_ARCH} ${IOS_TARGETS} ${VCX_VERSION}
 }
 
-VCX_VERSION=libvcx_version
+VCX_VERSION=$(libvcx_version)
 echo "VCX version: ${VCX_VERSION}"
 clear_previous_builds
 set_ios_platforms "arm64,armv7,i386,x86_64" "aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
