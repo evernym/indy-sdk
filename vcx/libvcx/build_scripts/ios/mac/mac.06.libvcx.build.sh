@@ -12,6 +12,7 @@ INDY_SDK=$WORK_DIR/vcx-indy-sdk
 VCX_SDK=$START_DIR/../../../../..
 VCX_SDK=$(abspath "$VCX_SDK")
 
+IOS_ARCHS=$3
 source ./mac.05.libvcx.env.sh
 cd ../../..
 DEBUG_SYMBOLS="debuginfo"
@@ -24,29 +25,20 @@ if [ "$DEBUG_SYMBOLS" = "nodebug" ]; then
     sed -i .bak 's/debug = true/debug = false/' Cargo.toml
 fi
 
-# removing 'armv7s-apple-ios' from the master build, as its not currently
-# required, just a 'nice to have'
-IOS_TARGETS="aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
-#IOS_TARGETS="x86_64-apple-ios,i386-apple-ios"
-if [ ! -z "$2" ]; then
-    IOS_TARGETS=$2
+if [ ! -z "${IOS_ARCHS}" ]; then
+    echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
+    exit 1
 fi
 
 CLEAN_BUILD="cleanbuild"
-if [ ! -z "$3" ]; then
-    CLEAN_BUILD=$3
+if [ ! -z "$2" ]; then
+    CLEAN_BUILD=$2
 fi
 
 if [ "$CLEAN_BUILD" = "cleanbuild" ]; then
     cargo clean
     rm -rf ${BUILD_CACHE}/target
     rm -rf ${BUILD_CACHE}/arch_libs
-    # cargo update
-# else
-#     if [ -d ${BUILD_CACHE}/target ]; then
-#         echo "Optimizing iOS build using folder: $(abspath ${BUILD_CACHE}/target)"
-#         cp -rfp ${BUILD_CACHE}/target .
-#     fi
 fi
 
 git log -1 > $WORK_DIR/evernym.vcx-sdk.git.commit.log
