@@ -83,4 +83,5 @@ if [[ $RUSTUP_VERSION =~ ^'rustup ' ]]; then
     brew install wget
     brew install truncate
     brew install libzip
+    brew install python3
 fi
