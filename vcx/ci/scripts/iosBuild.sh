@@ -1,10 +1,5 @@
 #!/bin/bash
 
-libvcx_version() {
-    CARGO_LOCATION="vcx/libvcx/Cargo.toml"
-    return $(./vcx/ci/scripts/toml_utils.py ${CARGO_LOCATION})
-}
-
 setup_env() {
     set -e
     export SCRIPTS_PATH="vcx/libvcx/build_scripts/ios/mac"
@@ -61,10 +56,9 @@ build_cocoapod() {
     ./mac.12.combine.static.libs.sh ${LIBVCX_ARCH} delete nodebug "${IOS_ARCHS}"
     ./mac.13.build.cocoapod.sh ${LIBVCX_ARCH} ${IOS_TARGETS} ${VCX_VERSION}
 }
-
-libvcx_version
-VCX_VERSION=$?
-echo "VCX version: ${VCX_VERSION}"
+export PATH=${PATH}:$(pwd)/vcx/ci/scripts
+export VCX_VERSION=$(toml_utils.py vcx/libvcx/Cargo.toml)
+echo "VCX_VERSION: ${VCX_VERSION}"
 clear_previous_builds
 set_ios_platforms "arm64,armv7,i386,x86_64" "aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
 setup_env $1 $2 $3 $4
