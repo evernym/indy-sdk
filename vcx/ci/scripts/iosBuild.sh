@@ -57,7 +57,7 @@ build_cocoapod() {
     ./mac.13.build.cocoapod.sh ${LIBVCX_ARCH} ${IOS_TARGETS} ${VCX_VERSION}
 }
 export PATH=${PATH}:$(pwd)/vcx/ci/scripts
-export VCX_VERSION=$(toml_utils.py vcx/libvcx/Cargo.toml)
+export VCX_VERSION=$(./vcx/ci/scripts/toml_utils.py vcx/libvcx/Cargo.toml)
 echo "VCX_VERSION: ${VCX_VERSION}"
 clear_previous_builds
 set_ios_platforms "arm64,armv7,i386,x86_64" "aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
