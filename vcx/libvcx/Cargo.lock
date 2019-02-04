@@ -461,11 +461,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "indy"
+<<<<<<< 82f7aa97c2b05d965a436fbad33386b68585fb93
 version = "1.8.1"
+=======
+version = "1.8.0"
+>>>>>>> Merge upstream master to the evernym repo (#30)
 dependencies = [
  "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.25 (registry+https://github.com/rust-lang/crates.io-index)",
+<<<<<<< 82f7aa97c2b05d965a436fbad33386b68585fb93
  "indy-sys 1.8.1",
+=======
+ "indy-sys 1.8.0",
+>>>>>>> Merge upstream master to the evernym repo (#30)
  "lazy_static 0.2.11 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.41 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -478,7 +486,11 @@ dependencies = [
 
 [[package]]
 name = "indy-sys"
+<<<<<<< 82f7aa97c2b05d965a436fbad33386b68585fb93
 version = "1.8.1"
+=======
+version = "1.8.0"
+>>>>>>> Merge upstream master to the evernym repo (#30)
 dependencies = [
  "libc 0.2.41 (registry+https://github.com/rust-lang/crates.io-index)",
  "pkg-config 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
