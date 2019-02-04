@@ -19,7 +19,7 @@ cp -v $LIBZMQ/dist/ios/lib/libzmq.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libzmq.a.t
 cp -v $LIBZMQ/libsodium-ios/dist/ios/lib/libsodium.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libsodium.a.tocombine
 
 # sovtoken and nullpay
-#cp -v /Users/jenkins/nologging_nullpay/target/universal/debug/libnullpay.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libnullpay.a.tocombine
-cp -v /Users/jenkins/withlogging_nullpay/target/universal/debug/libnullpay.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libnullpay.a.tocombine
+cp -v /Users/jenkins/nologging_nullpay/target/universal/debug/libnullpay.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libnullpay.a.tocombine
+#cp -v /Users/jenkins/withlogging_nullpay/target/universal/debug/libnullpay.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libnullpay.a.tocombine
 #cp -v ${BUILD_CACHE}/libnullpay/${LIBNULLPAY_VERSION}/libnullpay.a $VCX_SDK/vcx/wrappers/ios/vcx/lib/libnullpay.a.tocombine
 #cp -v ${BUILD_CACHE}/libsovtoken-ios/${LIBSOVTOKEN_VERSION}/libsovtoken/universal/libsovtoken.a ${VCX_SDK}/vcx/wrappers/ios/vcx/lib/libsovtoken.a.tocombine
