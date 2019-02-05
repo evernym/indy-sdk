@@ -5,9 +5,55 @@ SCRIPT_PATH=${BASH_SOURCE[0]}      # this script's name
 SCRIPT_NAME=${SCRIPT_PATH##*/}       # basename of script (strip path)
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 
+ANDROID_SDK=${ANDROID_BUILD_FOLDER}/sdk
+export ANDROID_SDK_ROOT=${ANDROID_SDK}
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+export PATH=${PATH}:${ANDROID_HOME}/tools
+export PATH=${PATH}:${ANDROID_HOME}/tools/bin
+
+export GREEN=`tput setaf 2`
+export BLUE=`tput setaf 4`
+export RESET=`tput sgr0`
+
+create_avd_and_launch_emulator(){
+
+    ABSOLUTE_ARCH="x86"
+    ABI="x86"
+    ANDROID_SDK=""
+
+    echo "${GREEN}Creating Android SDK${RESET}"
+
+    yes | sdkmanager --licenses
+
+    echo "yes" |
+          sdkmanager --no_https \
+            "emulator" \
+            "platform-tools" \
+            "platforms;android-24" \
+            "system-images;android-24;default;${ABI}"
+
+    echo "${BLUE}Creating android emulator${RESET}"
+
+        echo "no" |
+             avdmanager create avd \
+                --name ${ABSOLUTE_ARCH} \
+                --package "system-images;android-24;default;${ABI}" \
+                -f \
+                -c 1000M
+
+        ANDROID_SDK_ROOT=${ANDROID_SDK} ANDROID_HOME=${ANDROID_SDK} ${ANDROID_HOME}/tools/emulator -avd ${ABSOLUTE_ARCH} -no-audio -no-window -no-snapshot -no-accel &
+}
+
+create_avd_and_launch_emulator
+
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ..
     ./gradlew --no-daemon clean build --project-dir=android -x test #skipping tests because the already run in jenkins CI
+    ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
+    #./gradlew --no-daemon :assembleAndroidTest --project-dir=android -x test
+    # To run instrumented tests do...
+    #./gradlew --no-daemon :connectedDebugAndroidTest --project-dir=android -x test
     mkdir -p artifacts/aar
     pushd android/build/outputs/aar
         cp $(ls -t1 |  head -n 1) ${SCRIPT_DIR}/../artifacts/aar
