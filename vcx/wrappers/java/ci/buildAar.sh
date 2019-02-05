@@ -51,6 +51,22 @@ delete_existing_avd(){
     avdmanager delete avd -n ${ABSOLUTE_ARCH}
 }
 
+download_and_unzip_if_missed() {
+    target_dir=$1
+    url_pref=$2
+    fname=$3
+    url="${url_pref}${fname}"
+    if [ ! -d "${target_dir}" ] ; then
+        echo "Downloading ${fname}"
+        curl -sSLO ${url}
+        unzip -qq ${fname}
+        rm ${fname}
+        echo "Done!"
+    else
+        echo "Skipping download ${fname}"
+    fi
+}
+
 download_sdk(){
     pushd ${ANDROID_SDK}
         download_and_unzip_if_missed "tools" "https://dl.google.com/android/repository/" "sdk-tools-linux-4333796.zip"
