@@ -8,22 +8,19 @@ SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 export ANDROID_BUILD_FOLDER="/tmp/android_build"
 echo "ANDROID_BUILD_FOLDER: ${ANDROID_BUILD_FOLDER}"
 ANDROID_SDK=${ANDROID_BUILD_FOLDER}/sdk
+mkdir -p ${ANDROID_SDK}
 export ANDROID_SDK_ROOT=${ANDROID_SDK}
 export ANDROID_HOME=${ANDROID_SDK}
 export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 export PATH=${PATH}:${ANDROID_HOME}/tools
 export PATH=${PATH}:${ANDROID_HOME}/tools/bin
+export ABSOLUTE_ARCH="x86"
+export ABI="x86"
 
-export GREEN=`tput setaf 2`
-export BLUE=`tput setaf 4`
-export RESET=`tput sgr0`
 
 create_avd_and_launch_emulator(){
 
-    ABSOLUTE_ARCH="x86"
-    ABI="x86"
-
-    echo "${GREEN}Creating Android SDK${RESET}"
+    echo "Creating Android SDK"
 
     yes | sdkmanager --licenses
 
@@ -34,7 +31,7 @@ create_avd_and_launch_emulator(){
             "platforms;android-24" \
             "system-images;android-24;default;${ABI}"
 
-    echo "${BLUE}Creating android emulator${RESET}"
+    echo "Creating android emulator"
 
         echo "no" |
              avdmanager create avd \
@@ -44,6 +41,14 @@ create_avd_and_launch_emulator(){
                 -c 1000M
 
         ANDROID_SDK_ROOT=${ANDROID_SDK} ANDROID_HOME=${ANDROID_SDK} ${ANDROID_HOME}/tools/emulator -avd ${ABSOLUTE_ARCH} -no-audio -no-window -no-snapshot -no-accel &
+}
+
+kill_avd(){
+    adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill; done || true
+}
+delete_existing_avd(){
+    kill_avd
+    avdmanager delete avd -n ${ABSOLUTE_ARCH}
 }
 
 download_sdk(){
