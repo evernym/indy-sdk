@@ -22,7 +22,6 @@ create_avd_and_launch_emulator(){
 
     ABSOLUTE_ARCH="x86"
     ABI="x86"
-    ANDROID_SDK=""
 
     echo "${GREEN}Creating Android SDK${RESET}"
 
