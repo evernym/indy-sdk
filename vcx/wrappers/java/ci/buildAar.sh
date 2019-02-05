@@ -5,6 +5,7 @@ SCRIPT_PATH=${BASH_SOURCE[0]}      # this script's name
 SCRIPT_NAME=${SCRIPT_PATH##*/}       # basename of script (strip path)
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 
+echo "******** >>>>>> ${ANDROID_BUILD_FOLDER}"
 ANDROID_SDK=${ANDROID_BUILD_FOLDER}/sdk
 export ANDROID_SDK_ROOT=${ANDROID_SDK}
 export ANDROID_HOME=${ANDROID_SDK}
@@ -45,7 +46,18 @@ create_avd_and_launch_emulator(){
         ANDROID_SDK_ROOT=${ANDROID_SDK} ANDROID_HOME=${ANDROID_SDK} ${ANDROID_HOME}/tools/emulator -avd ${ABSOLUTE_ARCH} -no-audio -no-window -no-snapshot -no-accel &
 }
 
-create_avd_and_launch_emulator
+download_sdk(){
+    pushd ${ANDROID_SDK}
+        download_and_unzip_if_missed "tools" "https://dl.google.com/android/repository/" "sdk-tools-linux-4333796.zip"
+
+        set +e
+        delete_existing_avd
+        set -e
+        create_avd_and_launch_emulator
+    popd
+}
+
+download_sdk
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ..
