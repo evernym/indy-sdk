@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Reads the Cargo.toml file and extracs the major.minor version of the package
 
@@ -8,7 +8,8 @@ import os
 SO_FILE = 'libvcx.so'
 
 def valid_line(line):
-    return ('version =' in line or 'version=' in line) and ('uuid' not in line and 'rusqlite' not in line and 'indy' not in line)
+    return ('version =' in line or 'version=' in line) and ('uuid' not in line and 'rusqlite' not in line and 'indy-sys' not in line and 'rust' not in line)
+
 	
 # update the so file with the major minor build
 def update_so(src_dir, version):
