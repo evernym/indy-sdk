@@ -286,7 +286,7 @@ def ios() {
                 // Build ios architectures
 
                 def indyTag = appendTag(libindyTag(), "-")
-                def nullTag = appendTag(libnullVersion(), "-")
+                def nullTag = appendTag(nullpayTag(), "-")
 
                 sh "source vcx/ci/scripts/iosBuild.sh ${indyBranch()} ${libindyVersion()}${indyTag} \
                     ${nullBranch()} ${libnullVersion()}${nullTag} ${iosSovtokenArtifact()} ${rustVersion()}"
