@@ -50,7 +50,7 @@ clear_previous_builds() {
 
 build_vcx() {
     IOS_ARCHS=$1
-    ./mac.06.libvcx.build.sh nodebug cleanbuild "${IOS_ARCHS}"
+    ./mac.06.libvcx.build.sh nodebug cleanbuild ${IOS_ARCHS}
 }
 
 build_cocoapod() {
@@ -60,7 +60,7 @@ build_cocoapod() {
     VCX_VERSION=$4
 
     ./mac.11.copy.static.libs.to.app.sh
-    ./mac.12.combine.static.libs.sh ${LIBVCX_ARCH} delete nodebug "${IOS_ARCHS}"
+    ./mac.12.combine.static.libs.sh ${LIBVCX_ARCH} delete nodebug ${IOS_ARCHS}
     ./mac.13.build.cocoapod.sh ${LIBVCX_ARCH} ${IOS_TARGETS} ${VCX_VERSION}
 }
 vcx_version
