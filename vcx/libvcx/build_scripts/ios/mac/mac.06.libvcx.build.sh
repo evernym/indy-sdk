@@ -44,10 +44,8 @@ fi
 
 git log -1 > $WORK_DIR/evernym.vcx-sdk.git.commit.log
 
-export OPENSSL_LIB_DIR_DARWIN=${OPENSSL_LIB_DIR}
-
 bkpIFS="$IFS"
-IFS=',()][' read -r -a targets <<<"${IOS_TARGETS}"
+IFS=',()][' read -r -a targets <<<"${IOS_ARCHS}"
 echo "Building targets: ${targets[@]}"    ##Or printf "%s\n" ${array[@]}
 IFS="$bkpIFS"
 
@@ -92,5 +90,3 @@ lipo -create $to_combine -o ./target/universal/release/libvcx.a
 
 # echo "Copying iOS target folder into directory: $(abspath "${BUILD_CACHE}")"
 # cp -rfp ./target ${BUILD_CACHE}
-
-export OPENSSL_LIB_DIR=$OPENSSL_LIB_DIR_DARWIN
