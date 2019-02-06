@@ -12,7 +12,7 @@ INDY_SDK=$WORK_DIR/vcx-indy-sdk
 VCX_SDK=$START_DIR/../../../../..
 VCX_SDK=$(abspath "$VCX_SDK")
 
-IOS_ARCHS=$3
+IOS_ARCHS="$3"
 source ./mac.05.libvcx.env.sh
 cd ../../..
 DEBUG_SYMBOLS="debuginfo"
