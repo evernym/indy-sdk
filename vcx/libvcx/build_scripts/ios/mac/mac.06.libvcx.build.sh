@@ -12,7 +12,12 @@ INDY_SDK=$WORK_DIR/vcx-indy-sdk
 VCX_SDK=$START_DIR/../../../../..
 VCX_SDK=$(abspath "$VCX_SDK")
 
-IOS_ARCHS=$3
+export IOS_ARCHS=$3
+if [ -z ${IOS_ARCHS} ]; then
+    echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
+    exit 1
+fi
+
 source ./mac.05.libvcx.env.sh
 cd ../../..
 DEBUG_SYMBOLS="debuginfo"
@@ -23,11 +28,6 @@ fi
 
 if [ "$DEBUG_SYMBOLS" = "nodebug" ]; then
     sed -i .bak 's/debug = true/debug = false/' Cargo.toml
-fi
-
-if [ ! -z ${IOS_ARCHS} ]; then
-    echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
-    exit 1
 fi
 
 CLEAN_BUILD="cleanbuild"
