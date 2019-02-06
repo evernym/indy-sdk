@@ -32,7 +32,7 @@ fi
 
 CLEAN_BUILD="cleanbuild"
 if [ ! -z "$2" ]; then
-    CLEAN_BUILD=$2
+    CLEAN_BUILD="$2"
 fi
 
 if [ "$CLEAN_BUILD" = "cleanbuild" ]; then
