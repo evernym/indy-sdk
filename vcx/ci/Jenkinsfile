@@ -341,7 +341,7 @@ def buildAndroid(arch) {
                     sh 'sudo ./vcx/ci/scripts/installCert.sh'
 
                     def indyTag = appendTag(libindyTag(), "-")
-                    def nullTag = appendTag(libnullVersion(), "-")
+                    def nullTag = appendTag(nullpayTag(), "-")
 
                     sh "./${ANDROID_SCRIPT_PATH} ${arch} ${indyBranch()} ${libindyVersion()}${indyTag} \
                             ${nullBranch()} ${libnullVersion()}${nullTag} ${androidSovtokenArtifact()}"
