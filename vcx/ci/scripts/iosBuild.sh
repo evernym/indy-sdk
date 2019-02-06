@@ -4,7 +4,7 @@ vcx_version() {
     export PATH=${PATH}:$(pwd)/vcx/ci/scripts
     export VCX_VERSION=$(toml_utils.py vcx/libvcx/Cargo.toml)
     echo "VCX_VERSION: ${VCX_VERSION}"
-    return ${VCX_VERSION}
+    return "${VCX_VERSION}"
 }
 
 setup_env() {
