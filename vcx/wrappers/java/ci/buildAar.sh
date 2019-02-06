@@ -95,7 +95,7 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     # Use the command below to find out the -a [intent-filter:name] -n [activity:name]
     ls -al ${ANDROID_BUILD_TOOLS}/..
     ${ANDROID_BUILD_TOOLS}/aapt d xmltree ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk AndroidManifest.xml
-    adb shell am start -a android.intent.action.MAIN -n com.anonymous/.MainWindow
+    adb shell am start -a android.intent.action.MAIN -n pl.brightinventions.slf4android/.NotifyDeveloperDialogDisplayActivity
     mkdir -p artifacts/aar
     pushd android/build/outputs/aar
         cp $(ls -t1 |  head -n 1) ${SCRIPT_DIR}/../artifacts/aar
