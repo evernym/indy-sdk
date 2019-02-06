@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Reads the Cargo.toml file and extracs the major.minor version of the package
 
