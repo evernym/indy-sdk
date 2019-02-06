@@ -5,9 +5,9 @@ SCRIPT_PATH=${BASH_SOURCE[0]}      # this script's name
 SCRIPT_NAME=${SCRIPT_PATH##*/}       # basename of script (strip path)
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 
-export ANDROID_BUILD_FOLDER="/tmp/android_build"
+export ANDROID_BUILD_FOLDER="/home/android"
 echo "ANDROID_BUILD_FOLDER: ${ANDROID_BUILD_FOLDER}"
-ANDROID_SDK=${ANDROID_BUILD_FOLDER}/sdk
+ANDROID_SDK=${ANDROID_BUILD_FOLDER}/android-sdk-linux
 mkdir -p ${ANDROID_SDK}
 export ANDROID_SDK_ROOT=${ANDROID_SDK}
 export ANDROID_HOME=${ANDROID_SDK}
@@ -92,7 +92,7 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     #./gradlew --no-daemon :connectedDebugAndroidTest --project-dir=android -x test
     adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk
     # Use the command below to find out the -a [intent-filter:name] -n [activity:name]
-    # /Users/norm/Library/Android/sdk/build-tools/26.0.2/aapt d xmltree ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk AndroidManifest.xml
+    ${ANDROID_SDK}/build-tools/27.0.3/aapt d xmltree ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk AndroidManifest.xml
     adb shell am start -a android.intent.action.MAIN -n com.anonymous/.MainWindow
     mkdir -p artifacts/aar
     pushd android/build/outputs/aar
