@@ -1,7 +1,6 @@
 #!/bin/bash
 
 vcx_version() {
-
     export PATH=${PATH}:$(pwd)/vcx/ci/scripts
     VCX_VERSION=$(toml_utils.py vcx/libvcx/Cargo.toml)
     echo "VCX_VERSION: ${VCX_VERSION}"
@@ -16,8 +15,10 @@ setup_env() {
     export WRAPPER_LIBS="vcx/wrappers/ios/vcx/lib"
     export INDY_BRANCH=$1
     export INDY_VERSION=$2
-    export SOVTOKEN_ZIP=$3
-    export RUST_VERSION=$4
+    export NULL_BRANCH=$3
+    export NULL_VERSION=$4
+    export SOVTOKEN_ZIP=$5
+    export RUST_VERSION=$6
     cd ${SCRIPTS_PATH}
 
     cp -rf ~/OpenSSL-for-iPhone ${BASE_DIR}/.macosbuild
