@@ -3,21 +3,21 @@
 set -e
 source ./shared.functions.sh
 
-IOS_ARCHS="$1"
-IOS_TARGETS="$2"
-VCX_VERSION="$3"
+IOS_ARCHS=$1
+IOS_TARGETS=$2
+VCX_VERSION=$3
 
-if [ ! -z "${IOS_ARCHS}" ]; then
+if [ ! -z ${IOS_ARCHS} ]; then
     echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
     exit 1
 fi
 
-if [ ! -z "${IOS_TARGETS}" ]; then
+if [ ! -z ${IOS_TARGETS} ]; then
     echo "please provide the targets e.g aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
     exit 1
 fi
 
-if [ ! -z "${VCX_VERSION}" ]; then
+if [ ! -z ${VCX_VERSION} ]; then
     echo "Please provide a vcx version"
     exit 1
 fi
