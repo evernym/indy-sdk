@@ -69,7 +69,7 @@ VCX_VERSION=''
 vcx_version VCX_VERSION
 clear_previous_builds
 set_ios_platforms "arm64,armv7,i386,x86_64" "aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
-setup_env $1 $2 $3 $4
+setup_env $1 $2 $3 $4 $5 $6
 build_vcx ${IOS_ARCHS}
 build_cocoapod libvcxall ${IOS_ARCHS} ${IOS_TARGETS} ${VCX_VERSION}
 
