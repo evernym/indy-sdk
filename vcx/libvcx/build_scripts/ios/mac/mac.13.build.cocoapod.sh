@@ -3,17 +3,12 @@
 set -e
 source ./shared.functions.sh
 
-IOS_ARCHS=$1
-IOS_TARGETS=$2
+COMBINED_LIB=$1
+IOS_ARCHS=$2
 VCX_VERSION=$3
 
 if [ -z ${IOS_ARCHS} ]; then
     echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
-    exit 1
-fi
-
-if [ -z ${IOS_TARGETS} ]; then
-    echo "please provide the targets e.g aarch64-apple-ios,armv7-apple-ios,i386-apple-ios,x86_64-apple-ios"
     exit 1
 fi
 
@@ -30,7 +25,6 @@ WORK_DIR=$(abspath "$WORK_DIR")
 VCX_SDK=$START_DIR/../../../../..
 VCX_SDK=$(abspath "$VCX_SDK")
 
-COMBINED_LIB=$1
 
 DATETIME=$(date +"%Y%m%d.%H%M")
 

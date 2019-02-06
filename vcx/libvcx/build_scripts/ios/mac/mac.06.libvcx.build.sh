@@ -32,10 +32,11 @@ fi
 
 CLEAN_BUILD="cleanbuild"
 if [ ! -z "$2" ]; then
-    CLEAN_BUILD="$2"
+    CLEAN_BUILD=$2
 fi
 
-if [ "$CLEAN_BUILD" = "cleanbuild" ]; then
+if [ "${CLEAN_BUILD}" = "cleanbuild" ]; then
+    echo "clean build"
     cargo clean
     rm -rf ${BUILD_CACHE}/target
     rm -rf ${BUILD_CACHE}/arch_libs
