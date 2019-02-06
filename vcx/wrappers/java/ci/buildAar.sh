@@ -81,7 +81,9 @@ download_sdk(){
 download_sdk
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
+    pushd ../android
     npm install
+    popd
     pushd ..
     ./gradlew --no-daemon clean build --project-dir=android -x test #skipping tests because the already run in jenkins CI
     ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
