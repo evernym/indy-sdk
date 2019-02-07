@@ -100,9 +100,9 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     #${ANDROID_BUILD_TOOLS}/aapt d xmltree ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk AndroidManifest.xml
     echo "Starting the tests of the aar library..."
     #adb shell am start -a android.intent.action.MAIN -n pl.brightinventions.slf4android/.NotifyDeveloperDialogDisplayActivity
-    ./gradlew --full-stacktrace --no-daemon :connectedCheck --project-dir=android
+    ./gradlew --full-stacktrace --debug --console=verbose --no-daemon :connectedCheck --project-dir=android
     #ls -al ./android/build/reports/androidTests/connected/*
-    cat ./android/build/reports/androidTests/connected/index.html
+    cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
 
     mkdir -p artifacts/aar
     pushd android/build/outputs/aar
