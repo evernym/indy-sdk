@@ -17,13 +17,14 @@ def vcx_nodejs
 testing()
 
 def testing() {
-    stage('Testing') {
-        parallel([
-            'Xenial' : { mainUbuntu() },
-            'Android': { android() },
-            'iOS' : { ios() }
-        ])
-    }
+    vcxVersion()
+//    stage('Testing') {
+//        parallel([
+//            'Xenial' : { mainUbuntu() },
+//            'Android': { android() },
+//            'iOS' : { ios() }
+//        ])
+//    }
 }
 
 def getUserUid() {
@@ -106,6 +107,43 @@ def buildAndroidDocker() {
     android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
 }
 
+def vcxVersion() {
+    node('ubuntu') {
+
+        try {
+            checkout scm
+            def libvcxDockerfile = 'vcx/ci/libvcx.dockerfile'
+
+            stage('Build Libindy Image') {
+                // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
+                buildLibindyDocker()
+            }
+            stage('Build Libvcx Image') {
+                libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f ${libvcxDockerfile} .")
+                libvcx.inside {
+                    sh "./vcx/ci/scripts/cargo-update-version"
+                }
+            }
+
+            stage('Retrieve VCX version for ios & android') {
+                sh "pushd vcx/libvcx"
+                def full_version = sh(returnStdout: true, script: './../ci/scripts/vcx_version_parts.py full_version').trim()
+                sh "popd"
+                echo "$full_version"
+
+            }
+        } catch (Exception ex) {
+            currentBuild.result = "FAILED"
+            if (env.BRANCH_NAME == "master") {
+                fail()
+            }
+            echo "$ex error"
+        } finally {
+            sh 'docker system df'
+            step([$class: 'WsCleanup'])
+        }
+    }
+}
 
 def mainUbuntu() {
     node('ubuntu') {
