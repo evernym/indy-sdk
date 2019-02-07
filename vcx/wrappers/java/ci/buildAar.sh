@@ -87,15 +87,20 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     popd
     pushd ..
     ./gradlew --no-daemon clean build --project-dir=android -x test #skipping tests because the already run in jenkins CI
+
     ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
     #./gradlew --no-daemon :assembleAndroidTest --project-dir=android -x test
     # To run instrumented tests do...
     #./gradlew --no-daemon :connectedDebugAndroidTest --project-dir=android -x test
+    adb shell service list
+    echo "Installing the android test apk that will test the aar library..."
     adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk
     # Use the command below to find out the -a [intent-filter:name] -n [activity:name]
     ls -al ${ANDROID_BUILD_TOOLS}/..
     ${ANDROID_BUILD_TOOLS}/aapt d xmltree ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk AndroidManifest.xml
+    echo "Starting the tests of the aar library..."
     adb shell am start -a android.intent.action.MAIN -n pl.brightinventions.slf4android/.NotifyDeveloperDialogDisplayActivity
+
     mkdir -p artifacts/aar
     pushd android/build/outputs/aar
         cp $(ls -t1 |  head -n 1) ${SCRIPT_DIR}/../artifacts/aar
