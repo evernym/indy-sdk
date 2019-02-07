@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
 set -e
-vcx_version() {
-    export PATH=${PATH}:$(pwd)/vcx/ci/scripts
-    VCX_VERSION=$(toml_utils.py vcx/libvcx/Cargo.toml)
-    echo "VCX_VERSION: ${VCX_VERSION}"
-    eval "$1='${VCX_VERSION}'"
-}
-
 publish() {
-    VCX_VERSION=''
-    vcx_version VCX_VERSION
+    VCX_VERSION=$1
+    if [ -z ${VCX_VERSION} ]; then
+        echo "please provide the vcx version that corresponds to linux builds (python, node, deb)"
+        exit 1
+    fi
+
     AAR_FOLDER=vcx/wrappers/java/artifacts/aar
-#    AAR_VERSION=$(find ${AAR_FOLDER} -type f -name 'com.evernym-vcx_*-release.aar'| perl -nle 'print $& if m{(?<=vcx_)(.*)(?=_x86)}' | head -1 | awk '{print $1}')
     echo "Uploading .aar with version number ==> ${VCX_VERSION}"
     cp -v settings.xml ${AAR_FOLDER}
     pushd ${AAR_FOLDER}
@@ -32,4 +28,4 @@ publish() {
 }
 
 
-publish
+publish $1

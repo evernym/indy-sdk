@@ -13,98 +13,17 @@ def vcx_nodejs
 // python3-vcx-wrapper-<ver>.tar.gz (Python Installable package) ----> published with Filely to https://kraken.corp.evernym.com/repo/python/upload
 // ********* OTHERS ********
 // DEPRECATED ( NO LONGER PRODUCED ) libvcx.tar.gz (libvcx.so file and provision_agent_keys.py) ----> archived with Jenkins
-
 testing()
 
 def testing() {
-    vcxVersion()
-//    stage('Testing') {
-//        parallel([
-//            'Xenial' : { mainUbuntu() },
-//            'Android': { android() },
-//            'iOS' : { ios() }
-//        ])
-//    }
-}
-
-def getUserUid() {
-    return sh(returnStdout: true, script: 'id -u').trim()
-}
-
-
-def build(name, file, context='.', customParams = '') {
-    return docker.build("$name", "${customParams} --build-arg uid=${getUserUid()} -f $file $context")
-}
-
-def getRevNumber() {
-    return sh(returnStdout: true, script: 'git log --pretty=format:%h -n 1')
-}
-
-def getCurDir() {
-    return sh(returnStdout: true, script: 'pwd')
-}
-
-static String rustVersion() {
-    return "1.31.1"
-}
-
-static String libindyVersion() {
-    return "1.7.0"
-}
-
-static String libindyTag() {
-    return "961"
-}
-
-static String libnullVersion() {
-    return "1.8.0"
-}
-
-static String nullpayTag() {
-    return "967"
-}
-
-static String libsovtokenVersion() {
-    return "0.9.6~-.1.126"
-}
-
-static String androidSovtokenArtifact() {
-    return "libsovtoken_0.9.6-201811211720-4901e95_all.zip"
-}
-
-static String iosSovtokenArtifact() {
-    return "libsovtoken_0.9.6-201811211710-4901e95_all.zip"
-}
-
-static String libindyDockerfile() {
-    return 'vcx/ci/libindy.dockerfile'
-}
-
-static String indyBranch() {
-    return 'master'
-}
-
-static String nullBranch() {
-    return 'master'
-}
-
-static String appendTag(tag, del) {
-    if (tag != "") { tag = del + tag }
-    return tag
-}
-
-def buildLibindyDocker() {
-    def indyTag = appendTag(libindyTag(), "~")
-    def nullTag= appendTag(nullpayTag(), "~")
-    docker.build("libindy", "--build-arg LIBINDY_VER=${libindyVersion()}${indyTag} \
-            --build-arg LIBNULL_VER=${libnullVersion()}${nullTag} \
-            --build-arg LIBSOVTOKEN_VER=${libsovtokenVersion()} \
-            -f ${libindyDockerfile()} .")
-}
-
-def buildAndroidDocker() {
-    def uid= sh(returnStdout: true, script: 'id -u').trim()
-    android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
+    def (libvcx, libvcxVersion) = vcxVersion()
+    stage('Testing') {
+        parallel([
+                'Xenial' : { mainUbuntu(libvcx) },
+                'Android': { android(libvcxVersion) },
+                'iOS' : { ios(libvcxVersion) }
+        ])
+    }
 }
 
 def vcxVersion() {
@@ -125,13 +44,17 @@ def vcxVersion() {
 
             stage('Retrieve VCX version for ios & android') {
                 libvcx.inside {
-                    sh "cd vcx/libvcx && ./vcx/ci/scripts/cargo-update-version"
-                    def full_version = sh(returnStdout: true, script: './vcx/ci/scripts/vcx_version_parts.py full_version').trim()
-                    sh "cd ../.."
-                    echo "$full_version"
+                    sh(returnStdout: false, "cd vcx/libvcx && ./../ci/scripts/cargo-update-version")
+                    def full_version = sh(
+                            returnStdout: true,
+                            script: 'cd vcx/libvcx && ./../ci/scripts/vcx_version_parts.py full_version'
+                    ).trim()
+                    echo "VCX Version: $full_version"
                 }
 
             }
+
+            new Tuple(libvcx, full_version)
         } catch (Exception ex) {
             currentBuild.result = "FAILED"
             if (env.BRANCH_NAME == "master") {
@@ -145,7 +68,7 @@ def vcxVersion() {
     }
 }
 
-def mainUbuntu() {
+def mainUbuntu(libvcx) {
     node('ubuntu') {
 
         try {
@@ -153,14 +76,11 @@ def mainUbuntu() {
             def volumeInternalDir = "/sdk/vcx/output"
             def revNumber = getRevNumber()
             def volumeName = "vcx-volume1-${revNumber}"
-            def libindyDockerfile = 'vcx/ci/libindy.dockerfile'
-            def libvcxDockerfile = 'vcx/ci/libvcx.dockerfile'
             def pythonDockerfile = 'vcx/ci/python.dockerfile'
             def nodeDockerfile = 'vcx/wrappers/node/ci/node.dockerfile'
             def javaDockerfile = 'vcx/wrappers/java/ci/java.dockerfile'
             def uid= sh(returnStdout: true, script: 'id -u').trim()
             def cwd= sh(returnStdout: true, script: 'pwd').trim()
-            def libvcx
             def python
             def node
             def java
@@ -171,13 +91,7 @@ def mainUbuntu() {
 
             sh 'mkdir -p output'
             sh 'rm -rf output/*'
-            stage('Build Libindy Image') {
-                
-                // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
-                buildLibindyDocker()
-            }
-            stage('Build Libvcx Image, Tests Rust Code') {
-                libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f ${libvcxDockerfile} .")
+            stage('Tests Rust Code') {
                 libvcx.inside() {
                     sh "vcx/ci/scripts/package.sh ${rustTestFlag}"
                 }
@@ -269,7 +183,7 @@ def mainUbuntu() {
     }
 }
 
-def android() {
+def android(vcxVersion) {
 
     stage('Android Build') {
         parallel([
@@ -296,7 +210,7 @@ def android() {
             stage('Android Publishing') {
                 if (env.BRANCH_NAME == "master") {
                     //Publish package on aptly
-                    publishAndroid(android)
+                    publishAndroid(android, vcxVersion)
                 }
             }
         } catch (Exception ex) {
@@ -312,7 +226,7 @@ def android() {
     }
 }
 
-def ios() {
+def ios(vcxVersion) {
 
     node('macos-vcx') {
         checkout scm
@@ -327,7 +241,7 @@ def ios() {
                 def nullTag = appendTag(nullpayTag(), "-")
 
                 sh "source vcx/ci/scripts/iosBuild.sh ${indyBranch()} ${libindyVersion()}${indyTag} \
-                    ${nullBranch()} ${libnullVersion()}${nullTag} ${iosSovtokenArtifact()} ${rustVersion()}"
+                    ${nullBranch()} ${libnullVersion()}${nullTag} ${iosSovtokenArtifact()} ${rustVersion()} ${vcxVersion}"
 
                 // Publish to Kraken
                 if (env.BRANCH_NAME == "master") {
@@ -417,13 +331,95 @@ def packageAndroid(android) {
     }
 }
 
-def publishAndroid(envn) {
+def publishAndroid(envn, vcxVersion) {
     envn.inside {
         withCredentials([file(credentialsId: 'cloudrepo-artifactory-settings-libvcx', variable: 'settingsFile')]) {
             sh 'cp $settingsFile .'
             ANDROID_SCRIPT_PATH = 'vcx/ci/scripts/androidPublish.sh'
             sh "chmod +x ${ANDROID_SCRIPT_PATH}"
-            sh "./${ANDROID_SCRIPT_PATH}"
+            sh "./${ANDROID_SCRIPT_PATH} ${vcxVersion}"
         }
     }
 }
+
+def buildLibindyDocker() {
+    def indyTag = appendTag(libindyTag(), "~")
+    def nullTag= appendTag(nullpayTag(), "~")
+    docker.build("libindy", "--build-arg LIBINDY_VER=${libindyVersion()}${indyTag} \
+            --build-arg LIBNULL_VER=${libnullVersion()}${nullTag} \
+            --build-arg LIBSOVTOKEN_VER=${libsovtokenVersion()} \
+            -f ${libindyDockerfile()} .")
+}
+
+def buildAndroidDocker() {
+    def uid= sh(returnStdout: true, script: 'id -u').trim()
+    android = docker.build("android", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f vcx/wrappers/java/ci/android.dockerfile .")
+}
+
+
+def getUserUid() {
+    return sh(returnStdout: true, script: 'id -u').trim()
+}
+
+
+def build(name, file, context='.', customParams = '') {
+    return docker.build("$name", "${customParams} --build-arg uid=${getUserUid()} -f $file $context")
+}
+
+def getRevNumber() {
+    return sh(returnStdout: true, script: 'git log --pretty=format:%h -n 1')
+}
+
+def getCurDir() {
+    return sh(returnStdout: true, script: 'pwd')
+}
+
+static String rustVersion() {
+    return "1.31.1"
+}
+
+static String libindyVersion() {
+    return "1.7.0"
+}
+
+static String libindyTag() {
+    return "961"
+}
+
+static String libnullVersion() {
+    return "1.8.0"
+}
+
+static String nullpayTag() {
+    return "967"
+}
+
+static String libsovtokenVersion() {
+    return "0.9.6~-.1.126"
+}
+
+static String androidSovtokenArtifact() {
+    return "libsovtoken_0.9.6-201811211720-4901e95_all.zip"
+}
+
+static String iosSovtokenArtifact() {
+    return "libsovtoken_0.9.6-201811211710-4901e95_all.zip"
+}
+
+static String libindyDockerfile() {
+    return 'vcx/ci/libindy.dockerfile'
+}
+
+static String indyBranch() {
+    return 'master'
+}
+
+static String nullBranch() {
+    return 'master'
+}
+
+static String appendTag(tag, del) {
+    if (tag != "") { tag = del + tag }
+    return tag
+}
+
