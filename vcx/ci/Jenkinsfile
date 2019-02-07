@@ -60,7 +60,7 @@ static String libnullVersion() {
 }
 
 static String nullpayTag() {
-    return "967"
+    return "2"
 }
 
 static String libsovtokenVersion() {
@@ -84,7 +84,7 @@ static String indyBranch() {
 }
 
 static String nullBranch() {
-    return 'master'
+    return 'PR-1460'
 }
 
 static String appendTag(tag, del) {
