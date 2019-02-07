@@ -125,7 +125,7 @@ def vcxVersion() {
 
             stage('Retrieve VCX version for ios & android') {
                 libvcx.inside {
-                    sh "cd vcx/libvcx & ./vcx/ci/scripts/cargo-update-version"
+                    sh "cd vcx/libvcx && ./vcx/ci/scripts/cargo-update-version"
                     def full_version = sh(returnStdout: true, script: './vcx/ci/scripts/vcx_version_parts.py full_version').trim()
                     sh "cd ../.."
                     echo "$full_version"
