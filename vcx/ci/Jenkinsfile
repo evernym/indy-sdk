@@ -95,7 +95,7 @@ static String appendTag(tag, del) {
 def buildLibindyDocker() {
     def indyTag = appendTag(libindyTag(), "~")
     // Todo: when indy fixes libnullpay, delete this line
-    def nullTag="967"
+    def nullTag="~967"
 //    def nullTag= appendTag(nullpayTag(), "~")
     docker.build("libindy", "--build-arg LIBINDY_VER=${libindyVersion()}${indyTag} \
             --build-arg LIBNULL_VER=${libnullVersion()}${nullTag} \
