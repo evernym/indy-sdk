@@ -113,6 +113,7 @@ def vcxVersion() {
         try {
             checkout scm
             def libvcxDockerfile = 'vcx/ci/libvcx.dockerfile'
+            def uid= sh(returnStdout: true, script: 'id -u').trim()
 
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
