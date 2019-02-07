@@ -4,8 +4,6 @@ OUTPUTDIR=output
 CURDIR=$(pwd)
 export PATH=${PATH}:$(pwd)/vcx/ci/scripts
 cd vcx/libvcx/
-echo "Updating Version in Cargo.toml file"
-cargo update-version
 echo "Updating Cargo"
 if [ "$1" != "--no-test" ]; then
     echo "Testing libvcx.so"
