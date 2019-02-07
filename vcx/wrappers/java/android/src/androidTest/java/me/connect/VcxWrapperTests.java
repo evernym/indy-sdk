@@ -66,6 +66,22 @@ public class VcxWrapperTests {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testInitNullPay() {
+        Log.d(TAG, "testInitNullPay: called");
+        try {
+            int result =  VcxApi.initNullPay();
+            Assert.assertNotSame(0,result);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         } catch (ExecutionException e) {
+             e.printStackTrace();
+         } catch (VcxException e) {
+             e.printStackTrace();
+         }
+    }
+
     @Test
     public void testInitWithConfig(){
         Log.d(TAG, "testInitWithConfig: called");
