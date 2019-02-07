@@ -30,7 +30,7 @@ create_avd_and_launch_emulator(){
             "emulator" \
             "platform-tools" \
             "platforms;android-24" \
-            "system-images;android-24;default;${ABI}"
+            "system-images;android-24;default;${ABI}" > sdkmanager.install.emulator.and.tools.out 2>&1
 
     echo "Creating android emulator"
 
