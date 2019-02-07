@@ -121,13 +121,13 @@ def vcxVersion() {
             }
             stage('Build Libvcx Image') {
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${rustVersion()} -f ${libvcxDockerfile} .")
-                libvcx.inside {
-                    sh "./vcx/ci/scripts/cargo-update-version"
-                }
             }
 
             stage('Retrieve VCX version for ios & android') {
                 sh "pushd vcx/libvcx"
+                libvcx.inside {
+                    sh "./vcx/ci/scripts/cargo-update-version"
+                }
                 def full_version = sh(returnStdout: true, script: './../ci/scripts/vcx_version_parts.py full_version').trim()
                 sh "popd"
                 echo "$full_version"
