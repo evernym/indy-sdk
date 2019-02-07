@@ -66,8 +66,6 @@ build_cocoapod() {
     ./mac.11.copy.static.libs.to.app.sh
     ./mac.12.combine.static.libs.sh ${COMBINED_LIB} delete nodebug "${IOS_ARCHS}"
     ./mac.13.build.cocoapod.sh ${COMBINED_LIB} "${IOS_ARCHS}" "${VCX_VERSION}"
-
-
 }
 
 VCX_VERSION=''

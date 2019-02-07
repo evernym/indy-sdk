@@ -30,3 +30,6 @@ publish() {
             --settings settings.xml
     popd
 }
+
+
+publish
