@@ -52,8 +52,8 @@ def testing() {
         stage('Testing') {
             parallel([
                 'Xenial' : { mainUbuntu() },
-//                'Android': { android() },
-//                'iOS' : { ios() }
+                'Android': { android() },
+                'iOS' : { ios() }
             ])
         }
     } else {
