@@ -12,8 +12,22 @@ if [ "$1" != "--no-test" ]; then
     cargo test --no-default-features --features "ci" -- --test-threads=1
 fi
 echo "Updating Version in Cargo.toml file"
+echo $(cat Cargo.toml)
+echo
+echo
+echo
+echo
+echo $(cat ../wrappers/node/package.json)
 cargo update-version ${VERSION} ${REVISION}
 echo "Building libvcx.so"
+echo $(cat Cargo.toml)
+echo
+echo
+echo
+echo
+echo $(cat ../wrappers/node/package.json)
+echo
+echo
 cargo build --no-default-features --features "ci"
 echo "Updating libvcx.so File with Version"
 cargo update-so
