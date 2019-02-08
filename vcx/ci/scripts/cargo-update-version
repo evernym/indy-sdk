@@ -67,12 +67,14 @@ def update_npm_package(package, version):
 
 if __name__ == '__main__':
     args = ()
+    print("sys.argv 1.")
+    print(sys.argv)
     if len(sys.argv) > 1:
         args = sys.argv[2:]
 
-    print("sys.argv")
+    print("sys.argv 2. ")
     print(sys.argv)
-    print("sys.argv[2:")
+    print("sys.argv[2:]")
     print(sys.argv[2:])
     print("args")
     print(args)

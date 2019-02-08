@@ -7,6 +7,8 @@ cd vcx/libvcx/
 export RUST_FLAG=$1
 export VERSION=$2
 export REVISION=$3
+echo ${VERSION}
+echo ${REVISION}
 echo "Updating Version in Cargo.toml file"
 cargo update-version ${VERSION} ${REVISION}
 echo "Updating Cargo"
