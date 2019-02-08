@@ -37,6 +37,7 @@ def verify_cwd(target_dir, toml_file):
 
 
 def main(version=None, revision_number=None):
+    print("version: %s, revision_number: %s" % (version, revision_number))
     verify_cwd(LIBVCX_DIR, TOML_FILENAME)
     if not version or not revision_number:
         (major, minor) = extract_version_from_file(TOML_FILENAME)
