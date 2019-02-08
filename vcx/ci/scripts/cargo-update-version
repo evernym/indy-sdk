@@ -66,8 +66,7 @@ def update_npm_package(package, version):
 
 if __name__ == '__main__':
     args = ()
-    if len(sys.argv) == 4:
+    if len(sys.argv) > 1:
         args = sys.argv[1:]
-    print("update version args: %s", args)
     main(*args)
 
