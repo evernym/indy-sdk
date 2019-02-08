@@ -134,13 +134,13 @@ def update_revision(filename, revision):
         print("Error: Cannot find %s, error reading/writing" % filename)
 
 # update in toml file
-def update_major_minor_build_to_toml(filename, major, minor, build):
+def update_major_minor_build_to_toml(filename, version, build):
     try:
         o = ""
         f = open(filename, 'r')
         for line in f.readlines():
             if valid_line(line):
-                o = o + 'version = \"%s.%s.%s\"\n' % (major, minor, build)
+                o = o + 'version = \"%s.%s\"\n' % (version, build)
             else:
                 o = o + line
                 
@@ -149,7 +149,6 @@ def update_major_minor_build_to_toml(filename, major, minor, build):
             f.write(o)
     except IOError:
         print("Error: Cannot find Cargo.toml file, error reading/writing")
-        
 
 if __name__  == "__main__":
     if len(sys.argv) < 2:

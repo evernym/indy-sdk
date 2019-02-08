@@ -36,18 +36,27 @@ class Globals {
     static String nullBranch = 'PR-1460'
 
     static String vcxVersion = null
+
+    static String vcxRevision = null
+
+    static String vcxBuildNumber = null
 }
 
 testing()
 
 def testing() {
     vcxVersion()
-    if (Globals.vcxVersion != null) {
+    if (Globals.vcxVersion && Globals.vcxRevision && Globals.vcxBuildNumber) {
+        echo "VCX Version: ${Globals.vcxVersion}"
+        echo "VCX build number: ${Globals.vcxBuildNumber}"
+        echo "VCX revision: ${Globals.vcxRevision}"
+        echo "Full VCX version: ${full_vcx_version()}"
+
         stage('Testing') {
             parallel([
-                    'Xenial' : { mainUbuntu() },
-                    'Android': { android() },
-                    'iOS' : { ios() }
+//                'Xenial' : { mainUbuntu() },
+//                'Android': { android() },
+//                'iOS' : { ios() }
             ])
         }
     } else {
@@ -91,6 +100,10 @@ static String appendTag(tag, del) {
     return tag
 }
 
+static String full_vcx_version() {
+    return Globals.vcxVersion + "." + Globals.vcxBuildNumber + "-" + Globals.vcxRevision
+}
+
 def vcxVersion() {
     node('ubuntu') {
 
@@ -98,16 +111,23 @@ def vcxVersion() {
             checkout scm
 
             libindy = buildLibindyDocker()
+            def scripts_path = "vcx/ci/scripts"
 
             stage('Retrieve VCX version for ios & android') {
                 libindy.inside {
                     sh "cd vcx/libvcx && ./../ci/scripts/cargo-update-version"
-                    def full_version = sh(
+                    Globals.vcxRevision = sh(
                             returnStdout: true,
-                            script: 'cd vcx/libvcx && ./../ci/scripts/vcx_version_parts.py full_version'
+                            script: 'git rev-parse --short HEAD'
                     ).trim()
-                    echo "VCX Version: $full_version"
-                    Globals.vcxVersion = full_version
+                    Globals.vcxVersion = sh(
+                            returnStdout: true,
+                            script: "./${scripts_path}/toml_utils.py vcx/libvcx"
+                    ).trim()
+                    Globals.vcxBuildNumber = sh(
+                            returnStdout: true,
+                            script: "chmod u+x ${scripts_path}/buildnum.py && ./${scripts_path}/buildnum.py"
+                    )
                 }
 
             }
@@ -152,7 +172,7 @@ def mainUbuntu(libvcx) {
             sh 'rm -rf output/*'
             stage('Build Libvcx Image and Tests Rust Code') {
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${Globals.rustVersion} -f ${libvcxDockerfile} .")
-                sh "vcx/ci/scripts/package.sh ${rustTestFlag}"
+                sh "vcx/ci/scripts/package.sh ${rustTestFlag} ${Globals.vcxVersion} ${Globals.vcxBuildNumber} ${Globals.vcxRevision}"
             }
 
             stage('Test Python Wrapper'){
@@ -268,7 +288,7 @@ def android() {
             stage('Android Publishing') {
                 if (env.BRANCH_NAME == "master") {
                     //Publish package on aptly
-                    publishAndroid(android, Globals.vcxVersion)
+                    publishAndroid(android)
                 }
             }
         } catch (Exception ex) {
@@ -300,7 +320,7 @@ def ios() {
 
                 sh "source vcx/ci/scripts/iosBuild.sh ${Globals.indyBranch} ${Globals.libindyVersion}${indyTag} \
                     ${Globals.nullBranch} ${Globals.libnullVersion}${nullTag} ${Globals.iosSovtokenArtifact} \
-                    ${Globals.rustVersion} ${Globals.vcxVersion}"
+                    ${Globals.rustVersion} ${full_vcx_version()}"
 
                 // Publish to Kraken
                 if (env.BRANCH_NAME == "master") {
@@ -394,19 +414,19 @@ def packageAndroid(android) {
     }
 }
 
-def publishAndroid(envn, vcxVersion) {
+def publishAndroid(envn) {
     envn.inside {
         withCredentials([file(credentialsId: 'cloudrepo-artifactory-settings-libvcx', variable: 'settingsFile')]) {
             sh 'cp $settingsFile .'
             ANDROID_SCRIPT_PATH = 'vcx/ci/scripts/androidPublish.sh'
             sh "chmod +x ${ANDROID_SCRIPT_PATH}"
-            sh "./${ANDROID_SCRIPT_PATH} ${vcxVersion}"
+            sh "./${ANDROID_SCRIPT_PATH} ${full_vcx_version()}"
         }
 
         withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
             artifactLocation='vcx/wrappers/java/artifacts/aar'
-            artifactName="com.evernym-vcx_${Globals.vcxVersion}_x86-armv7-release.aar"
-            archiveArtifacts allowEmptyArchive: true, artifacts: "${artifactLocation}/"
+            artifactName="com.evernym-vcx_${full_vcx_version()}_x86-armv7-release.aar"
+            archiveArtifacts allowEmptyArchive: true, artifacts: "${artifactLocation}/${artifactName}"
         }
     }
 }
