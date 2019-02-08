@@ -10,10 +10,9 @@ if [ "$1" != "--no-test" ]; then
     cargo test --no-default-features --features "ci" -- --test-threads=1
 fi
 VERSION=$2
-BUILD_NUMBER=$3
-REVISION=$4
+REVISION=$3
 echo "Updating Version in Cargo.toml file"
-cargo update-version ${VERSION} ${BUILD_NUMBER} ${REVISION}
+cargo update-version ${VERSION} ${REVISION}
 echo "Building libvcx.so"
 cargo build --no-default-features --features "ci"
 echo "Updating libvcx.so File with Version"

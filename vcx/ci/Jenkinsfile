@@ -38,17 +38,14 @@ class Globals {
     static String vcxVersion = null
 
     static String vcxRevision = null
-
-    static String vcxBuildNumber = null
 }
 
 testing()
 
 def testing() {
     vcxVersion()
-    if (Globals.vcxVersion && Globals.vcxRevision && Globals.vcxBuildNumber) {
+    if (Globals.vcxVersion && Globals.vcxRevision) {
         echo "VCX Version: ${Globals.vcxVersion}"
-        echo "VCX build number: ${Globals.vcxBuildNumber}"
         echo "VCX revision: ${Globals.vcxRevision}"
         echo "Full VCX version: ${full_vcx_version()}"
 
@@ -112,22 +109,23 @@ def vcxVersion() {
 
             libindy = buildLibindyDocker()
             def scripts_path = "vcx/ci/scripts"
-
             stage('Retrieve VCX version for ios & android') {
                 libindy.inside {
+                    pwd = sh(
+                            returnStdout: true,
+                            script: 'pwd'
+                    ).trim()
                     sh "cd vcx/libvcx && ./../ci/scripts/cargo-update-version"
                     Globals.vcxRevision = sh(
                             returnStdout: true,
                             script: 'git rev-parse --short HEAD'
                     ).trim()
+                    sh "ls"
+                    sh "pwd"
                     Globals.vcxVersion = sh(
                             returnStdout: true,
-                            script: "./${scripts_path}/toml_utils.py vcx/libvcx"
+                            script: "./${scripts_path}/toml_utils.py ${pwd}/vcx/libvcx/Cargo.toml"
                     ).trim()
-                    Globals.vcxBuildNumber = sh(
-                            returnStdout: true,
-                            script: "chmod u+x ${scripts_path}/buildnum.py && ./${scripts_path}/buildnum.py"
-                    )
                 }
 
             }
@@ -172,7 +170,7 @@ def mainUbuntu(libvcx) {
             sh 'rm -rf output/*'
             stage('Build Libvcx Image and Tests Rust Code') {
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${Globals.rustVersion} -f ${libvcxDockerfile} .")
-                sh "vcx/ci/scripts/package.sh ${rustTestFlag} ${Globals.vcxVersion} ${Globals.vcxBuildNumber} ${Globals.vcxRevision}"
+                sh "vcx/ci/scripts/package.sh ${rustTestFlag} ${Globals.vcxVersion} ${Globals.vcxRevision}"
             }
 
             stage('Test Python Wrapper'){

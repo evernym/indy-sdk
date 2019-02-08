@@ -134,13 +134,13 @@ def update_revision(filename, revision):
         print("Error: Cannot find %s, error reading/writing" % filename)
 
 # update in toml file
-def update_major_minor_build_to_toml(filename, version, build):
+def update_major_minor_build_to_toml(filename, version):
     try:
         o = ""
         f = open(filename, 'r')
         for line in f.readlines():
             if valid_line(line):
-                o = o + 'version = \"%s.%s\"\n' % (version, build)
+                o = o + 'version = \"%s.%s\"\n' % (version)
             else:
                 o = o + line
                 
