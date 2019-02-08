@@ -140,7 +140,7 @@ def update_major_minor_build_to_toml(filename, version):
         f = open(filename, 'r')
         for line in f.readlines():
             if valid_line(line):
-                o = o + 'version = \"%s.%s\"\n' % (version)
+                o = o + 'version = \"%s\"\n' % (version)
             else:
                 o = o + line
                 
