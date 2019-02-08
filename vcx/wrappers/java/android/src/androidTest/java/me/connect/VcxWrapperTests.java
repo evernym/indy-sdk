@@ -73,8 +73,6 @@ public class VcxWrapperTests {
         try {
             int result =  VcxApi.initNullPay();
             Assert.assertNotSame(0,result);
-         } catch (InterruptedException e) {
-             e.printStackTrace();
          } catch (VcxException e) {
              e.printStackTrace();
          }
