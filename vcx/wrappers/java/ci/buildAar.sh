@@ -83,22 +83,27 @@ download_sdk
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ../android
-    npm install
+        npm install
     popd
     pushd ..
-    ./gradlew --no-daemon clean build --project-dir=android -x test #skipping tests because the already run in jenkins CI
-
-    ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
-    adb shell service list
-    echo "Installing the android test apk that will test the aar library..."
-    adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk
-    echo "Starting the tests of the aar library..."
-    ./gradlew --full-stacktrace --debug --console=verbose --no-daemon :connectedCheck --project-dir=android
-    cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
-
-    mkdir -p artifacts/aar
-    pushd android/build/outputs/aar
-        cp $(ls -t1 |  head -n 1) ${SCRIPT_DIR}/../artifacts/aar
+        # Run the tests first
+        ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
+        adb shell service list
+        echo "Installing the android test apk that will test the aar library..."
+        adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk
+        echo "Starting the tests of the aar library..."
+        ./gradlew --full-stacktrace --debug --console=verbose --no-daemon :connectedCheck --project-dir=android
+        cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
     popd
+popd
 
+pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
+    pushd ..
+        # Now build it clean
+        ./gradlew --no-daemon clean build --project-dir=android -x test #skipping tests because they already run in jenkins CI
+        mkdir -p artifacts/aar
+        pushd android/build/outputs/aar
+            cp $(ls -t1 |  head -n 1) ${SCRIPT_DIR}/../artifacts/aar
+        popd
+    popd
 popd
