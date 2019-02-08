@@ -68,9 +68,11 @@ def testing() {
 def buildLibindyDocker() {
     def libindyDockerfile = 'vcx/ci/libindy.dockerfile'
     def indyTag = appendTag(Globals.libindyTag, "~")
+
     // Todo: when indy fixes libnullpay, delete this line
     def nullTag="~967"
 //    def nullTag= appendTag(Globals.nullpayTag, "~")
+
     docker.build("libindy", "--build-arg LIBINDY_VER=${Globals.libindyVersion}${indyTag} \
             --build-arg LIBNULL_VER=${Globals.libnullVersion}${nullTag} \
             --build-arg LIBSOVTOKEN_VER=${Globals.libsovtokenVersion} \
@@ -141,7 +143,7 @@ def vcxVersion() {
     }
 }
 
-def mainUbuntu(libvcx) {
+def mainUbuntu() {
     node('ubuntu') {
 
         try {
@@ -168,7 +170,9 @@ def mainUbuntu(libvcx) {
             sh 'rm -rf output/*'
             stage('Build Libvcx Image and Tests Rust Code') {
                 libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${Globals.rustVersion} -f ${libvcxDockerfile} .")
-                sh "vcx/ci/scripts/package.sh ${rustTestFlag} ${Globals.vcxVersion} ${Globals.vcxRevision}"
+                libvcx.inside {
+                    sh "vcx/ci/scripts/package.sh ${rustTestFlag} ${Globals.vcxVersion} ${Globals.vcxRevision}"
+                }
             }
 
             stage('Test Python Wrapper'){
@@ -318,7 +322,6 @@ def ios() {
                     ${Globals.nullBranch} ${Globals.libnullVersion}${nullTag} ${Globals.iosSovtokenArtifact} \
                     ${Globals.rustVersion} ${full_vcx_version()}"
 
-                // Publish to Kraken
                 if (env.BRANCH_NAME == "master") {
                     withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
                         // ******** Archive with Jenkins ********
@@ -329,8 +332,6 @@ def ios() {
                         sh "find /Users/jenkins/IOSBuilds/libvcxpartial/ -type f -name 'libvcx.a.libvcxpartial_*_universal.tar.gz' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxall/ -type f -name 'vcx.libvcxall_*_universal.zip' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxall/ -type f -name 'libvcx.a.libvcxall_*_universal.tar.gz' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
-                        // sh "vcx/ci/scripts/publish.sh 'vcx.libvcxpartial_*_universal.zip' https://kraken.corp.evernym.com/repo/ios/upload /Users/jenkins/IOSBuilds/libvcxpartial/"
-                        // sh "vcx/ci/scripts/publish.sh 'vcx.libvcxall_*_universal.zip' https://kraken.corp.evernym.com/repo/ios/upload /Users/jenkins/IOSBuilds/libvcxall/"
                     }
                 }
             } catch (Exception ex) {
