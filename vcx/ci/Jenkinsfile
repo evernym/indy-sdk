@@ -52,8 +52,8 @@ def testing() {
         stage('Testing') {
             parallel([
                 'Xenial' : { mainUbuntu() },
-//                'Android': { android() },
-//                'iOS' : { ios() }
+                'Android': { android() },
+                'iOS' : { ios() }
             ])
         }
     } else {
@@ -159,7 +159,7 @@ def mainUbuntu() {
             def java
 
             // set this to '--no-test' and the rust code will not run tests.
-            def rustTestFlag="--no-test"
+            def rustTestFlag=""
 
             stage('Build Libindy Image') {
                 // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
