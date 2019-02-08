@@ -34,18 +34,28 @@ class Globals {
     static String indyBranch = 'master'
 
     static String nullBranch = 'PR-1460'
+
+    static String vcxVersion = null
 }
 
 testing()
 
 def testing() {
-    def (libvcx, libvcxVersion) = vcxVersion()
-    stage('Testing') {
-        parallel([
-                'Xenial' : { mainUbuntu(libvcx) },
-                'Android': { android(libvcxVersion) },
-                'iOS' : { ios(libvcxVersion) }
-        ])
+    vcxVersion()
+    if (Globals.vcxVersion != null) {
+        stage('Testing') {
+            parallel([
+                    'Xenial' : { mainUbuntu() },
+                    'Android': { android() },
+                    'iOS' : { ios() }
+            ])
+        }
+    } else {
+        currentBuild.result = "FAILED"
+        if (env.BRANCH_NAME == "master") {
+            fail()
+        }
+        echo "vcx version not found"
     }
 }
 
@@ -86,30 +96,22 @@ def vcxVersion() {
 
         try {
             checkout scm
-            def libvcxDockerfile = 'vcx/ci/libvcx.dockerfile'
-            def uid= sh(returnStdout: true, script: 'id -u').trim()
 
-            stage('Build Libindy Image') {
-                // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
-                buildLibindyDocker()
-            }
-            stage('Build Libvcx Image') {
-                libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${Globals.rustVersion} -f ${libvcxDockerfile} .")
-            }
+            libindy = buildLibindyDocker()
 
             stage('Retrieve VCX version for ios & android') {
-                libvcx.inside {
-                    sh(returnStdout: false, "cd vcx/libvcx && ./../ci/scripts/cargo-update-version")
+                libindy.inside {
+                    sh "cd vcx/libvcx && ./../ci/scripts/cargo-update-version"
                     def full_version = sh(
                             returnStdout: true,
                             script: 'cd vcx/libvcx && ./../ci/scripts/vcx_version_parts.py full_version'
                     ).trim()
                     echo "VCX Version: $full_version"
+                    Globals.vcxVersion = full_version
                 }
 
             }
 
-            new Tuple(libvcx, full_version)
         } catch (Exception ex) {
             currentBuild.result = "FAILED"
             if (env.BRANCH_NAME == "master") {
@@ -128,6 +130,7 @@ def mainUbuntu(libvcx) {
 
         try {
             checkout scm
+            def libvcxDockerfile = 'vcx/ci/libvcx.dockerfile'
             def pythonDockerfile = 'vcx/ci/python.dockerfile'
             def nodeDockerfile = 'vcx/wrappers/node/ci/node.dockerfile'
             def javaDockerfile = 'vcx/wrappers/java/ci/java.dockerfile'
@@ -140,15 +143,18 @@ def mainUbuntu(libvcx) {
             // set this to '--no-test' and the rust code will not run tests.
             def rustTestFlag=""
 
+            stage('Build Libindy Image') {
+                // ******** Build the libindy base image (pulls down dependent debians from sovrin repo, and installs a majority of the dependencies)
+                buildLibindyDocker()
+            }
 
             sh 'mkdir -p output'
             sh 'rm -rf output/*'
-            stage('Tests Rust Code') {
-                libvcx.inside() {
-                    sh "vcx/ci/scripts/package.sh ${rustTestFlag}"
-                }
-
+            stage('Build Libvcx Image and Tests Rust Code') {
+                libvcx = docker.build("libvcx", "--build-arg uid=${uid} --build-arg RUST_VER=${Globals.rustVersion} -f ${libvcxDockerfile} .")
+                sh "vcx/ci/scripts/package.sh ${rustTestFlag}"
             }
+
             stage('Test Python Wrapper'){
                 python = docker.build("python", "--build-arg uid=${uid} -f ${pythonDockerfile} .")
                 withEnv(["PYTHONPATH=${cwd}/vcx/wrappers/python3:vcx/wrappers/python3"]){
@@ -235,7 +241,7 @@ def mainUbuntu(libvcx) {
     }
 }
 
-def android(vcxVersion) {
+def android() {
 
     stage('Android Build') {
         parallel([
@@ -262,7 +268,7 @@ def android(vcxVersion) {
             stage('Android Publishing') {
                 if (env.BRANCH_NAME == "master") {
                     //Publish package on aptly
-                    publishAndroid(android, vcxVersion)
+                    publishAndroid(android, Globals.vcxVersion)
                 }
             }
         } catch (Exception ex) {
@@ -278,7 +284,7 @@ def android(vcxVersion) {
     }
 }
 
-def ios(vcxVersion) {
+def ios() {
 
     node('macos-vcx') {
         checkout scm
@@ -293,11 +299,16 @@ def ios(vcxVersion) {
                 def nullTag = appendTag(Globals.nullpayTag, "-")
 
                 sh "source vcx/ci/scripts/iosBuild.sh ${Globals.indyBranch} ${Globals.libindyVersion}${indyTag} \
-                    ${Globals.nullBranch} ${Globals.libnullVersion}${nullTag} ${Globals.iosSovtokenArtifact} ${Globals.rustVersion} ${vcxVersion}"
+                    ${Globals.nullBranch} ${Globals.libnullVersion}${nullTag} ${Globals.iosSovtokenArtifact} \
+                    ${Globals.rustVersion} ${Globals.vcxVersion}"
 
                 // Publish to Kraken
                 if (env.BRANCH_NAME == "master") {
                     withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
+                        // ******** Archive with Jenkins ********
+                        archiveArtifacts allowEmptyArchive: true, artifacts: '/Users/jenkins/IOSBuilds/libvcxpartial/*'
+                        archiveArtifacts allowEmptyArchive: true, artifacts: '/Users/jenkins/IOSBuilds/libvcxall/*'
+
                         sh "find /Users/jenkins/IOSBuilds/libvcxpartial/ -type f -name 'vcx.libvcxpartial_*_universal.zip' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxpartial/ -type f -name 'libvcx.a.libvcxpartial_*_universal.tar.gz' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxall/ -type f -name 'vcx.libvcxall_*_universal.zip' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
@@ -390,6 +401,12 @@ def publishAndroid(envn, vcxVersion) {
             ANDROID_SCRIPT_PATH = 'vcx/ci/scripts/androidPublish.sh'
             sh "chmod +x ${ANDROID_SCRIPT_PATH}"
             sh "./${ANDROID_SCRIPT_PATH} ${vcxVersion}"
+        }
+
+        withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
+            artifactLocation='vcx/wrappers/java/artifacts/aar'
+            artifactName="com.evernym-vcx_${Globals.vcxVersion}_x86-armv7-release.aar"
+            archiveArtifacts allowEmptyArchive: true, artifacts: "${artifactLocation}/"
         }
     }
 }
