@@ -4,6 +4,7 @@
 
 import sys
 import os
+import re
 
 SO_FILE = 'libvcx.so'
 

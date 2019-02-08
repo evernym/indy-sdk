@@ -325,8 +325,10 @@ def ios() {
                 if (env.BRANCH_NAME == "master") {
                     withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
                         // ******** Archive with Jenkins ********
-                        archiveArtifacts allowEmptyArchive: true, artifacts: '/Users/jenkins/IOSBuilds/libvcxpartial/*'
-                        archiveArtifacts allowEmptyArchive: true, artifacts: '/Users/jenkins/IOSBuilds/libvcxall/*'
+                        archiveArtifacts allowEmptyArchive: true, artifacts: "/Users/jenkins/IOSBuilds/libvcxpartial/vcx.libvcxpartial_${full_vcx_version()}_universal.zip"
+                        archiveArtifacts allowEmptyArchive: true, artifacts: "/Users/jenkins/IOSBuilds/libvcxpartial/libvcx.a.libvcxpartial_${full_vcx_version()}.tar.gz"
+                        archiveArtifacts allowEmptyArchive: true, artifacts: "/Users/jenkins/IOSBuilds/libvcxall/vcx.libvcxall_${full_vcx_version()}_universal.zip"
+                        archiveArtifacts allowEmptyArchive: true, artifacts: "/Users/jenkins/IOSBuilds/libvcxall/libvcx.a.libvcxall_${full_vcx_version()}_universal.tar.gz"
 
                         sh "find /Users/jenkins/IOSBuilds/libvcxpartial/ -type f -name 'vcx.libvcxpartial_*_universal.zip' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxpartial/ -type f -name 'libvcx.a.libvcxpartial_*_universal.tar.gz' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
