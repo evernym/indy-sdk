@@ -51,9 +51,9 @@ def testing() {
 
         stage('Testing') {
             parallel([
-//                'Xenial' : { mainUbuntu() },
-//                'Android': { android() },
-//                'iOS' : { ios() }
+                'Xenial' : { mainUbuntu() },
+                'Android': { android() },
+                'iOS' : { ios() }
             ])
         }
     } else {
@@ -98,7 +98,7 @@ static String appendTag(tag, del) {
 }
 
 static String full_vcx_version() {
-    return Globals.vcxVersion + "." + Globals.vcxBuildNumber + "-" + Globals.vcxRevision
+    return Globals.vcxVersion + "-" + Globals.vcxRevision
 }
 
 def vcxVersion() {
@@ -120,8 +120,6 @@ def vcxVersion() {
                             returnStdout: true,
                             script: 'git rev-parse --short HEAD'
                     ).trim()
-                    sh "ls"
-                    sh "pwd"
                     Globals.vcxVersion = sh(
                             returnStdout: true,
                             script: "./${scripts_path}/toml_utils.py ${pwd}/vcx/libvcx/Cargo.toml"
