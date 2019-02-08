@@ -4,8 +4,9 @@ OUTPUTDIR=output
 CURDIR=$(pwd)
 export PATH=${PATH}:$(pwd)/vcx/ci/scripts
 cd vcx/libvcx/
-VERSION=$2
-REVISION=$3
+export RUST_FLAG=$1
+export VERSION=$2
+export REVISION=$3
 echo "Updating Version in Cargo.toml file"
 echo $(cat Cargo.toml)
 echo
@@ -13,9 +14,11 @@ echo
 echo
 echo
 echo $(cat ../wrappers/node/package.json)
+echo ${VERSION}
+echo ${REVISION}
 cargo update-version ${VERSION} ${REVISION}
 echo "Updating Cargo"
-if [ "$1" != "--no-test" ]; then
+if [ "${RUST_FLAG}" != "--no-test" ]; then
     echo "Testing libvcx.so"
     cargo test --no-default-features --features "ci" -- --test-threads=1
 fi
