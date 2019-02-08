@@ -88,12 +88,21 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ..
         # Run the tests first
         ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
+
         while
             sleep 5
             FOUND_PACKAGE=$(adb shell service list|grep "package:")
             echo "FOUND_PACKAGE -- ${FOUND_PACKAGE}"
             [ "${FOUND_PACKAGE}" == "" ]            # test the limit of the loop.
         do :;  done
+
+        while
+            sleep 5
+            FOUND_PACKAGE=$(adb shell service list|grep "settings:")
+            echo "FOUND_PACKAGE -- ${FOUND_PACKAGE}"
+            [ "${FOUND_PACKAGE}" == "" ]            # test the limit of the loop.
+        do :;  done
+
         adb shell service list
         echo "Installing the android test apk that will test the aar library..."
         adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk
