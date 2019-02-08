@@ -6,13 +6,13 @@ export PATH=${PATH}:$(pwd)/vcx/ci/scripts
 cd vcx/libvcx/
 VERSION=$2
 REVISION=$3
-echo "Updating Version in Cargo.toml file"
-cargo update-version ${VERSION} ${REVISION}
 echo "Updating Cargo"
 if [ "$1" != "--no-test" ]; then
     echo "Testing libvcx.so"
     cargo test --no-default-features --features "ci" -- --test-threads=1
 fi
+echo "Updating Version in Cargo.toml file"
+cargo update-version ${VERSION} ${REVISION}
 echo "Building libvcx.so"
 cargo build --no-default-features --features "ci"
 echo "Updating libvcx.so File with Version"
