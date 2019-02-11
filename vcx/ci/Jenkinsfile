@@ -23,7 +23,7 @@ class Globals {
 
     static String libnullVersion = "1.8.0"
 
-    static String nullpayTag = "2"
+    static String nullpayTag = "968"
 
     static String libsovtokenVersion = "0.9.6~-.1.126"
 
@@ -33,7 +33,7 @@ class Globals {
 
     static String indyBranch = 'master'
 
-    static String nullBranch = 'PR-1460'
+    static String nullBranch = 'master'
 
     static String vcxVersion = null
 

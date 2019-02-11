@@ -71,7 +71,9 @@ public class VcxWrapperTests {
     public void testInitNullPay() {
         Log.d(TAG, "testInitNullPay: called");
         try {
-            int result =  VcxApi.initNullPay();
+            int result =  VcxApi.vcxSetDefaultLogger("trace");
+            Assert.assertSame(0,result);
+            result =  VcxApi.initNullPay();
             Assert.assertSame(0,result);
          } catch (VcxException e) {
              e.printStackTrace();
