@@ -78,6 +78,18 @@ public class VcxWrapperTests {
          }
     }
 
+
+    @Test
+    public void testVcxSetDefaultLogger() {
+        Log.d(TAG, "testVcxSetDefaultLogger: called");
+        try {
+            int result =  VcxApi.vcxSetDefaultLogger("trace");
+            Assert.assertSame(0,result);
+         } catch (VcxException e) {
+             e.printStackTrace();
+         }
+    }
+
     @Test
     public void testInitWithConfig(){
         Log.d(TAG, "testInitWithConfig: called");
