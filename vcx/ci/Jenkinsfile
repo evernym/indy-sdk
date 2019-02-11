@@ -52,7 +52,7 @@ static String libindyVersion() {
 }
 
 static String libindyTag() {
-    return "961"
+    return "968"
 }
 
 static String libnullVersion() {
