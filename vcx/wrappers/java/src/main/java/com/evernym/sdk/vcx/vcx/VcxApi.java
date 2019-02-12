@@ -5,7 +5,7 @@ import com.evernym.sdk.vcx.LibVcx;
 import com.evernym.sdk.vcx.ParamGuard;
 import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.VcxJava;
-import com.sun.jna.Callback;
+import com.sun.jna.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
