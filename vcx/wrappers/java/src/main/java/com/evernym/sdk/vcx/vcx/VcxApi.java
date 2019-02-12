@@ -98,6 +98,13 @@ public class VcxApi extends VcxJava.API {
 
     }
 
+    public static int vcxSetLogger(Pointer context, Callback enabled, Callback log, Callback flush) throws VcxException {
+        logger.debug("vcxSetLogger()");
+        int result = LibVcx.api.vcx_set_logger(context, enabled, log, flush);
+        checkResult(result);
+        return result;
+    }
+
     public static int vcxSetDefaultLogger(String logLevel) throws VcxException {
         logger.debug("vcxSetDefaultLogger()");
         int result = LibVcx.api.vcx_set_default_logger(logLevel);
