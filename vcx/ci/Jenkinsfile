@@ -19,11 +19,11 @@ class Globals {
 
     static String libindyVersion = "1.8.1"
 
-    static String libindyTag = ""
+    static String libindyTag = null
 
     static String libnullVersion = "1.8.1"
 
-    static String nullpayTag = ""
+    static String nullpayTag = null
 
     static String libsovtokenVersion = "0.9.6~-.1.126"
 
@@ -69,9 +69,7 @@ def buildLibindyDocker() {
     def libindyDockerfile = 'vcx/ci/libindy.dockerfile'
     def indyTag = appendTag(Globals.libindyTag, "~")
 
-    // Todo: when indy fixes libnullpay, delete this line
-    def nullTag="~967"
-//    def nullTag= appendTag(Globals.nullpayTag, "~")
+    def nullTag= appendTag(Globals.nullpayTag, "~")
 
     docker.build("libindy", "--build-arg LIBINDY_VER=${Globals.libindyVersion}${indyTag} \
             --build-arg LIBNULL_VER=${Globals.libnullVersion}${nullTag} \
@@ -95,7 +93,7 @@ def build(name, file, context='.', customParams = '') {
 }
 
 static String appendTag(tag, del) {
-    if (tag != "") { tag = del + tag }
+    if (tag != "" || tag != null) { tag = del + tag }
     return tag
 }
 
