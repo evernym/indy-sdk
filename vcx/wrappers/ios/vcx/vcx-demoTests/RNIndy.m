@@ -900,4 +900,10 @@
 
 }
 
+- (void)setLogger:(id)logCb {
+    //[VcxLogger sharedInstance].callbacks[0] = [logCb copy];
+    //vcx_set_logger(nil, nil, logCallback, nil);
+    //[VcxLogger ]
+}
+
 @end
