@@ -93,7 +93,7 @@ def build(name, file, context='.', customParams = '') {
 }
 
 static String appendTag(tag, del) {
-    if (tag != "" || tag != null) { tag = del + tag }
+    if (tag != "" && tag != null) { tag = del + tag }
     return tag
 }
 
