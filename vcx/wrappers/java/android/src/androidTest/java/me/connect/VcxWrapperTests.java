@@ -71,7 +71,22 @@ public class VcxWrapperTests {
     public void testInitNullPay() {
         Log.d(TAG, "testInitNullPay: called");
         try {
-            int result =  VcxApi.vcxSetDefaultLogger("trace");
+            Pointer context = null;
+            Callback enabled = new Callback() {
+
+                @SuppressWarnings({"unused", "unchecked"})
+                public void callback(int xcommand_handle, int err) {
+
+                    CompletableFuture<Void> future = (CompletableFuture<Void>) removeFuture(xcommand_handle);
+                    if (!checkResult(future, err)) return;
+
+                    Void result = null;
+                    future.complete(result);
+                }
+            };
+            Callback log;
+            Callback flush;
+            int result =  VcxApi.vcxSetLogger(context, enabled, log, flush);
             Assert.assertSame(0,result);
             result =  VcxApi.initNullPay();
             Assert.assertSame(0,result);
