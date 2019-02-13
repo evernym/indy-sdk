@@ -55,6 +55,8 @@ public class VcxWrapperTests {
                 "    \"enterprise_seed\": null\n" +
                 "}";
         try {
+            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+            Assert.assertSame(0,result);
             String res = UtilsApi.vcxAgentProvisionAsync(agencyConfig).get();
 
             Log.d(TAG, "vcx::APP::async result Prov: " + res);
