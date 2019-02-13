@@ -107,7 +107,7 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
 
         adb shell service list
         echo "Starting the tests of the aar library..."
-        ./gradlew --full-stacktrace --debug --console=verbose --no-daemon :connectedCheck --project-dir=android
+        ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
         cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
     popd
 popd

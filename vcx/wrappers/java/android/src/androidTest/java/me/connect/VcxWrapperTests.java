@@ -34,6 +34,7 @@ public class VcxWrapperTests {
 
     private GrantPermissionRule writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+    private CallbackLogger callbackLogger = new CallbackLogger();
 
     @Rule
     public final RuleChain mRuleChain = RuleChain.outerRule(readPermissionRule)
@@ -71,22 +72,7 @@ public class VcxWrapperTests {
     public void testInitNullPay() {
         Log.d(TAG, "testInitNullPay: called");
         try {
-            Pointer context = null;
-            Callback enabled = new Callback() {
-
-                @SuppressWarnings({"unused", "unchecked"})
-                public void callback(int xcommand_handle, int err) {
-
-                    CompletableFuture<Void> future = (CompletableFuture<Void>) removeFuture(xcommand_handle);
-                    if (!checkResult(future, err)) return;
-
-                    Void result = null;
-                    future.complete(result);
-                }
-            };
-            Callback log;
-            Callback flush;
-            int result =  VcxApi.vcxSetLogger(context, enabled, log, flush);
+            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
             Assert.assertSame(0,result);
             result =  VcxApi.initNullPay();
             Assert.assertSame(0,result);
