@@ -451,6 +451,7 @@ public abstract class LibVcx {
 
         NativeLibrary.addSearchPath(libraryName, searchPath);
         api = Native.loadLibrary(libraryName, API.class);
+        initLogger();
     }
 
     /**
@@ -462,6 +463,7 @@ public abstract class LibVcx {
     public static void init(File file) {
 
         api = Native.loadLibrary(file.getAbsolutePath(), API.class);
+        initLogger();
     }
 
     /**
@@ -470,12 +472,14 @@ public abstract class LibVcx {
     public static void init() {
 
         api = Native.loadLibrary(LIBRARY_NAME, API.class);
+        initLogger();
     }
 
     public static void initByLibraryName(String libraryName) {
 
         System.loadLibrary(libraryName);
         api = Native.loadLibrary(libraryName, API.class);
+        initLogger();
     }
 
     /**
@@ -486,5 +490,48 @@ public abstract class LibVcx {
     public static boolean isInitialized() {
 
         return api != null;
+    }
+
+    public static void logMessage(String loggerName, int level, String message) {
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(loggerName);
+        switch (level) {
+            case 1:
+                logger.error(message);
+                break;
+            case 2:
+                logger.warn(message);
+                break;
+            case 3:
+                logger.info(message);
+                break;
+            case 4:
+                logger.debug(message);
+                break;
+            case 5:
+                logger.trace(message);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static class Logger {
+        private static Callback enabled = null;
+
+        private static Callback log = new Callback() {
+
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
+                String msg = String.format("%s:%d | %s", file, line, message);
+                logMessage(loggerName, level, msg);
+            }
+        };
+
+        private static Callback flush = null;
+    }
+
+    private static void initLogger() {
+        api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
     }
 }
