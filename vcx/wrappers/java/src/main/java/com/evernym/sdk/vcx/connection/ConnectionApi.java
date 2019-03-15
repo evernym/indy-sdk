@@ -11,8 +11,6 @@ import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.VcxJava;
 import com.sun.jna.Callback;
 import com.sun.jna.Pointer;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.xml.internal.rngom.digested.DDataPattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
