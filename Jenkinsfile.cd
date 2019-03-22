@@ -41,7 +41,7 @@ def testing() {
     stage('Testing') {
         parallel([
                 'ubuntu-test' : { ubuntuTesting() },
-                'redhat-test' : { rhelTesting() },
+                //  FIXME 'redhat-test' : { rhelTesting() }, https://jira.hyperledger.org/browse/IS-1212
                 'android-test': { androidTesting() },
                 'windows-test': { windowsTesting() },
                 'ios-test'    : { iosTesting() }
@@ -889,7 +889,7 @@ def ubuntuPublishing() {
                 libvcxDebPublishing(testEnv)
                 vcxJavaWrapperPublishing(testEnv, false)
                 pythonWrapperPublishing(testEnv, false, 'vcx/wrappers/python3', 'vcx/libvcx')
-                nodejsWrapperPublishing(testEnv, false,'vcx')
+                nodejsWrapperPublishing(testEnv, false, 'vcx')
             }
             finally {
                 echo 'Publish Ubuntu files: Cleanup'
@@ -1069,6 +1069,8 @@ def libindyDebPublishing(testEnv, version) {
 def libindyCliDebPublishing(testEnv, version) {
     echo 'Publish Indy Cli deb files to Apt'
 
+    setLibindyDependencyVersion("cli/debian/control")
+
     debPublishing(testEnv, "cli", "indy-cli", version, "IndyCliUbuntuBuildResult", "libindyCliDebs")
 }
 
@@ -1076,6 +1078,8 @@ def libnullpayDebPublishing(testEnv) {
     echo 'Publish Libnullpay deb files to Apt'
 
     def libnullpayVersion = getSrcVersion("libnullpay")
+
+    setLibindyDependencyVersion("libnullpay/debian/control")
 
     debPublishing(testEnv, "libnullpay", "libnullpay", libnullpayVersion, "LibnullpayUbuntuBuildResult", "libnullpayDebs")
 }
@@ -1085,11 +1089,16 @@ def libvcxDebPublishing(testEnv) {
 
     def libvcxVersion = getSrcVersion("vcx/libvcx")
 
-    def libindyVersion = getSrcVersion("libindy")
-    def replaceVersion = "$libindyVersion~$env.BUILD_NUMBER"
-    sh "sed -i -e \"s/^\\(Depends: .*libindy\\)\\(\\s*[,]\\{,1\\}.*\\)/\\1 (= $replaceVersion)\\2/\" vcx/libvcx/debian/control"
+    setLibindyDependencyVersion("vcx/libvcx/debian/control")
 
     debPublishing(testEnv, "vcx/libvcx", "libvcx", libvcxVersion, "LibvcxUbuntuBuildResult", "libvcxDebs")
+}
+
+def setLibindyDependencyVersion(file) {
+    def libindyVersion = getSrcVersion("libindy")
+    def replaceVersion = "$libindyVersion~$env.BUILD_NUMBER"
+
+    sh "sed -i -e \"s/^\\(Depends: .*libindy\\)\\(\\s*[,]\\{,1\\}.*\\)/\\1 (= $replaceVersion)\\2/\" $file"
 }
 
 def debPublishing(testEnv, directory, packageName, version, inStashName, outStashName) {
@@ -1140,22 +1149,23 @@ def nodejsWrapperPublishing(testEnv, isRelease, library) {
 
     def suffix = getSuffix(isRelease, "nodejs")
 
-    dir(paths[library]['dir']) {
-        testEnv.inside {
-            if (library == 'vcx') { // need addition step for VCX to create .js files
-                sh "npm run compile"
-            }
+    def directory = paths[library]['dir']
 
-            npmPublish(version, suffix)
+    testEnv.inside {
+        if (library == 'vcx') { // need addition step for VCX to create .js files
+            sh "cd $directory && npm i && npm run compile"
         }
+
+        npmPublish(version, suffix, directory)
     }
 }
 
-def npmPublish(version, suffix) {
+def npmPublish(version, suffix, directory) {
     withCredentials([file(credentialsId: 'npm_credentials', variable: 'credentialsFile')]) {
         sh 'cp $credentialsFile ~/.npmrc'
-        sh "npm version --no-git-tag-version --allow-same-version $version$suffix"
-        sh "npm publish"
+        sh "cd $directory && " +
+                "npm version --no-git-tag-version --allow-same-version $version$suffix &&" +
+                "npm publish"
     }
 }
 
@@ -1428,7 +1438,7 @@ def shell(command) {
 }
 
 def setupRust() {
-    shell("rustup default 1.31.0")
+    shell("rustup default 1.32.0")
 }
 
 def androidPublishing() {
