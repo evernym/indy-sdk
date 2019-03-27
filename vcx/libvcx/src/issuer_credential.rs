@@ -79,6 +79,7 @@ pub struct CredentialOffer {
     pub claim_name: String,
     pub claim_id: String,
     pub msg_ref_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub thread_id: Option<String>,
 }
 
