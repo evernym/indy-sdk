@@ -7,7 +7,6 @@ use failure::{Context, Backtrace, Fail};
 use libc::c_char;
 
 use utils::error;
-use utils::cstring::CStringUtils;
 use utils::cstring;
 
 pub mod prelude {
