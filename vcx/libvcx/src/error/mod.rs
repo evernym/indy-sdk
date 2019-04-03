@@ -8,6 +8,7 @@ use libc::c_char;
 
 use utils::error;
 use utils::cstring::CStringUtils;
+use utils::ctypes;
 
 pub mod prelude {
     pub use super::{err_msg, VcxError, VcxErrorExt, VcxErrorKind, VcxResult, VcxResultExt, get_current_error_c_json};
