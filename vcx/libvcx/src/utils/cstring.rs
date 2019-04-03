@@ -36,6 +36,10 @@ impl CStringUtils {
     }
 }
 
+pub fn string_to_cstring(s: String) -> CString {
+    CString::new(s).unwrap()
+}
+
 //TODO DOCUMENT WHAT THIS DOES
 macro_rules! check_useful_c_str {
     ($x:ident, $e:expr) => {

@@ -8,7 +8,7 @@ use libc::c_char;
 
 use utils::error;
 use utils::cstring::CStringUtils;
-use utils::ctypes;
+use utils::cstring;
 
 pub mod prelude {
     pub use super::{err_msg, VcxError, VcxErrorExt, VcxErrorKind, VcxResult, VcxResultExt, get_current_error_c_json};
@@ -409,7 +409,7 @@ pub fn set_current_error(err: &VcxError) {
             "cause": "some_cause",
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
-        error.replace(Some(ctypes::string_to_cstring(error_json)));
+        error.replace(Some(cstring::string_to_cstring(error_json)));
     });
 }
 
