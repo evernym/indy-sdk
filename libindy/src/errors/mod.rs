@@ -473,7 +473,7 @@ pub fn get_current_error_c_json() -> *const c_char {
 // pub fn get_current_error_c_json() -> *const c_char {
 //     let mut value = ptr::null();
 
-//     CURRENT_ERROR_C_JSONß.with(|err|
+//     CURRENT_ERROR_C_JSON.with(|err|
 //         err.borrow().as_ref().map(|err| value = err.as_ptr())
 //     );
 
