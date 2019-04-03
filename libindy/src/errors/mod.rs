@@ -466,11 +466,17 @@ pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
     trace!("2) libindy::get_current_error_c_json: ...");
 
-    CURRENT_ERROR_C_JSON.with(|err| {
-        trace!("3) libindy::get_current_error_c_json: ... {:?}", err);
-        err.borrow().as_ref().map(|err| value = err.as_ptr())
+    CURRENT_ERROR_C_JSON.with(|errCJ| {
+        trace!("3) libindy::get_current_error_c_json: ... {:?}", errCJ);
+        if let Some(errVal) = errCJ {
+            trace!("4) libindy::get_current_error_c_json: errCJ has value: {}", errVal);
+            errCJ.borrow().as_ref().map(|err| value = err.as_ptr())
+        }
+        else {
+            trace!("5) libindy::get_current_error_c_json: errCJ is not set");
+        }
     });
-    trace!("4) libindy::get_current_error_c_json: <<<");
+    trace!("6) libindy::get_current_error_c_json: <<<");
 
     value
 }
