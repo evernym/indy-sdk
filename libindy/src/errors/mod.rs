@@ -457,15 +457,15 @@ pub fn set_current_error(err: &IndyError) {
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
-    trace!("1) get_current_error_c_json: >>>");
+    trace!("1) libindy::get_current_error_c_json: >>>");
     let mut value = ptr::null();
-    trace!("2) get_current_error_c_json: ...");
+    trace!("2) libindy::get_current_error_c_json: ...");
 
     CURRENT_ERROR_C_JSON.with(|err|
-        trace!("3) get_current_error_c_json: ... {:?}", err);
+        trace!("3) libindy::get_current_error_c_json: ... {:?}", err);
         err.borrow().as_ref().map(|err| value = err.as_ptr())
     );
-    trace!("4) get_current_error_c_json: <<<");
+    trace!("4) libindy::get_current_error_c_json: <<<");
 
     value
 }
