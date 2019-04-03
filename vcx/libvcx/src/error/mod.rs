@@ -402,7 +402,9 @@ thread_local! {
 
 pub fn set_current_error(err: &VcxError) {
     trace!("1) set_current_error: >>>");
+
     CURRENT_ERROR_C_JSON.with(|error| {
+        trace!("2) set_current_error: ... {:?}", error);
         let error_json = json!({
             "error": "some_error",
             "message": err.to_string(),
@@ -411,7 +413,7 @@ pub fn set_current_error(err: &VcxError) {
         }).to_string();
         error.replace(Some(cstring::string_to_cstring(error_json)));
     });
-    trace!("2) set_current_error: <<<");
+    trace!("3) set_current_error: <<<");
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
@@ -420,9 +422,10 @@ pub fn get_current_error_c_json() -> *const c_char {
     trace!("2) get_current_error_c_json: ...");
 
     CURRENT_ERROR_C_JSON.with(|err|
+        trace!("3) get_current_error_c_json: ... {:?}", err);
         err.borrow().as_ref().map(|err| value = err.as_ptr())
     );
-    trace!("3) get_current_error_c_json: <<<");
+    trace!("4) get_current_error_c_json: <<<");
 
     value
 }
