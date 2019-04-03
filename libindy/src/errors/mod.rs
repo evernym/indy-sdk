@@ -447,13 +447,18 @@ thread_local! {
 }
 
 pub fn set_current_error(err: &IndyError) {
+    trace!("1) libindy::set_current_error: >>>");
+
     CURRENT_ERROR_C_JSON.with(|error| {
+        trace!("2) libindy::set_current_error: ... {:?}", error);
         let error_json = json!({
             "message": err.to_string(),
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
         error.replace(Some(ctypes::string_to_cstring(error_json)));
+        trace!("3) libindy::set_current_error: ... {:?}", error);
     });
+    trace!("4) libindy::set_current_error: <<<");
 }
 
 pub fn get_current_error_c_json() -> *const c_char {

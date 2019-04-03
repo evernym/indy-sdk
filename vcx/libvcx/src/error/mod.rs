@@ -10,7 +10,7 @@ use utils::error;
 use utils::cstring;
 
 pub mod prelude {
-    pub use super::{err_msg, VcxError, VcxErrorExt, VcxErrorKind, VcxResult, VcxResultExt, get_current_error_c_json};
+    pub use super::{err_msg, VcxError, VcxErrorExt, VcxErrorKind, VcxResult, VcxResultExt, vcx_get_current_error_c_json};
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Fail)]
@@ -278,7 +278,7 @@ impl From<Context<VcxErrorKind>> for VcxError {
 
 impl From<VcxError> for u32 {
     fn from(code: VcxError) -> u32 {
-        set_current_error(&code);
+        vcx_set_current_error(&code);
         code.kind().into()
     }
 }
@@ -400,11 +400,11 @@ thread_local! {
     pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
 }
 
-pub fn set_current_error(err: &VcxError) {
-    trace!("1) set_current_error: >>>");
+pub fn vcx_set_current_error(err: &VcxError) {
+    trace!("1) vcx_set_current_error: >>>");
 
     CURRENT_ERROR_C_JSON.with(|error| {
-        trace!("2) set_current_error: ... {:?}", error);
+        trace!("2) vcx_set_current_error: ... {:?}", error);
         let error_json = json!({
             "error": "some_error",
             "message": err.to_string(),
@@ -412,20 +412,21 @@ pub fn set_current_error(err: &VcxError) {
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
         error.replace(Some(cstring::string_to_cstring(error_json)));
+        trace!("3) vcx_set_current_error: ... {:?}", error);
     });
-    trace!("3) set_current_error: <<<");
+    trace!("4) vcx_set_current_error: <<<");
 }
 
-pub fn get_current_error_c_json() -> *const c_char {
-    trace!("1) get_current_error_c_json: >>>");
+pub fn vcx_get_current_error_c_json() -> *const c_char {
+    trace!("1) vcx_get_current_error_c_json: >>>");
     let mut value = ptr::null();
-    trace!("2) get_current_error_c_json: ...");
+    trace!("2) vcx_get_current_error_c_json: ...");
 
     CURRENT_ERROR_C_JSON.with(|err| {
-        trace!("3) get_current_error_c_json: ... {:?}", err);
+        trace!("3) vcx_get_current_error_c_json: ... {:?}", err);
         err.borrow().as_ref().map(|err| value = err.as_ptr())
     });
-    trace!("4) get_current_error_c_json: <<<");
+    trace!("4) vcx_get_current_error_c_json: <<<");
 
     value
 }
