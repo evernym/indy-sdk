@@ -425,7 +425,7 @@ pub fn vcx_get_current_error_c_json() -> *const c_char {
     CURRENT_ERROR_C_JSON.with(|errCJ| {
         trace!("3) vcx_get_current_error_c_json: ... {:?}", errCJ);
         if let Some(errVal) = errCJ.into_inner() {
-            trace!("4) vcx_get_current_error_c_json: errCJ has value: {}", errVal);
+            trace!("4) vcx_get_current_error_c_json: errCJ has value: {:?}", errVal);
             errCJ.borrow().as_ref().map(|err| value = err.as_ptr())
         }
         else {
