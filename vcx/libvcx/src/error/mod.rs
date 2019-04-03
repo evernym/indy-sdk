@@ -403,12 +403,12 @@ thread_local! {
 pub fn set_current_error(err: &VcxError) {
     CURRENT_ERROR_C_JSON.with(|error| {
         let error_json = json!({
-            "error": err.kind().to_string(),
+            "error": "some_error",
             "message": err.to_string(),
-            "cause": Fail::find_root_cause(err).to_string(),
+            "cause": "some_cause",
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
-        error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+        error.replace(Some(ctypes::string_to_cstring(error_json)));
     });
 }
 
