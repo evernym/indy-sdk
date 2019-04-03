@@ -421,10 +421,10 @@ pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
     trace!("2) get_current_error_c_json: ...");
 
-    CURRENT_ERROR_C_JSON.with(|err|
+    CURRENT_ERROR_C_JSON.with(|err| {
         trace!("3) get_current_error_c_json: ... {:?}", err);
         err.borrow().as_ref().map(|err| value = err.as_ptr())
-    );
+    });
     trace!("4) get_current_error_c_json: <<<");
 
     value
