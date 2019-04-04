@@ -474,6 +474,7 @@ pub fn get_current_error_c_json() -> *const c_char {
         }
         else {
             trace!("5) libindy::get_current_error_c_json: errCJ is not set");
+            None
         }
     });
     trace!("6) libindy::get_current_error_c_json: <<<");

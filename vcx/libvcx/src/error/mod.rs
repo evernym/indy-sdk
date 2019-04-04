@@ -430,6 +430,7 @@ pub fn vcx_get_current_error_c_json() -> *const c_char {
         }
         else {
             trace!("5) vcx_get_current_error_c_json: errCJ is not set");
+            None
         }
     });
     trace!("6) vcx_get_current_error_c_json: <<<");
