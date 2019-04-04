@@ -491,6 +491,8 @@ pub fn get_current_error_c_json() -> *const c_char {
             //         value = err.as_ptr()
             //     }
             // })
+        } else {
+            trace!("PANIC libindy::get_current_error_c_json: ... {:?}", reserr_cj);
         }
     });
     trace!("6) libindy::get_current_error_c_json: <<<");

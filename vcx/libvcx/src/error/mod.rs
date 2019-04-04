@@ -447,6 +447,8 @@ pub fn vcx_get_current_error_c_json() -> *const c_char {
             //         value = err.as_ptr()
             //     }
             // })
+        } else {
+            trace!("PANIC vcx_get_current_error_c_json: ... {:?}", reserr_cj);
         }
     });
     trace!("6) vcx_get_current_error_c_json: <<<");
