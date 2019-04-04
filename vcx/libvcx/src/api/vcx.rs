@@ -7,6 +7,7 @@ use settings;
 use std::ffi::CString;
 use utils::threadpool::spawn;
 use error::prelude::*;
+use std::thread;
 
 /// Initializes VCX with config settings
 ///
@@ -289,7 +290,7 @@ pub extern fn vcx_mint_tokens(seed: *const c_char, fees: *const c_char) {
 ///
 #[no_mangle]
 pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
-    trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
+    trace!("vcx_get_current_error >>> thread_id: {:?} - error_json_p: {:?}", thread::current().id(), error_json_p);
 
     let error = vcx_get_current_error_c_json();
 

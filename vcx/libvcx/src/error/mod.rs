@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
+use std::thread;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -401,10 +402,10 @@ thread_local! {
 }
 
 pub fn vcx_set_current_error(err: &VcxError) {
-    trace!("1) vcx_set_current_error: >>>");
+    trace!("1) vcx_set_current_error: >>> thread_id: {:?}", thread::current().id());
 
     CURRENT_ERROR_C_JSON.with(|error| {
-        trace!("2) vcx_set_current_error: ... {:?}", error);
+        trace!("2) vcx_set_current_error: ... thread_id: {:?} - error: {:?}", thread::current().id(), error);
         let error_json = json!({
             "error": "some_error",
             "message": err.to_string(),
@@ -412,13 +413,13 @@ pub fn vcx_set_current_error(err: &VcxError) {
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
         error.replace(Some(cstring::string_to_cstring(error_json)));
-        trace!("3) vcx_set_current_error: ... {:?}", error);
+        trace!("3) vcx_set_current_error: ... thread_id: {:?} - error: {:?}", thread::current().id(), error);
     });
-    trace!("4) vcx_set_current_error: <<<");
+    trace!("4) vcx_set_current_error: <<< thread_id: {:?}", thread::current().id());
 }
 
 pub fn vcx_get_current_error_c_json() -> *const c_char {
-    trace!("1) vcx_get_current_error_c_json: >>>");
+    trace!("1) vcx_get_current_error_c_json: >>> thread_id: {:?}", thread::current().id());
     let mut value = ptr::null();
     trace!("2) vcx_get_current_error_c_json: ...");
 

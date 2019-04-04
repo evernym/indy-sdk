@@ -16,6 +16,7 @@ use domain::IndyConfig;
 use errors::prelude::*;
 
 use utils::ctypes;
+use std::thread;
 
 pub type IndyHandle = i32;
 
@@ -298,10 +299,10 @@ pub extern fn indy_set_runtime_config(config: *const c_char) -> ErrorCode {
 ///
 #[no_mangle]
 pub extern fn indy_get_current_error(error_json_p: *mut *const c_char) {
-    trace!("indy_get_current_error >>> error_json_p: {:?}", error_json_p);
+    trace!("indy_get_current_error >>> thread_id: {:?} - error_json_p: {:?}", thread::current().id(), error_json_p);
 
     let error = get_current_error_c_json();
     unsafe { *error_json_p = error };
 
-    trace!("indy_get_current_error: <<<");
+    trace!("indy_get_current_error: thread_id: {:?} <<<", thread::current().id());
 }
