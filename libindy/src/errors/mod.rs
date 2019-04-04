@@ -477,9 +477,7 @@ pub fn get_current_error_c_json() -> *const c_char {
                     if val.is_some() {
                         val.as_ref().map(|jsonVal| {
                             trace!("5) libindy::get_current_error_c_json: ... {:?}", jsonVal);
-                            if jsonVal.is_some() {
-                                value = jsonVal.as_ptr();
-                            }
+                            value = jsonVal.as_ptr();
                         });
                     }
                 });
