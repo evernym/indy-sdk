@@ -422,18 +422,18 @@ pub fn vcx_get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
     trace!("2) vcx_get_current_error_c_json: ...");
 
-    CURRENT_ERROR_C_JSON.with(|errCJ| {
-        trace!("3) vcx_get_current_error_c_json: ... {:?}", errCJ);
-        let resErrCJ = errCJ.try_borrow();
-        if resErrCJ.is_ok() {
-            let resVal = resErrCJ.ok();
-            if resVal.is_some() {
-                trace!("4) vcx_get_current_error_c_json: ... {:?}", resVal);
-                resVal.as_ref().map(|val| {
+    CURRENT_ERROR_C_JSON.with(|err_cj| {
+        trace!("3) vcx_get_current_error_c_json: ... {:?}", err_cj);
+        let reserr_cj = err_cj.try_borrow();
+        if reserr_cj.is_ok() {
+            let res_val = reserr_cj.ok();
+            if res_val.is_some() {
+                trace!("4) vcx_get_current_error_c_json: ... {:?}", res_val);
+                res_val.as_ref().map(|val| {
                     if val.is_some() {
-                        val.as_ref().map(|jsonVal| {
-                            trace!("5) vcx_get_current_error_c_json: ... {:?}", jsonVal);
-                            value = jsonVal.as_ptr();
+                        val.as_ref().map(|json_val| {
+                            trace!("5) vcx_get_current_error_c_json: ... {:?}", json_val);
+                            value = json_val.as_ptr();
                         });
                     }
                 });
@@ -441,7 +441,7 @@ pub fn vcx_get_current_error_c_json() -> *const c_char {
             // if val {
             //     value = val.as_ptr();
             // }
-            // resErrCJ.as_ref().map(|err| {
+            // reserr_cj.as_ref().map(|err| {
             //     trace!("4) vcx_get_current_error_c_json: ... {:?}", err);
             //     if err {
             //         value = err.as_ptr()
