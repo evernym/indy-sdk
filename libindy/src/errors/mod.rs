@@ -473,7 +473,16 @@ pub fn get_current_error_c_json() -> *const c_char {
             let resVal = resErrCJ.ok();
             if resVal.is_some() {
                 trace!("4) libindy::get_current_error_c_json: ... {:?}", resVal);
-                resVal.as_ref().map(|val| value = val.as_ptr());
+                resVal.as_ref().map(|val| {
+                    if val.is_some() {
+                        val.as_ref().map(|jsonVal| {
+                            trace!("5) libindy::get_current_error_c_json: ... {:?}", jsonVal);
+                            if jsonVal.is_some() {
+                                value = jsonVal.as_ptr();
+                            }
+                        });
+                    }
+                });
             }
             // if val {
             //     value = val.as_ptr();
@@ -486,7 +495,7 @@ pub fn get_current_error_c_json() -> *const c_char {
             // })
         }
     });
-    trace!("5) libindy::get_current_error_c_json: <<<");
+    trace!("6) libindy::get_current_error_c_json: <<<");
 
     value
 }
