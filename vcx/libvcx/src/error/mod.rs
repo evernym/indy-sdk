@@ -279,7 +279,7 @@ impl From<Context<VcxErrorKind>> for VcxError {
 
 impl From<VcxError> for u32 {
     fn from(code: VcxError) -> u32 {
-        vcx_set_current_error(&code);
+        //vcx_set_current_error(&code);
         code.kind().into()
     }
 }

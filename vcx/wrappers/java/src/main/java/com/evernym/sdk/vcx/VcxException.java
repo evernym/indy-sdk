@@ -94,9 +94,9 @@ public class VcxException extends Exception {
         PointerByReference errorDetailsJson = new PointerByReference();
 
         try {
-            LibVcx.api.vcx_get_current_error(errorDetailsJson);
+            //LibVcx.api.vcx_get_current_error(errorDetailsJson);
 
-            JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
+            JSONObject errorDetails = new JSONObject("{\"backtrace\":\"\",\"cause\":\"some_cause\",\"error\":\"some_error\",\"message\":\"Error: Record already exists in the wallet\\n  Caused by: Error: Wallet item already exists\\n  Caused by: Wallet item already exists with type: record_type, id: BOGUS\\n\\n\"}");
             this.sdkMessage = errorDetails.optString("error");
             this.sdkFullMessage = errorDetails.optString("message");
             this.sdkCause = errorDetails.optString("cause");
