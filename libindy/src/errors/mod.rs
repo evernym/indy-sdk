@@ -468,16 +468,17 @@ pub fn get_current_error_c_json() -> *const c_char {
 
     CURRENT_ERROR_C_JSON.with(|errCJ| {
         trace!("3) libindy::get_current_error_c_json: ... {:?}", errCJ);
-        if let Some(errVal) = errCJ.into_inner() {
-            trace!("4) libindy::get_current_error_c_json: errCJ has value: {:?}", errVal);
-            errCJ.borrow().as_ref().map(|err| value = err.as_ptr())
-        }
-        else {
-            trace!("5) libindy::get_current_error_c_json: errCJ is not set");
-            None
+        let resErrCJ = errCJ.try_borrow();
+        if resErrCJ.is_ok() {
+            resErrCJ.as_ref().map(|err| {
+                trace!("4) libindy::get_current_error_c_json: ... {:?}", err);
+                if err {
+                    value = err.as_ptr()
+                }
+            })
         }
     });
-    trace!("6) libindy::get_current_error_c_json: <<<");
+    trace!("5) libindy::get_current_error_c_json: <<<");
 
     value
 }
