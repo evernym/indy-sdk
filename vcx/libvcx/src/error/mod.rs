@@ -1,4 +1,4 @@
-use std::sync::RwLock;
+use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
@@ -397,36 +397,27 @@ impl<E> VcxErrorExt for E where E: Fail
 }
 
 thread_local! {
-    pub static CURRENT_ERROR_C_JSON: RwLock<Option<CString>> = RwLock::new(None);
+    pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
 }
 
-pub fn set_current_error(vcxErr: &VcxError) {
-    CURRENT_ERROR_C_JSON.with(|errorLock| {
+pub fn set_current_error(err: &VcxError) {
+    CURRENT_ERROR_C_JSON.with(|error| {
         let error_json = json!({
-            "error": vcxErr.kind().to_string(),
-            "message": vcxErr.to_string(),
-            "cause": Fail::find_root_cause(vcxErr).to_string(),
-            "backtrace": vcxErr.backtrace().map(|bt| bt.to_string())
+            "error": err.kind().to_string(),
+            "message": err.to_string(),
+            "cause": Fail::find_root_cause(err).to_string(),
+            "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
-
-        //errorLock.replace(Some(CStringUtils::string_to_cstring(error_json)));
-        match errorLock.try_write() {
-            Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
-            Err(writeErr) => { trace!("set_current_error >>> errorLock writeErr: {} - {:?}", writeErr, error_json); },
-        };
+        error.replace(Some(CStringUtils::string_to_cstring(error_json)));
     });
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
 
-    CURRENT_ERROR_C_JSON.with(|errorLock| {
-        //err.borrow().as_ref().map(|err| value = err.as_ptr())
-        match errorLock.try_read() {
-            Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
-            Err(readErr) => { trace!("get_current_error_c_json >>> errorLock readErr: {}", readErr); },
-        };
-    });
+    CURRENT_ERROR_C_JSON.with(|err|
+        err.borrow().as_ref().map(|err| value = err.as_ptr())
+    );
 
     value
 }
