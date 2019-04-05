@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
+use std::panic;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -400,16 +401,21 @@ thread_local! {
     pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
 }
 
-pub fn set_current_error(err: &VcxError) {
-    CURRENT_ERROR_C_JSON.with(|error| {
+pub fn set_current_error(vcxErr: &VcxError) {
+    CURRENT_ERROR_C_JSON.with(|errorLock| {
         let error_json = json!({
-            "error": err.kind().to_string(),
-            "message": err.to_string(),
-            "cause": Fail::find_root_cause(err).to_string(),
-            "backtrace": err.backtrace().map(|bt| bt.to_string())
+            "error": vcxErr.kind().to_string(),
+            "message": vcxErr.to_string(),
+            "cause": Fail::find_root_cause(vcxErr).to_string(),
+            "backtrace": vcxErr.backtrace().map(|bt| bt.to_string())
         }).to_string();
+
+        //errorLock.replace(Some(CStringUtils::string_to_cstring(error_json)));
         let panicResult = panic::catch_unwind(|| {
-            error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+            match errorLock.try_borrow_mut() {
+                Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
+                Err(borrowErr) => { trace!("set_current_error >>> errorLock borrowErr: {} - {:?}", borrowErr, error_json); },
+            };
         });
         trace!("set_current_error >>> panicResult: {:?}", panicResult);
     });
@@ -418,12 +424,44 @@ pub fn set_current_error(err: &VcxError) {
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
 
-    CURRENT_ERROR_C_JSON.with(|err| {
+    CURRENT_ERROR_C_JSON.with(|errorLock| {
+        //err.borrow().as_ref().map(|err| value = err.as_ptr())
         let panicResult = panic::catch_unwind(|| {
-            err.borrow().as_ref().map(|err| value = err.as_ptr())
+            match errorLock.try_borrow() {
+                Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
+                Err(borrowErr) => { trace!("get_current_error_c_json >>> errorLock borrowErr: {}", borrowErr); },
+            };
         });
         trace!("get_current_error_c_json >>> panicResult: {:?}", panicResult);
     });
 
     value
 }
+
+// pub fn set_current_error(err: &VcxError) {
+//     CURRENT_ERROR_C_JSON.with(|error| {
+//         let error_json = json!({
+//             "error": err.kind().to_string(),
+//             "message": err.to_string(),
+//             "cause": Fail::find_root_cause(err).to_string(),
+//             "backtrace": err.backtrace().map(|bt| bt.to_string())
+//         }).to_string();
+//         let panicResult = panic::catch_unwind(|| {
+//             error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+//         });
+//         trace!("set_current_error >>> panicResult: {:?}", panicResult);
+//     });
+// }
+
+// pub fn get_current_error_c_json() -> *const c_char {
+//     let mut value = ptr::null();
+
+//     CURRENT_ERROR_C_JSON.with(|err| {
+//         let panicResult = panic::catch_unwind(|| {
+//             err.borrow().as_ref().map(|err| value = err.as_ptr())
+//         });
+//         trace!("get_current_error_c_json >>> panicResult: {:?}", panicResult);
+//     });
+
+//     value
+// }
