@@ -411,8 +411,8 @@ pub fn set_current_error(vcxErr: &VcxError) {
 
         //errorLock.replace(Some(CStringUtils::string_to_cstring(error_json)));
         match errorLock.try_write() {
-            Ok(innerOption) => *innerOption = Some(CStringUtils::string_to_cstring(error_json)),
-            Err(writeErr) => { trace!("set_current_error >>> errorLock writeErr: {} - {:?}", writeErr, error_json); None },
+            Ok(innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
+            Err(writeErr) => { trace!("set_current_error >>> errorLock writeErr: {} - {:?}", writeErr, error_json); },
         };
     });
 }
@@ -423,8 +423,8 @@ pub fn get_current_error_c_json() -> *const c_char {
     CURRENT_ERROR_C_JSON.with(|errorLock| {
         //err.borrow().as_ref().map(|err| value = err.as_ptr())
         match errorLock.try_read() {
-            Ok(innerOption) => innerOption.as_ref().map(|errStr| value = errStr.as_ptr()),
-            Err(readErr) => trace!("get_current_error_c_json >>> errorLock readErr: {}", readErr),
+            Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
+            Err(readErr) => { trace!("get_current_error_c_json >>> errorLock readErr: {}", readErr); },
         };
     });
 
