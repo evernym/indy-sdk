@@ -2,7 +2,6 @@ use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
-use std::panic;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -411,13 +410,10 @@ pub fn set_current_error(vcxErr: &VcxError) {
         }).to_string();
 
         //errorRefCell.replace(Some(CStringUtils::string_to_cstring(error_json)));
-        let panicResult = panic::catch_unwind(|| {
-            match errorRefCell.try_borrow_mut() {
-                Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
-                Err(borrowErr) => { trace!("set_current_error >>> errorRefCell borrowErr: {} - {:?}", borrowErr, error_json); },
-            };
-        });
-        trace!("set_current_error >>> panicResult: {:?}", panicResult);
+        match errorRefCell.try_borrow_mut() {
+            Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
+            Err(borrowErr) => { trace!("set_current_error >>> errorRefCell borrowErr: {} - {:?}", borrowErr, error_json); },
+        };
     });
 }
 
@@ -426,13 +422,10 @@ pub fn get_current_error_c_json() -> *const c_char {
 
     CURRENT_ERROR_C_JSON.with(|errorRefCell| {
         //err.borrow().as_ref().map(|err| value = err.as_ptr())
-        let panicResult = panic::catch_unwind(|| {
-            match errorRefCell.try_borrow() {
-                Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
-                Err(borrowErr) => { trace!("get_current_error_c_json >>> errorRefCell borrowErr: {}", borrowErr); },
-            };
-        });
-        trace!("get_current_error_c_json >>> panicResult: {:?}", panicResult);
+        match errorRefCell.try_borrow() {
+            Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
+            Err(borrowErr) => { trace!("get_current_error_c_json >>> errorRefCell borrowErr: {}", borrowErr); },
+        };
     });
 
     value
