@@ -424,7 +424,7 @@ pub fn get_current_error_c_json() -> *const c_char {
         //err.borrow().as_ref().map(|err| value = err.as_ptr())
         match errorLock.try_read() {
             Ok(innerOption) => innerOption.as_ref().map(|errStr| value = errStr.as_ptr()),
-            Err(readErr) => { trace!("get_current_error_c_json >>> errorLock readErr: {}", readErr); None },
+            Err(readErr) => trace!("get_current_error_c_json >>> errorLock readErr: {}", readErr),
         };
     });
 
