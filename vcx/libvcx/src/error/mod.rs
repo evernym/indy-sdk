@@ -402,7 +402,7 @@ thread_local! {
 }
 
 pub fn set_current_error(vcxErr: &VcxError) {
-    CURRENT_ERROR_C_JSON.with(|errorLock| {
+    CURRENT_ERROR_C_JSON.with(|errorRefCell| {
         let error_json = json!({
             "error": vcxErr.kind().to_string(),
             "message": vcxErr.to_string(),
@@ -410,11 +410,11 @@ pub fn set_current_error(vcxErr: &VcxError) {
             "backtrace": vcxErr.backtrace().map(|bt| bt.to_string())
         }).to_string();
 
-        //errorLock.replace(Some(CStringUtils::string_to_cstring(error_json)));
+        //errorRefCell.replace(Some(CStringUtils::string_to_cstring(error_json)));
         let panicResult = panic::catch_unwind(|| {
-            match errorLock.try_borrow_mut() {
+            match errorRefCell.try_borrow_mut() {
                 Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
-                Err(borrowErr) => { trace!("set_current_error >>> errorLock borrowErr: {} - {:?}", borrowErr, error_json); },
+                Err(borrowErr) => { trace!("set_current_error >>> errorRefCell borrowErr: {} - {:?}", borrowErr, error_json); },
             };
         });
         trace!("set_current_error >>> panicResult: {:?}", panicResult);
@@ -424,12 +424,12 @@ pub fn set_current_error(vcxErr: &VcxError) {
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
 
-    CURRENT_ERROR_C_JSON.with(|errorLock| {
+    CURRENT_ERROR_C_JSON.with(|errorRefCell| {
         //err.borrow().as_ref().map(|err| value = err.as_ptr())
         let panicResult = panic::catch_unwind(|| {
-            match errorLock.try_borrow() {
+            match errorRefCell.try_borrow() {
                 Ok(innerOption) => { innerOption.as_ref().map(|errStr| value = errStr.as_ptr()); },
-                Err(borrowErr) => { trace!("get_current_error_c_json >>> errorLock borrowErr: {}", borrowErr); },
+                Err(borrowErr) => { trace!("get_current_error_c_json >>> errorRefCell borrowErr: {}", borrowErr); },
             };
         });
         trace!("get_current_error_c_json >>> panicResult: {:?}", panicResult);
