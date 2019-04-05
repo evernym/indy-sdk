@@ -408,16 +408,22 @@ pub fn set_current_error(err: &VcxError) {
             "cause": Fail::find_root_cause(err).to_string(),
             "backtrace": err.backtrace().map(|bt| bt.to_string())
         }).to_string();
-        error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+        let panicResult = panic::catch_unwind(|| {
+            error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+        });
+        trace!("set_current_error >>> panicResult: {:?}", panicResult);
     });
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
 
-    CURRENT_ERROR_C_JSON.with(|err|
-        err.borrow().as_ref().map(|err| value = err.as_ptr())
-    );
+    CURRENT_ERROR_C_JSON.with(|err| {
+        let panicResult = panic::catch_unwind(|| {
+            err.borrow().as_ref().map(|err| value = err.as_ptr())
+        });
+        trace!("get_current_error_c_json >>> panicResult: {:?}", panicResult);
+    });
 
     value
 }
