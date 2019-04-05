@@ -411,7 +411,7 @@ pub fn set_current_error(vcxErr: &VcxError) {
 
         //errorLock.replace(Some(CStringUtils::string_to_cstring(error_json)));
         match errorLock.try_write() {
-            Ok(innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
+            Ok(mut innerOption) => { *innerOption = Some(CStringUtils::string_to_cstring(error_json)); },
             Err(writeErr) => { trace!("set_current_error >>> errorLock writeErr: {} - {:?}", writeErr, error_json); },
         };
     });
