@@ -1,8 +1,9 @@
-use std::cell::RwLock;
+use std::sync::RwLock;
 //use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
+use std::panic;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
