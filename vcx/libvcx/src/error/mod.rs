@@ -399,8 +399,12 @@ impl<E> VcxErrorExt for E where E: Fail
 
 
 
+thread_local! {
+    pub static CURRENT_ERROR_C_JSON: RwLock<Arc<ErrorJson>> = RwLock::new(Default::default());
+}
+
 #[derive(Default)]
-struct ErrorJson {
+pub struct ErrorJson {
     pub json: CString,
 }
 
@@ -411,10 +415,6 @@ impl ErrorJson {
     pub fn make_current(self) {
         CURRENT_ERROR_C_JSON.with(|ej| *ej.write().unwrap() = Arc::new(self))
     }
-}
-
-thread_local! {
-    pub static CURRENT_ERROR_C_JSON: RwLock<Arc<ErrorJson>> = RwLock::new(Default::default());
 }
 
 pub fn set_current_error(vcx_err: &VcxError) {
