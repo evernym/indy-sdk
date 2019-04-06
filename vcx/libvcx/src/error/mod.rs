@@ -3,7 +3,6 @@ use std::sync::{Arc, RwLock};
 use std::fmt;
 use std::ffi::CString;
 use std::ptr;
-use std::panic;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -430,7 +429,8 @@ pub fn set_current_error(vcx_err: &VcxError) {
 
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
-    value = ErrorJson::current().json.as_ptr()
+    value = ErrorJson::current().json.as_ptr();
+    value
 }
 
 // thread_local! {
