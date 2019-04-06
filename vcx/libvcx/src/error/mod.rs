@@ -412,8 +412,8 @@ impl ErrorJson {
     pub fn current() -> Arc<ErrorJson> {
         CURRENT_ERROR_C_JSON.with(|ej| {
             //ej.read().unwrap().clone();
-            match ej.try_read() {
-                Ok(inner_json) => inner_json.unwrap().clone(),
+            return match ej.try_read() {
+                Ok(inner_json) => inner_json.clone(),
                 Err(read_err) => {
                     trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err);
                     Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
