@@ -1,4 +1,4 @@
-use std::sync::RwLock;
+use std::sync::{Arc, RwLock};
 //use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
@@ -398,46 +398,75 @@ impl<E> VcxErrorExt for E where E: Fail
     }
 }
 
+
+
+#[derive(Default)]
+struct ErrorJson {
+    pub json: CString,
+}
+
+impl ErrorJson {
+    pub fn current() -> Arc<ErrorJson> {
+        CURRENT_ERROR_C_JSON.with(|ej| ej.read().unwrap().clone())
+    }
+    pub fn make_current(self) {
+        CURRENT_ERROR_C_JSON.with(|ej| *ej.write().unwrap() = Arc::new(self))
+    }
+}
+
 thread_local! {
-    pub static CURRENT_ERROR_C_JSON: RwLock<Option<CString>> = RwLock::new(None);
+    pub static CURRENT_ERROR_C_JSON: RwLock<Arc<ErrorJson>> = RwLock::new(Default::default());
 }
 
 pub fn set_current_error(vcx_err: &VcxError) {
-    CURRENT_ERROR_C_JSON.with(|error_lock| {
-        let error_json = json!({
-            "error": vcx_err.kind().to_string(),
-            "message": vcx_err.to_string(),
-            "cause": Fail::find_root_cause(vcx_err).to_string(),
-            "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
-        }).to_string();
-
-        //error_lock.replace(Some(CStringUtils::string_to_cstring(error_json)));
-        let panic_result = panic::catch_unwind(|| {
-            match error_lock.try_write() {
-                Ok(mut inner_option) => { *inner_option = Some(CStringUtils::string_to_cstring(error_json)); },
-                Err(write_err) => { trace!("set_current_error >>> error_lock write_err: {} - {:?}", write_err, error_json); },
-            };
-        });
-        trace!("set_current_error >>> panic_result: {:?}", panic_result);
-    });
+    let error_json = json!({
+        "error": vcx_err.kind().to_string(),
+        "message": vcx_err.to_string(),
+        "cause": Fail::find_root_cause(vcx_err).to_string(),
+        "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
+    }).to_string();
+    ErrorJson { json: CStringUtils::string_to_cstring(error_json) }.make_current();
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
     let mut value = ptr::null();
-
-    CURRENT_ERROR_C_JSON.with(|error_lock| {
-        //error_lock.borrow().as_ref().map(|err_str| value = err_str.as_ptr())
-        let panic_result = panic::catch_unwind(|| {
-            match error_lock.try_read() {
-                Ok(inner_option) => { inner_option.as_ref().map(|err_str| value = err_str.as_ptr()); },
-                Err(read_err) => { trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err); },
-            };
-        });
-        trace!("get_current_error_c_json >>> panic_result: {:?}", panic_result);
-    });
-
-    value
+    value = ErrorJson::current().json.as_ptr()
 }
+
+// thread_local! {
+//     pub static CURRENT_ERROR_C_JSON: RwLock<Option<CString>> = RwLock::new(None);
+// }
+
+// pub fn set_current_error(vcx_err: &VcxError) {
+//     CURRENT_ERROR_C_JSON.with(|error_lock| {
+//         let error_json = json!({
+//             "error": vcx_err.kind().to_string(),
+//             "message": vcx_err.to_string(),
+//             "cause": Fail::find_root_cause(vcx_err).to_string(),
+//             "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
+//         }).to_string();
+
+//         //error_lock.replace(Some(CStringUtils::string_to_cstring(error_json)));
+//         match error_lock.try_write() {
+//             Ok(mut inner_option) => { *inner_option = Some(CStringUtils::string_to_cstring(error_json)); },
+//             Err(write_err) => { trace!("set_current_error >>> error_lock write_err: {} - {:?}", write_err, error_json); },
+//         };
+//     });
+// }
+
+// pub fn get_current_error_c_json() -> *const c_char {
+//     let mut value = ptr::null();
+
+//     CURRENT_ERROR_C_JSON.with(|error_lock| {
+//         //error_lock.borrow().as_ref().map(|err_str| value = err_str.as_ptr())
+//         match error_lock.try_read() {
+//             Ok(inner_option) => { inner_option.as_ref().map(|err_str| value = err_str.as_ptr()); },
+//             Err(read_err) => { trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err); },
+//         };
+//     });
+
+//     value
+// }
 
 // thread_local! {
 //     pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
