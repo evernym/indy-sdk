@@ -453,7 +453,7 @@ pub fn get_current_error_c_json() -> *const c_char {
     // let mut value = ptr::null();
     // value = ErrorJson::current().json.as_ptr();
     // value
-    CStringUtils::string_to_cstring("hi mom").as_ptr()
+    CStringUtils::string_to_cstring("hi mom".to_string()).as_ptr()
 }
 
 // thread_local! {
