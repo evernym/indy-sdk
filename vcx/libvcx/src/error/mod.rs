@@ -410,28 +410,32 @@ pub struct ErrorJson {
 
 impl ErrorJson {
     pub fn current() -> Arc<ErrorJson> {
-        CURRENT_ERROR_C_JSON.with(|ej| {
-            //ej.read().unwrap().clone();
-            return match ej.try_read() {
-                Ok(inner_json) => inner_json.clone(),
-                Err(read_err) => {
-                    trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err);
-                    Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
-                        "error": read_err.to_string(),
-                    }).to_string()) })
-                },
-            };
-        })
+        // CURRENT_ERROR_C_JSON.with(|ej| {
+        //     //ej.read().unwrap().clone();
+        //     return match ej.try_read() {
+        //         Ok(inner_json) => inner_json.clone(),
+        //         Err(read_err) => {
+        //             trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err);
+        //             Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
+        //                 "error": read_err.to_string(),
+        //             }).to_string()) })
+        //         },
+        //     };
+        // })
+
+        Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
+            "error": "errort fixed",
+        }).to_string()) })
     }
 
     pub fn make_current(self) {
-        CURRENT_ERROR_C_JSON.with(|ej| {
-            //*ej.write().unwrap() = Arc::new(self));
-            match ej.try_write() {
-                Ok(mut inner_json) => { *inner_json = Arc::new(self); },
-                Err(write_err) => { trace!("make_current >>> ej write_err: {} - {:?}", write_err, self.json); },
-            };
-        })
+        // CURRENT_ERROR_C_JSON.with(|ej| {
+        //     //*ej.write().unwrap() = Arc::new(self));
+        //     match ej.try_write() {
+        //         Ok(mut inner_json) => { *inner_json = Arc::new(self); },
+        //         Err(write_err) => { trace!("make_current >>> ej write_err: {} - {:?}", write_err, self.json); },
+        //     };
+        // })
     }
 }
 
