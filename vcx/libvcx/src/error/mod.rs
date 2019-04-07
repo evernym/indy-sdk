@@ -446,13 +446,14 @@ pub fn set_current_error(vcx_err: &VcxError) {
         "cause": Fail::find_root_cause(vcx_err).to_string(),
         "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
     }).to_string();
-    ErrorJson { json: CStringUtils::string_to_cstring(error_json) }.make_current();
+    //ErrorJson { json: CStringUtils::string_to_cstring(error_json) }.make_current();
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
-    let mut value = ptr::null();
-    value = ErrorJson::current().json.as_ptr();
-    value
+    // let mut value = ptr::null();
+    // value = ErrorJson::current().json.as_ptr();
+    // value
+    "hi mom"
 }
 
 // thread_local! {
