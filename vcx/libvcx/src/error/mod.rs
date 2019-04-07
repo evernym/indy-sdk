@@ -2,7 +2,7 @@ use std::sync::{Arc, RwLock};
 //use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
-use std::ptr;
+//use std::ptr;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -453,7 +453,7 @@ pub fn get_current_error_c_json() -> *const c_char {
     // let mut value = ptr::null();
     // value = ErrorJson::current().json.as_ptr();
     // value
-    "hi mom"
+    CStringUtils::string_to_cstring("hi mom").as_ptr()
 }
 
 // thread_local! {
