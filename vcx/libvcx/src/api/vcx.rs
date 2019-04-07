@@ -292,7 +292,8 @@ pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
     trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
 
     let error = get_current_error_c_json();
-    unsafe { *error_json_p = error };
+    //unsafe { *error_json_p = error };
+    //unsafe { *error_json_p = CStringUtils::string_to_cstring("hi mom".to_string()).as_ptr() };
 
     trace!("vcx_get_current_error: <<<");
 }
