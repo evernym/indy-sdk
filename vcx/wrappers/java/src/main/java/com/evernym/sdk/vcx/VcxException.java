@@ -1,5 +1,6 @@
 package com.evernym.sdk.vcx;
 
+import java9.util.concurrent.CompletableFuture;
 
 import com.evernym.sdk.vcx.connection.ConnectionErrorException;
 import com.evernym.sdk.vcx.connection.InvalidConnectionHandleException;
@@ -60,11 +61,13 @@ import com.evernym.sdk.vcx.wallet.WalletAleradyOpenException;
 import com.evernym.sdk.vcx.wallet.WalletAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemNotFoundException;
+import com.sun.jna.Callback;
 
-import com.sun.jna.ptr.PointerByReference;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Thrown when an Indy specific error has occurred.
@@ -79,6 +82,8 @@ public class VcxException extends Exception {
     private String  sdkCause;
     private String sdkBacktrace;
 
+    private final CountDownLatch errorDetailsLatch = new CountDownLatch (1);
+
     /**
      * Initializes a new VcxException with the specified message.
      *
@@ -87,23 +92,60 @@ public class VcxException extends Exception {
     protected VcxException(String message, int sdkErrorCode) {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
-        setSdkErrorDetails();
+        try {
+            setSdkErrorDetails();
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void setSdkErrorDetails(){
-        PointerByReference errorDetailsJson = new PointerByReference();
+    class ErrorJsonAPI extends VcxJava.API {
 
-        LibVcx.api.vcx_get_current_error(errorDetailsJson);
+        private Callback errorJsonSerializeHandle = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int commandHandle, int err, String serializedData) {
+                logger.debug("callback() called with: commandHandle = [" + commandHandle + "], err = [" + err + "], serializedData = [" + serializedData + "]");
+                CompletableFuture<String> future = (CompletableFuture<String>) removeFuture(commandHandle);
+                if (!checkCallback(future, err)) return;
+                // TODO complete with exception if we find error
+    //            if (err != 0) {
+    //                future.completeExceptionally();
+    //            } else {
+    //
+    //            }
+                String result = serializedData;
+                try {
+                    JSONObject errorDetails = new JSONObject(result);
+                    VcxException.this.sdkMessage = errorDetails.optString("error");
+                    VcxException.this.sdkFullMessage = errorDetails.optString("message");
+                    VcxException.this.sdkCause = errorDetails.optString("cause");
+                    VcxException.this.sdkBacktrace = errorDetails.optString("backtrace");
+                    errorDetailsLatch.countDown ();
+                } catch(Exception e) {
+                    // TODO
+                }
+                future.complete(result);
+            }
+        };
 
-        try {
-            JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
-            this.sdkMessage = errorDetails.optString("error");
-            this.sdkFullMessage = errorDetails.optString("message");
-            this.sdkCause = errorDetails.optString("cause");
-            this.sdkBacktrace = errorDetails.optString("backtrace");
-        } catch(Exception e) {
-           // TODO
+        public CompletableFuture<String> errorJsonSerialize() {
+            //ParamGuard.notNull(errorJsonHandle, "errorJsonHandle");
+            //logger.debug("errorJsonSerialize() called with: errorJsonHandle = [" + errorJsonHandle + "]");
+            CompletableFuture<String> future = new CompletableFuture<>();
+            int commandHandle = addFuture(future);
+
+            int result = LibVcx.api.vcx_get_current_error(
+                    commandHandle,
+                    errorJsonSerializeHandle
+            );
+            //checkResult(result);
+            return future;
         }
+    }
+
+    private void setSdkErrorDetails()  throws InterruptedException {
+        new ErrorJsonAPI().errorJsonSerialize();
+        errorDetailsLatch.await();
     }
 
     /**

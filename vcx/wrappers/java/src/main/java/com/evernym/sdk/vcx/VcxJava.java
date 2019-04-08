@@ -55,7 +55,7 @@ public class VcxJava {
 		 * @param future The future to track.
 		 * @return The command handle the future is being tracked against.
 		 */
-		protected static int addFuture(CompletableFuture<?> future) {
+		public static int addFuture(CompletableFuture<?> future) {
 
 			int commandHandle = newCommandHandle();
 			assert(! futures.containsKey(commandHandle));
@@ -70,7 +70,7 @@ public class VcxJava {
 		 * @param commandHandle The command handle for the future to stop tracking.
 		 * @return The future associated with the command handle.
 		 */
-		protected static CompletableFuture<?> removeFuture(int commandHandle) {
+		public static CompletableFuture<?> removeFuture(int commandHandle) {
 			logger.debug("removeFuture: callback completed for command handle: {}", commandHandle);
 			CompletableFuture<?> future = futures.remove(commandHandle);
 			assert(future != null);
@@ -89,7 +89,7 @@ public class VcxJava {
 		 * @param err The error value to check.
 		 * @return true if the error code indicate SUCCESS, otherwise false.
 		 */
-		protected static boolean checkCallback(CompletableFuture<?> future, int err) {
+		public static boolean checkCallback(CompletableFuture<?> future, int err) {
 			ErrorCode errorCode = ErrorCode.UNKNOWN_ERROR;
 
 			try {
@@ -117,7 +117,7 @@ public class VcxJava {
 		 * @param err The error code to check.
 		 * @throws VcxException Thrown if the error code does not indicate success.
 		 */
-		protected static void checkCallback(int err) throws VcxException {
+		public static void checkCallback(int err) throws VcxException {
 
 			ErrorCode errorCode = ErrorCode.valueOf(err);
 			if (! ErrorCode.SUCCESS.equals(errorCode)) throw VcxException.fromSdkError(err);
@@ -129,7 +129,7 @@ public class VcxJava {
 		 * @param err The error code to check.
 		 * @throws VcxException Thrown if the error code does not indicate success.
 		 */
-		protected static void checkResult(int err) throws VcxException {
+		public static void checkResult(int err) throws VcxException {
 			ErrorCode errorCode = ErrorCode.valueOf(err);
 			if (! ErrorCode.SUCCESS.equals(errorCode)){
 				throw VcxException.fromSdkError(err);
@@ -146,7 +146,7 @@ public class VcxJava {
 		 * @param err    The error value to check.
 		 * @return true if the error code indicated Success, otherwise false.
 		 */
-		protected static boolean checkResult(CompletableFuture<?> future, int err) {
+		public static boolean checkResult(CompletableFuture<?> future, int err) {
 
 			ErrorCode errorCode = ErrorCode.valueOf(err);
 			if (! ErrorCode.SUCCESS.equals(errorCode)) {

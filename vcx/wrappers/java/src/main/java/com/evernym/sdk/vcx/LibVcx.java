@@ -37,7 +37,8 @@ public abstract class LibVcx {
      * Helper API for testing purposes.
      */
         public void vcx_set_next_agency_response(int msg);
-        public void vcx_get_current_error(PointerByReference error);
+        //public void vcx_get_current_error(PointerByReference error);
+        public int vcx_get_current_error(int command_handle, Callback cb);
 
     /**
      * Schema object
