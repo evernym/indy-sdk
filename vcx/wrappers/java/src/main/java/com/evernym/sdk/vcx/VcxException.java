@@ -91,20 +91,22 @@ public class VcxException extends Exception {
     }
 
     private void setSdkErrorDetails(){
-        logger.debug("setSdkErrorDetails() >>>>>");
-        PointerByReference errorDetailsJson = new PointerByReference();
+        synchronized(VcxException.class) {
+            logger.debug("setSdkErrorDetails() >>>>>");
+            PointerByReference errorDetailsJson = new PointerByReference();
 
-        LibVcx.api.vcx_get_current_error(errorDetailsJson);
-        logger.debug("setSdkErrorDetails() <<<<<");
+            LibVcx.api.vcx_get_current_error(errorDetailsJson);
+            logger.debug("setSdkErrorDetails() <<<<<");
 
-        try {
-            JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
-            this.sdkMessage = errorDetails.optString("error");
-            this.sdkFullMessage = errorDetails.optString("message");
-            this.sdkCause = errorDetails.optString("cause");
-            this.sdkBacktrace = errorDetails.optString("backtrace");
-        } catch(Exception e) {
-           // TODO
+            try {
+                JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
+                this.sdkMessage = errorDetails.optString("error");
+                this.sdkFullMessage = errorDetails.optString("message");
+                this.sdkCause = errorDetails.optString("cause");
+                this.sdkBacktrace = errorDetails.optString("backtrace");
+            } catch(Exception e) {
+            // TODO
+            }
         }
     }
 
