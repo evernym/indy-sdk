@@ -119,10 +119,10 @@ public class VcxException extends Exception {
                 String result = serializedData;
                 try {
                     JSONObject errorDetails = new JSONObject(result);
-                    VcxException.this.sdkMessage = errorDetails.optString("error");
-                    VcxException.this.sdkFullMessage = errorDetails.optString("message");
-                    VcxException.this.sdkCause = errorDetails.optString("cause");
-                    VcxException.this.sdkBacktrace = errorDetails.optString("backtrace");
+                    sdkMessage = errorDetails.optString("error");
+                    sdkFullMessage = errorDetails.optString("message");
+                    sdkCause = errorDetails.optString("cause");
+                    sdkBacktrace = errorDetails.optString("backtrace");
                 } catch(Exception e) {
                     // TODO
                     e.printStackTrace();
@@ -148,8 +148,10 @@ public class VcxException extends Exception {
     }
 
     private void setSdkErrorDetails()  throws InterruptedException {
-        new ErrorJsonAPI().errorJsonSerialize();
-        errorDetailsLatch.await();
+        synchronized(VcxException.class) {
+            new ErrorJsonAPI().errorJsonSerialize();
+            errorDetailsLatch.await();
+        }
     }
 
     /**
