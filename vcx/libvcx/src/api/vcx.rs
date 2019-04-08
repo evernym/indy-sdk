@@ -303,12 +303,14 @@ pub extern fn vcx_get_current_error(command_handle: u32,
                                      cb: Option<extern fn(xcommand_handle: u32, err: u32, error_json_p: *const c_char)>) -> u32 {
     trace!("vcx_get_current_error >>>");
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+    trace!("after cb check");
 
-    spawn(move || {
+//    spawn(move || {
         cb(command_handle, error::SUCCESS.code_num, get_current_error_c_json());
-        Ok(())
-    });
+//      c_str_to_string  Ok(())
+//    });
 
+    trace!("after cb !!!!");
     trace!("vcx_get_current_error: <<<");
     error::SUCCESS.code_num
 }
@@ -835,20 +837,30 @@ mod tests {
 //        assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
 //    }
 //
-//    #[test]
-//    fn get_current_error_works_for_async_error() {
-//        extern fn cb(storage_handle: u32,
-//                     err: u32,
-//                     config: *const c_char) {
+    #[test]
+    fn get_current_error_works_for_async_error() {
+        extern fn cb(storage_handle: u32,
+                     err: u32,
+                     config: *const c_char) {
+            println!("err_u32: {:?}", err);
+            extern fn cb2(_storage_handle: u32,
+                         _err: u32,
+                         error_json: *const c_char) {
+                assert!(CStringUtils::c_str_to_string(error_json).unwrap().is_some());
+                println!("Error: {:?}", CStringUtils::c_str_to_string(error_json).unwrap());
+            }
 //            let mut error_json_p: *const c_char = ptr::null();
-//            vcx_get_current_error(&mut error_json_p);
+            vcx_get_current_error(storage_handle, Some(cb2));
 //            assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
-//        }
-//
-//        let config = CString::new("{}").unwrap();
-//        ::api::utils::vcx_agent_provision_async(0, config.as_ptr(), Some(cb));
-//        ::std::thread::sleep(::std::time::Duration::from_secs(1));
-//    }
+        }
+
+        use utils::logger::{LibvcxDefaultLogger};
+        LibvcxDefaultLogger::init_testing_logger();
+        let config = CString::new("{}").unwrap();
+        ::api::utils::vcx_agent_provision_async(0, config.as_ptr(), Some(cb));
+        ::std::thread::sleep(::std::time::Duration::from_secs(1));
+    }
+
     #[test]
     fn test_vcx_get_current_error() {
          extern fn cb(storage_handle: u32,
@@ -856,7 +868,9 @@ mod tests {
                      error_json: *const c_char) {
             assert!(CStringUtils::c_str_to_string(error_json).unwrap().is_none());
         }
+        use utils::logger::{LibvcxDefaultLogger};
         init!("true");
+        LibvcxDefaultLogger::init_testing_logger();
         vcx_get_current_error(0, Some(cb));
         ::std::thread::sleep(::std::time::Duration::from_secs(1));
     }
