@@ -106,7 +106,10 @@ public class VcxException extends Exception {
             public void callback(int commandHandle, int err, String serializedData) {
                 logger.debug("callback() called with: commandHandle = [" + commandHandle + "], err = [" + err + "], serializedData = [" + serializedData + "]");
                 CompletableFuture<String> future = (CompletableFuture<String>) removeFuture(commandHandle);
-                if (!checkCallback(future, err)) return;
+                if (!checkCallback(future, err)) {
+                    errorDetailsLatch.countDown();
+                    return;
+                }
                 // TODO complete with exception if we find error
     //            if (err != 0) {
     //                future.completeExceptionally();
@@ -120,11 +123,12 @@ public class VcxException extends Exception {
                     VcxException.this.sdkFullMessage = errorDetails.optString("message");
                     VcxException.this.sdkCause = errorDetails.optString("cause");
                     VcxException.this.sdkBacktrace = errorDetails.optString("backtrace");
-                    errorDetailsLatch.countDown ();
                 } catch(Exception e) {
                     // TODO
+                    e.printStackTrace();
                 }
                 future.complete(result);
+                errorDetailsLatch.countDown();
             }
         };
 
