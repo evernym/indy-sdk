@@ -413,11 +413,20 @@ pub fn set_current_error(err: &VcxError) {
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
+    trace!("in get_current_error_c_json");
+
     let mut value = ptr::null();
 
-    CURRENT_ERROR_C_JSON.with(|err|
-        err.borrow().as_ref().map(|err| value = err.as_ptr())
+    CURRENT_ERROR_C_JSON.with(|err| {
+        trace!("in CURRENT_ERROR_C_JSON.with, beofre err.barrow()");
+        trace!("RefCell<Option<... = {:?}", err);
+        err.borrow().as_ref().map(|err| {
+            trace!("in err.barrow(): {:?}", err);
+            value = err.as_ptr()
+        })
+    }
     );
 
+    trace!("before rtn value: {:?}", value);
     value
 }

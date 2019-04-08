@@ -292,6 +292,7 @@ pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
     trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
 
     let error = get_current_error_c_json();
+    trace!("in api - after get_current_er... {:?}", error);
     unsafe { *error_json_p = error };
 
     trace!("vcx_get_current_error: <<<");
