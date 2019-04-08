@@ -1640,7 +1640,7 @@ vcx_error_t vcx_get_logger(const void*  vcx_get_logger,
 ///     "message": str - human-readable error description
 /// }
 ///
-vcx_error_t vcx_get_current_error(const char ** error_json_p);
+vcx_error_t vcx_get_current_error(vcx_command_handle_t command_handle, void (*cb)(vcx_command_handle_t, vcx_error_t, const char*));
 
 #ifdef __cplusplus
 } // extern "C"
