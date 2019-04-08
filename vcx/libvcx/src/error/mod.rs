@@ -1,8 +1,7 @@
-use std::sync::{Arc, RwLock};
-//use std::cell::RefCell;
+use std::cell::RefCell;
 use std::fmt;
 use std::ffi::CString;
-//use std::ptr;
+use std::ptr;
 
 use failure::{Context, Backtrace, Fail};
 use libc::c_char;
@@ -397,131 +396,28 @@ impl<E> VcxErrorExt for E where E: Fail
     }
 }
 
-
-
 thread_local! {
-    pub static CURRENT_ERROR_C_JSON: RwLock<Arc<ErrorJson>> = RwLock::new(Default::default());
+    pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
 }
 
-#[derive(Default)]
-pub struct ErrorJson {
-    pub json: CString,
-}
-
-impl ErrorJson {
-    pub fn current() -> Arc<ErrorJson> {
-        // CURRENT_ERROR_C_JSON.with(|ej| {
-        //     //ej.read().unwrap().clone();
-        //     return match ej.try_read() {
-        //         Ok(inner_json) => inner_json.clone(),
-        //         Err(read_err) => {
-        //             trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err);
-        //             Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
-        //                 "error": read_err.to_string(),
-        //             }).to_string()) })
-        //         },
-        //     };
-        // })
-
-        Arc::new(ErrorJson { json: CStringUtils::string_to_cstring(json!({
-            "error": "errort fixed",
-        }).to_string()) })
-    }
-
-    pub fn make_current(self) {
-        // CURRENT_ERROR_C_JSON.with(|ej| {
-        //     //*ej.write().unwrap() = Arc::new(self));
-        //     match ej.try_write() {
-        //         Ok(mut inner_json) => { *inner_json = Arc::new(self); },
-        //         Err(write_err) => { trace!("make_current >>> ej write_err: {} - {:?}", write_err, self.json); },
-        //     };
-        // })
-    }
-}
-
-pub fn set_current_error(vcx_err: &VcxError) {
-    let error_json = json!({
-        "error": vcx_err.kind().to_string(),
-        "message": vcx_err.to_string(),
-        "cause": Fail::find_root_cause(vcx_err).to_string(),
-        "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
-    }).to_string();
-    //ErrorJson { json: CStringUtils::string_to_cstring(error_json) }.make_current();
+pub fn set_current_error(err: &VcxError) {
+    CURRENT_ERROR_C_JSON.with(|error| {
+        let error_json = json!({
+            "error": err.kind().to_string(),
+            "message": err.to_string(),
+            "cause": Fail::find_root_cause(err).to_string(),
+            "backtrace": err.backtrace().map(|bt| bt.to_string())
+        }).to_string();
+        error.replace(Some(CStringUtils::string_to_cstring(error_json)));
+    });
 }
 
 pub fn get_current_error_c_json() -> *const c_char {
-    // let mut value = ptr::null();
-    // value = ErrorJson::current().json.as_ptr();
-    // value
-    CStringUtils::string_to_cstring("hi mom".to_string()).as_ptr()
+    let mut value = ptr::null();
+
+    CURRENT_ERROR_C_JSON.with(|err|
+        err.borrow().as_ref().map(|err| value = err.as_ptr())
+    );
+
+    value
 }
-
-// thread_local! {
-//     pub static CURRENT_ERROR_C_JSON: RwLock<Option<CString>> = RwLock::new(None);
-// }
-
-// pub fn set_current_error(vcx_err: &VcxError) {
-//     CURRENT_ERROR_C_JSON.with(|error_lock| {
-//         let error_json = json!({
-//             "error": vcx_err.kind().to_string(),
-//             "message": vcx_err.to_string(),
-//             "cause": Fail::find_root_cause(vcx_err).to_string(),
-//             "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
-//         }).to_string();
-
-//         //error_lock.replace(Some(CStringUtils::string_to_cstring(error_json)));
-//         match error_lock.try_write() {
-//             Ok(mut inner_option) => { *inner_option = Some(CStringUtils::string_to_cstring(error_json)); },
-//             Err(write_err) => { trace!("set_current_error >>> error_lock write_err: {} - {:?}", write_err, error_json); },
-//         };
-//     });
-// }
-
-// pub fn get_current_error_c_json() -> *const c_char {
-//     let mut value = ptr::null();
-
-//     CURRENT_ERROR_C_JSON.with(|error_lock| {
-//         //error_lock.borrow().as_ref().map(|err_str| value = err_str.as_ptr())
-//         match error_lock.try_read() {
-//             Ok(inner_option) => { inner_option.as_ref().map(|err_str| value = err_str.as_ptr()); },
-//             Err(read_err) => { trace!("get_current_error_c_json >>> error_lock read_err: {}", read_err); },
-//         };
-//     });
-
-//     value
-// }
-
-// thread_local! {
-//     pub static CURRENT_ERROR_C_JSON: RefCell<Option<CString>> = RefCell::new(None);
-// }
-
-// pub fn set_current_error(vcx_err: &VcxError) {
-//     CURRENT_ERROR_C_JSON.with(|error_ref_cell| {
-//         let error_json = json!({
-//             "error": vcx_err.kind().to_string(),
-//             "message": vcx_err.to_string(),
-//             "cause": Fail::find_root_cause(vcx_err).to_string(),
-//             "backtrace": vcx_err.backtrace().map(|bt| bt.to_string())
-//         }).to_string();
-
-//         //error_ref_cell.replace(Some(CStringUtils::string_to_cstring(error_json)));
-//         match error_ref_cell.try_borrow_mut() {
-//             Ok(mut inner_option) => { *inner_option = Some(CStringUtils::string_to_cstring(error_json)); },
-//             Err(borrow_err) => { trace!("set_current_error >>> error_ref_cell borrow_err: {} - {:?}", borrow_err, error_json); },
-//         };
-//     });
-// }
-
-// pub fn get_current_error_c_json() -> *const c_char {
-//     let mut value = ptr::null();
-
-//     CURRENT_ERROR_C_JSON.with(|error_ref_cell| {
-//         //error_ref_cell.borrow().as_ref().map(|err_str| value = err_str.as_ptr())
-//         match error_ref_cell.try_borrow() {
-//             Ok(inner_option) => { inner_option.as_ref().map(|err_str| value = err_str.as_ptr()); },
-//             Err(borrow_err) => { trace!("get_current_error_c_json >>> error_ref_cell borrow_err: {}", borrow_err); },
-//         };
-//     });
-
-//     value
-// }

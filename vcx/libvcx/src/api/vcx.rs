@@ -287,15 +287,30 @@ pub extern fn vcx_mint_tokens(seed: *const c_char, fees: *const c_char) {
 ///     "message": str - human-readable error description
 /// }
 ///
-#[no_mangle]
-pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
-    trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
+//#[no_mangle]
+//pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
+//    trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
+//
+//    let error = get_current_error_c_json();
+//    //unsafe { *error_json_p = error };
+//    //unsafe { *error_json_p = CStringUtils::string_to_cstring("hi mom".to_string()).as_ptr() };
+//
+//    trace!("vcx_get_current_error: <<<");
+//}
 
-    let error = get_current_error_c_json();
-    //unsafe { *error_json_p = error };
-    //unsafe { *error_json_p = CStringUtils::string_to_cstring("hi mom".to_string()).as_ptr() };
+#[no_mangle]
+pub extern fn vcx_get_current_error(command_handle: u32,
+                                     cb: Option<extern fn(xcommand_handle: u32, err: u32, error_json_p: *const c_char)>) -> u32 {
+    trace!("vcx_get_current_error >>>");
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+    spawn(move || {
+        cb(command_handle, error::SUCCESS.code_num, get_current_error_c_json());
+        Ok(())
+    });
 
     trace!("vcx_get_current_error: <<<");
+    error::SUCCESS.code_num
 }
 
 #[cfg(test)]
@@ -803,35 +818,47 @@ mod tests {
         debug!("This statement should log");
     }
 
+//    #[test]
+//    fn get_current_error_works_for_no_error() {
+//        let mut error_json_p: *const c_char = ptr::null();
+//
+//        vcx_get_current_error(&mut error_json_p);
+//        assert_eq!(None, CStringUtils::c_str_to_string(error_json_p).unwrap());
+//    }
+//
+//    #[test]
+//    fn get_current_error_works_for_sync_error() {
+//        ::api::utils::vcx_provision_agent(ptr::null());
+//
+//        let mut error_json_p: *const c_char = ptr::null();
+//        vcx_get_current_error(&mut error_json_p);
+//        assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
+//    }
+//
+//    #[test]
+//    fn get_current_error_works_for_async_error() {
+//        extern fn cb(storage_handle: u32,
+//                     err: u32,
+//                     config: *const c_char) {
+//            let mut error_json_p: *const c_char = ptr::null();
+//            vcx_get_current_error(&mut error_json_p);
+//            assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
+//        }
+//
+//        let config = CString::new("{}").unwrap();
+//        ::api::utils::vcx_agent_provision_async(0, config.as_ptr(), Some(cb));
+//        ::std::thread::sleep(::std::time::Duration::from_secs(1));
+//    }
     #[test]
-    fn get_current_error_works_for_no_error() {
-        let mut error_json_p: *const c_char = ptr::null();
-
-        vcx_get_current_error(&mut error_json_p);
-        assert_eq!(None, CStringUtils::c_str_to_string(error_json_p).unwrap());
-    }
-
-    #[test]
-    fn get_current_error_works_for_sync_error() {
-        ::api::utils::vcx_provision_agent(ptr::null());
-
-        let mut error_json_p: *const c_char = ptr::null();
-        vcx_get_current_error(&mut error_json_p);
-        assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
-    }
-
-    #[test]
-    fn get_current_error_works_for_async_error() {
-        extern fn cb(storage_handle: u32,
+    fn test_vcx_get_current_error() {
+         extern fn cb(storage_handle: u32,
                      err: u32,
-                     config: *const c_char) {
-            let mut error_json_p: *const c_char = ptr::null();
-            vcx_get_current_error(&mut error_json_p);
-            assert!(CStringUtils::c_str_to_string(error_json_p).unwrap().is_some());
+                     error_json: *const c_char) {
+            assert!(CStringUtils::c_str_to_string(error_json).unwrap().is_none());
         }
-
-        let config = CString::new("{}").unwrap();
-        ::api::utils::vcx_agent_provision_async(0, config.as_ptr(), Some(cb));
+        init!("true");
+        vcx_get_current_error(0, Some(cb));
         ::std::thread::sleep(::std::time::Duration::from_secs(1));
     }
+
 }
