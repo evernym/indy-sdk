@@ -134,9 +134,9 @@ public class VcxException extends Exception {
 
         public CompletableFuture<String> errorJsonSerialize() {
             //ParamGuard.notNull(errorJsonHandle, "errorJsonHandle");
-            //logger.debug("errorJsonSerialize() called with: errorJsonHandle = [" + errorJsonHandle + "]");
             CompletableFuture<String> future = new CompletableFuture<>();
             int commandHandle = addFuture(future);
+            logger.debug("errorJsonSerialize() called with: commandHandle = [" + commandHandle + "]");
 
             int result = LibVcx.api.vcx_get_current_error(
                     commandHandle,
