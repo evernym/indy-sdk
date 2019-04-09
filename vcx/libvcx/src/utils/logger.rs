@@ -109,7 +109,8 @@ impl log::Log for LibvcxLogger {
             .append(true)
             .open("/sdcard/Download/ryan_logs.txt").unwrap();
 
-        let my_id = Rng.gen::<u32>();
+        let mut rng = rand::thread_rng();
+        let my_id = rng.gen::<u32>();
         let mut msg = format!("Ryan: Beggining of log: {:?}", my_id);
         file_2.write(msg.as_bytes()).unwrap();
 
