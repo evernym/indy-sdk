@@ -498,8 +498,10 @@ public abstract class LibVcx {
 
     static {
 
+        logMessage("RyanLogger", 5, "LibVcx static block before init :: " + Thread.currentThread().getName());
         try {
             init();
+            logMessage("RyanLogger", 5, "LibVcx static block after init :: " + Thread.currentThread().getName());
         } catch (UnsatisfiedLinkError ex) {
             // Library could not be found in standard OS locations.
             // Call init(File file) explicitly with absolute library path.
@@ -537,7 +539,9 @@ public abstract class LibVcx {
     public static void init() {
 
         api = Native.loadLibrary(LIBRARY_NAME, API.class);
+        logMessage("RyanLogger", 5, "LibVcx before initLogger :: " + Thread.currentThread().getName());
         initLogger();
+        logMessage("RyanLogger", 5, "LibVcx after initLogger :: " + Thread.currentThread().getName());
     }
 
     public static void initByLibraryName(String libraryName) {
@@ -614,6 +618,9 @@ public abstract class LibVcx {
     }
 
     private static void initLogger() {
+        logMessage("RyanLogger", 5, "LibVcx before vcx_set_logger :: " + Thread.currentThread().getName());
+        logMessage("RyanLogger", 5, "Logger.log: " + Logger.log + " :: " + Thread.currentThread().getName());
         api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
+        logMessage("RyanLogger", 5, "LibVcx after vcx_set_logger :: " + Thread.currentThread().getName());
     }
 }
