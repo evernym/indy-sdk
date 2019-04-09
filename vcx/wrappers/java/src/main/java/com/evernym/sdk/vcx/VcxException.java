@@ -94,9 +94,9 @@ public class VcxException extends Exception {
         synchronized(VcxException.class) {
             PointerByReference errorDetailsJson = new PointerByReference();
 
-            logger.debug("\n\n\n\n\nsetSdkErrorDetails() \n\n\n\n\n");
+            logger.debug(" setSdkErrorDetails() >>>>>>" + " :: " + Thread.currentThread().getName());
             LibVcx.api.vcx_get_current_error(errorDetailsJson);
-            logger.debug("setSdkErrorDetails() \n\n\n\n\n");
+            logger.debug("setSdkErrorDetails() <<<<<<<" + " :: " + Thread.currentThread().getName());
 
             try {
                 JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
