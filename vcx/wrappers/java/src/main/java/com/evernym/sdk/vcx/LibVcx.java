@@ -591,13 +591,13 @@ public abstract class LibVcx {
 
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("RyanLogger");
 
                 // NOTE: We must restrict the size of the message because the message could be the whole
                 // contents of a file, like a 10 MB log file and we do not want all of that content logged
                 // into the log file itself... This is what the log statement would look like
                 // 2019-02-19 04:34:12.813-0700 ConnectMe[9216:8454774] Debug indy::commands::crypto | src/commands/crypto.rs:286 | anonymous_encrypt <<< res:
                 logMessage("RyanLogger", 5, "test 123" + " :: " + Thread.currentThread().getName());
-                org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("RyanLogger");
                 logger.trace("here comes the message: " + Thread.currentThread().getName());
                 logger.trace(message);
                 logger.trace(Thread.currentThread().getName() + " :: message: " + message);
@@ -615,7 +615,9 @@ public abstract class LibVcx {
                 logMessage("RyanLogger", 5, "before string format message" + " :: " + Thread.currentThread().getName());
                 String msg = String.format("%s:%d | %s", file, line, message);
                 logMessage("RyanLogger", 5, "before actual logMessage call" + " :: " + Thread.currentThread().getName());
+                logger.trace(Thread.currentThread().getName() + " :: msg: " + msg);
                 logMessage(loggerName, level, msg);
+                logger.trace(Thread.currentThread().getName() + " :: msg: " + msg);
             }
         };
 
