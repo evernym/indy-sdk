@@ -17,6 +17,8 @@ use std::env;
 use std::ptr;
 pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
+use std::thread;
+use std::fs::OpenOptions;
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
