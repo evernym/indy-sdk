@@ -587,7 +587,7 @@ public abstract class LibVcx {
 
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
-                //logMessage("RyanLogger", 5, "test 123");
+                logMessage("RyanLogger", 5, "test 123");
 
                 // NOTE: We must restrict the size of the message because the message could be the whole
                 // contents of a file, like a 10 MB log file and we do not want all of that content logged

@@ -94,7 +94,9 @@ public class VcxException extends Exception {
         synchronized(VcxException.class) {
             PointerByReference errorDetailsJson = new PointerByReference();
 
+            logger.debug("\n\n\n\n\nsetSdkErrorDetails() \n\n\n\n\n");
             LibVcx.api.vcx_get_current_error(errorDetailsJson);
+            logger.debug("setSdkErrorDetails() \n\n\n\n\n");
 
             try {
                 JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
@@ -103,8 +105,8 @@ public class VcxException extends Exception {
                 this.sdkCause = errorDetails.optString("cause");
                 this.sdkBacktrace = errorDetails.optString("backtrace");
             } catch(Exception e) {
-            // TODO
-            e.printStackTrace();
+                // TODO
+                e.printStackTrace();
             }
         }
     }
