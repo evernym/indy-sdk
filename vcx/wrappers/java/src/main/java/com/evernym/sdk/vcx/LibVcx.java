@@ -597,6 +597,11 @@ public abstract class LibVcx {
                 // into the log file itself... This is what the log statement would look like
                 // 2019-02-19 04:34:12.813-0700 ConnectMe[9216:8454774] Debug indy::commands::crypto | src/commands/crypto.rs:286 | anonymous_encrypt <<< res:
                 logMessage("RyanLogger", 5, "test 123" + " :: " + Thread.currentThread().getName());
+                org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("RyanLogger");
+                logger.trace("here comes the message: " + Thread.currentThread().getName());
+                logger.trace(message);
+                logger.trace(Thread.currentThread().getName() + " :: message: " + message);
+                logger.trace("END here comes the message: " + Thread.currentThread().getName());
                 logMessage("RyanLogger", 5, message + " :: " + Thread.currentThread().getName());
                 logMessage("RyanLogger", 5, String.valueOf(line) + " :: " + String.valueOf(level) + " :: " + Thread.currentThread().getName());
                 if (message.length() > 102400) {
