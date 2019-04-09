@@ -290,6 +290,7 @@ pub extern fn vcx_mint_tokens(seed: *const c_char, fees: *const c_char) {
 #[no_mangle]
 pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
     trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
+    trace!("Test for sanity!!!!");
 
     let error = get_current_error_c_json();
     trace!("in api - after get_current_er... {:?}", error);
