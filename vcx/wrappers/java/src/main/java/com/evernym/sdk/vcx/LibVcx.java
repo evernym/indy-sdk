@@ -592,21 +592,21 @@ public abstract class LibVcx {
                 // contents of a file, like a 10 MB log file and we do not want all of that content logged
                 // into the log file itself... This is what the log statement would look like
                 // 2019-02-19 04:34:12.813-0700 ConnectMe[9216:8454774] Debug indy::commands::crypto | src/commands/crypto.rs:286 | anonymous_encrypt <<< res:
-                // logMessage("RyanLogger", 5, "test 123");
-                // logMessage("RyanLogger", 5, message);
-                // logMessage("RyanLogger", 5, String.valueOf(line) + " :: " + String.valueOf(level));
-                // if (message.length() > 102400) {
-                //     logMessage("RyanLogger", 5, "inside message.length() > 102400");
-                //     // if message is more than 100K then log only 10K of the message
-                //     message = message.substring(0, 10240);
-                //     logMessage("RyanLogger", 5, "after message.substring(0, 10240)");
-                // }
-                // logMessage("RyanLogger", 5, "before string format loggerName");
-                // String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
-                // logMessage("RyanLogger", 5, "before string format message");
-                // String msg = String.format("%s:%d | %s", file, line, message);
-                // logMessage("RyanLogger", 5, "before actual logMessage call");
-                // logMessage(loggerName, level, msg);
+                logMessage("RyanLogger", 5, "test 123");
+                logMessage("RyanLogger", 5, message);
+                logMessage("RyanLogger", 5, String.valueOf(line) + " :: " + String.valueOf(level));
+                if (message.length() > 102400) {
+                    logMessage("RyanLogger", 5, "inside message.length() > 102400");
+                    // if message is more than 100K then log only 10K of the message
+                    message = message.substring(0, 10240);
+                    logMessage("RyanLogger", 5, "after message.substring(0, 10240)");
+                }
+                logMessage("RyanLogger", 5, "before string format loggerName");
+                String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
+                logMessage("RyanLogger", 5, "before string format message");
+                String msg = String.format("%s:%d | %s", file, line, message);
+                logMessage("RyanLogger", 5, "before actual logMessage call");
+                logMessage(loggerName, level, msg);
             }
         };
 
