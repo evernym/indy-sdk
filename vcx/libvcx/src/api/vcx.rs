@@ -289,12 +289,12 @@ pub extern fn vcx_mint_tokens(seed: *const c_char, fees: *const c_char) {
 ///
 #[no_mangle]
 pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
-    //trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
+    trace!("vcx_get_current_error >>> error_json_p: {:?}", error_json_p);
 
     let error = get_current_error_c_json();
     unsafe { *error_json_p = error };
 
-    //trace!("vcx_get_current_error: <<<");
+    trace!("vcx_get_current_error: <<<");
 }
 
 #[cfg(test)]
