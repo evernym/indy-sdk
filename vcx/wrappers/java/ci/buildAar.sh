@@ -81,10 +81,10 @@ download_sdk(){
 
 download_sdk
 
-#pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
-    #pushd ../android
-    #    npm install
-    #popd
+pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
+    pushd ../android
+       npm install
+    popd
     #pushd ..
         # Run the tests first
         #./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
@@ -110,7 +110,7 @@ download_sdk
         #./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
         #cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
     #popd
-#popd
+popd
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ..
