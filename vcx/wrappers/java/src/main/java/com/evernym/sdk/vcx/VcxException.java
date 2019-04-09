@@ -87,7 +87,9 @@ public class VcxException extends Exception {
     protected VcxException(String message, int sdkErrorCode) {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
-        setSdkErrorDetails();
+        //setSdkErrorDetails();
+        int result = LibVcx.api.vcx_test_log();
+        logger.debug("setSdkErrorDetails() <<<<<<< :: " + result + " :: " + Thread.currentThread().getName());
     }
 
     private void setSdkErrorDetails() {
@@ -96,7 +98,8 @@ public class VcxException extends Exception {
 
             logger.debug(" setSdkErrorDetails() >>>>>>" + " :: " + Thread.currentThread().getName());
             LibVcx.api.vcx_get_current_error(errorDetailsJson);
-            logger.debug("setSdkErrorDetails() <<<<<<<" + " :: " + Thread.currentThread().getName());
+            int result = LibVcx.api.vcx_test_log();
+            logger.debug("setSdkErrorDetails() <<<<<<< :: " + result + " :: " + Thread.currentThread().getName());
 
             try {
                 JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));

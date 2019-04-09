@@ -39,6 +39,7 @@ public abstract class LibVcx {
         public void vcx_set_next_agency_response(int msg);
         public void vcx_get_current_error(PointerByReference error);
 
+        public int vcx_test_log();
     /**
      * Schema object
      *

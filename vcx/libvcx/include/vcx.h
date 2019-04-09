@@ -1641,6 +1641,7 @@ vcx_error_t vcx_get_logger(const void*  vcx_get_logger,
 /// }
 ///
 vcx_error_t vcx_get_current_error(const char ** error_json_p);
+vcx_error_t vcx_test_log();
 
 #ifdef __cplusplus
 } // extern "C"
