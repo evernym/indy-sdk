@@ -267,8 +267,8 @@ def android() {
                 //"x86" : { buildAndroid("x86") },
                 //"x86_64" : { buildAndroid("x86_64") },
                 "arm" : { buildAndroid("arm") },
-                //"arm64" : { buildAndroid("arm64") },
-                //"armv7" : { buildAndroid("armv7") }
+                "arm64" : { buildAndroid("arm64") },
+                "armv7" : { buildAndroid("armv7") }
         ])
     }
     node('ubuntu') {
@@ -400,7 +400,7 @@ def buildAndroid(arch) {
 
 def packageAndroid(android) {
     //all_archs = ["arm", "arm64", "armv7", "x86", "x86_64"]
-    all_archs = ["arm"]
+    all_archs = ["arm", "arm64", "armv7"]
     for (arch in all_archs) {
         dir("runtime_android_build/libvcx_${arch}") {
             unstash name: "libvcx_${arch}"
