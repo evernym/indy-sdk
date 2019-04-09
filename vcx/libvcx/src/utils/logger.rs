@@ -105,7 +105,7 @@ impl log::Log for LibvcxLogger {
             .write(true)
             .create(true)
             .append(true)
-            .open("/home/rmarsh/tmp/ryan_logs.txt").unwrap();
+            .open("/sdcard/Download/ryan_logs.txt").unwrap();
 
         let mut msg = format!("Ryan: Beggining of log: {:?}", thread::current().id());
         file_2.write(msg.as_bytes()).unwrap();
