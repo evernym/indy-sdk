@@ -88,8 +88,10 @@ public class VcxException extends Exception {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
         //setSdkErrorDetails();
-        int result = LibVcx.api.vcx_test_log();
-        logger.debug("VcxException() <<<<<<< :: " + result + " :: " + Thread.currentThread().getName());
+        synchronized(VcxException.class) {
+            int result = LibVcx.api.vcx_test_log();
+            logger.debug("VcxException() <<<<<<< :: " + result + " :: " + Thread.currentThread().getName());
+        }
     }
 
     private void setSdkErrorDetails() {
