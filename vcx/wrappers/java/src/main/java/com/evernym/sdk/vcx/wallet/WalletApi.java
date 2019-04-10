@@ -74,9 +74,9 @@ public class WalletApi extends VcxJava.API {
         public void callback(int commandHandle, int err) {
             logger.debug("callback() called with: commandHandle = [" + commandHandle + "], err = [" + err + "]");
             CompletableFuture<Integer> future = (CompletableFuture<Integer>) removeFuture(commandHandle);
-            logger.debug("vcxDeleteRecordWalletCB before LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
+            logger.debug("vcxAddRecordWalletCB before LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
             int result1 = LibVcx.api.vcx_test_log();
-            logger.debug("vcxDeleteRecordWalletCB after LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
+            logger.debug("vcxAddRecordWalletCB after LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
             if (!checkCallback(future, err)) return;
             Integer result = commandHandle;
             future.complete(result);
@@ -97,9 +97,9 @@ public class WalletApi extends VcxJava.API {
         String recordTag = "{}";
 
         int result = LibVcx.api.vcx_wallet_add_record(commandHandle, recordType, recordId, recordValue, recordTag, vcxAddRecordWalletCB);
-        logger.debug("deleteRecordWallet before LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
+        logger.debug("addRecordWallet before LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
         int result1 = LibVcx.api.vcx_test_log();
-        logger.debug("deleteRecordWallet after LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
+        logger.debug("addRecordWallet after LibVcx.api.vcx_test_log(): " + Thread.currentThread().getName());
         checkResult(result);
 
         return future;
