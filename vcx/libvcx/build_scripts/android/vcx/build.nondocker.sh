@@ -145,28 +145,28 @@ if [ "$(uname)" == "Darwin" ]; then
     export TOOLCHAIN_PREFIX=${WORKDIR}/toolchains/darwin
     mkdir -p ${TOOLCHAIN_PREFIX}
     pushd $TOOLCHAIN_PREFIX
-    if [ ! -d "android-ndk-r16b" ] ; then
-        echo "Downloading android-ndk-r16b-darwin-x86_64.zip"
-        wget -q https://dl.google.com/android/repository/android-ndk-r16b-darwin-x86_64.zip
-        unzip -qq android-ndk-r16b-darwin-x86_64.zip
+    if [ ! -d "android-ndk-r19c" ] ; then
+        echo "Downloading android-ndk-r19c-darwin-x86_64.zip"
+        wget -q https://dl.google.com/android/repository/android-ndk-r19c-darwin-x86_64.zip
+        unzip -qq android-ndk-r19c-darwin-x86_64.zip
     else
-        echo "Skipping download android-ndk-r16b-linux-x86_64.zip"
+        echo "Skipping download android-ndk-r19c-linux-x86_64.zip"
     fi
-    export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r16b
+    export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r19c
     popd
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Downloading NDK for Linux"
     export TOOLCHAIN_PREFIX=${WORKDIR}/toolchains/linux
     mkdir -p ${TOOLCHAIN_PREFIX}
     pushd $TOOLCHAIN_PREFIX
-    if [ ! -d "android-ndk-r16b" ] ; then
-        echo "Downloading android-ndk-r16b-linux-x86_64.zip"
-        wget -q https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip
-        unzip -qq android-ndk-r16b-linux-x86_64.zip
+    if [ ! -d "android-ndk-r19c" ] ; then
+        echo "Downloading android-ndk-r19c-linux-x86_64.zip"
+        wget -q https://dl.google.com/android/repository/android-ndk-r19c-linux-x86_64.zip
+        unzip -qq android-ndk-r19c-linux-x86_64.zip
     else
-        echo "Skipping download android-ndk-r16b-linux-x86_64.zip"
+        echo "Skipping download android-ndk-r19c-linux-x86_64.zip"
     fi
-    export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r16b
+    export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r19c
     popd
 fi
 
