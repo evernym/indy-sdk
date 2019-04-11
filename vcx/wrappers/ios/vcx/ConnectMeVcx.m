@@ -28,6 +28,27 @@ void VcxWrapperCommonCallback(vcx_command_handle_t xcommand_handle,
     }
 }
 
+
+void VcxWrapperWalletAddRecordCallback(vcx_command_handle_t xcommand_handle,
+                              vcx_error_t err) {
+    id block = [[VcxCallbacks sharedInstance] commandCompletionFor:xcommand_handle];
+    [[VcxCallbacks sharedInstance] deleteCommandHandleFor:xcommand_handle];
+
+    void (^completion)(NSError *) = (void (^)(NSError *)) block;
+
+    if (completion) {
+        NSLog(@"VcxWrapperWalletAddRecordCallback before vcx_test_log: %d", xcommand_handle);
+        vcx_error_t ret1 = vcx_test_log();
+        NSLog(@"VcxWrapperWalletAddRecordCallback after vcx_test_log: %d", xcommand_handle);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error = [NSError errorFromVcxError:err];
+            completion(error);
+        });
+    }
+}
+
+
 void VcxWrapperCommonHandleCallback(vcx_command_handle_t xcommand_handle,
                                     vcx_error_t err,
                                     vcx_command_handle_t pool_handle) {
@@ -474,7 +495,7 @@ void VcxWrapperCommonNumberStringCallback(vcx_command_handle_t xcommand_handle,
             withCompletion:(void (^)(NSError *error, NSData *signature_raw, vcx_u32_t signature_len))completion
 {
     vcx_command_handle_t handle= [[VcxCallbacks sharedInstance] createCommandHandleFor:completion];
-    
+
     uint8_t *data_raw = (uint8_t *) [dataRaw bytes];
     uint32_t data_length = (uint32_t) [dataRaw length];
 
@@ -494,13 +515,13 @@ void VcxWrapperCommonNumberStringCallback(vcx_command_handle_t xcommand_handle,
                    withCompletion:(void (^)(NSError *error, vcx_bool_t valid))completion
 {
     vcx_command_handle_t handle= [[VcxCallbacks sharedInstance] createCommandHandleFor:completion];
-    
+
     uint8_t *data_raw = (uint8_t *) [dataRaw bytes];
     uint32_t data_length = (uint32_t) [dataRaw length];
-    
+
     uint8_t *signature_raw = (uint8_t *) [signatureRaw bytes];
     uint32_t signature_length = (uint32_t) [signatureRaw length];
-    
+
     vcx_error_t ret = vcx_connection_verify_signature(handle,
                                                       connectionHandle,
                                                       data_raw,
@@ -754,13 +775,17 @@ void VcxWrapperCommonNumberStringCallback(vcx_command_handle_t xcommand_handle,
                recordId:(NSString *)recordId
             recordValue:(NSString *) recordValue
              completion:(void (^)(NSError *error))completion {
-   vcx_error_t ret;
-   vcx_command_handle_t handle = [[VcxCallbacks sharedInstance] createCommandHandleFor:completion];
-   const char * record_type =[recordType cStringUsingEncoding:NSUTF8StringEncoding];
-   const char * record_id = [recordId cStringUsingEncoding:NSUTF8StringEncoding];
-   const char * record_value =[recordValue cStringUsingEncoding:NSUTF8StringEncoding];
-   const char * record_tag = "{}";
-    ret = vcx_wallet_add_record(handle, record_type, record_id, record_value, record_tag, VcxWrapperCommonCallback);
+    vcx_error_t ret;
+    vcx_command_handle_t handle = [[VcxCallbacks sharedInstance] createCommandHandleFor:completion];
+    const char * record_type =[recordType cStringUsingEncoding:NSUTF8StringEncoding];
+    const char * record_id = [recordId cStringUsingEncoding:NSUTF8StringEncoding];
+    const char * record_value =[recordValue cStringUsingEncoding:NSUTF8StringEncoding];
+    const char * record_tag = "{}";
+    ret = vcx_wallet_add_record(handle, record_type, record_id, record_value, record_tag, VcxWrapperWalletAddRecordCallback);
+
+    NSLog(@"addRecordWallet before vcx_test_log: %d", handle);
+    vcx_error_t ret1 = vcx_test_log();
+    NSLog(@"addRecordWallet after vcx_test_log: %d", handle);
 
    if( ret != 0 )
    {

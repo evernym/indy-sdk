@@ -22,11 +22,11 @@ if [ -z "${CROSS_COMPILE}" ]; then
     exit 1
 fi
 
-if [ ! -f "android-ndk-r19c-linux-x86_64.zip" ] ; then
-    echo "Downloading android-ndk-r19c-linux-x86_64.zip"
-    wget -q https://dl.google.com/android/repository/android-ndk-r19c-linux-x86_64.zip
+if [ ! -f "android-ndk-r16b-linux-x86_64.zip" ] ; then
+    echo "Downloading android-ndk-r16b-linux-x86_64.zip"
+    wget -q https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip
 else
-    echo "Skipping download android-ndk-r19c-linux-x86_64.zip"
+    echo "Skipping download android-ndk-r16b-linux-x86_64.zip"
 fi
 
 if [ ! -f "openssl-1.1.0h.tar.gz" ] ; then
