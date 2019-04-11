@@ -68,48 +68,48 @@ download_and_unzip_if_missed() {
     fi
 }
 
-download_sdk(){
-    pushd ${ANDROID_SDK}
-        download_and_unzip_if_missed "tools" "https://dl.google.com/android/repository/" "sdk-tools-linux-4333796.zip"
+# download_sdk(){
+#     pushd ${ANDROID_SDK}
+#         download_and_unzip_if_missed "tools" "https://dl.google.com/android/repository/" "sdk-tools-linux-4333796.zip"
 
-        set +e
-        delete_existing_avd
-        set -e
-        create_avd_and_launch_emulator
-    popd
-}
+#         set +e
+#         delete_existing_avd
+#         set -e
+#         create_avd_and_launch_emulator
+#     popd
+# }
 
-download_sdk
+# download_sdk
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ../android
         npm install
     popd
-    pushd ..
-        # Run the tests first
-        ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
+    # pushd ..
+    #     # Run the tests first
+    #     ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
 
-        echo "Installing the android test apk that will test the aar library..."
-        i=0
-        while
-            sleep 10
-            : ${start=$i}
-            i="$((i+1))"
-            ADB_INSTALL=$(adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk 2>&1)
-            echo "ADB_INSTALL -- ${ADB_INSTALL}"
-            FAILED_INSTALL=$(echo ${ADB_INSTALL}|grep "adb: failed to install")
-            [ "${FAILED_INSTALL}" != "" ] && [ "$i" -lt 70 ]            # test the limit of the loop.
-        do :;  done
+    #     echo "Installing the android test apk that will test the aar library..."
+    #     i=0
+    #     while
+    #         sleep 10
+    #         : ${start=$i}
+    #         i="$((i+1))"
+    #         ADB_INSTALL=$(adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk 2>&1)
+    #         echo "ADB_INSTALL -- ${ADB_INSTALL}"
+    #         FAILED_INSTALL=$(echo ${ADB_INSTALL}|grep "adb: failed to install")
+    #         [ "${FAILED_INSTALL}" != "" ] && [ "$i" -lt 70 ]            # test the limit of the loop.
+    #     do :;  done
 
-        if [ "${FAILED_INSTALL}" != "" ]; then
-            exit 1
-        fi
+    #     if [ "${FAILED_INSTALL}" != "" ]; then
+    #         exit 1
+    #     fi
 
-        adb shell service list
-        echo "Starting the tests of the aar library..."
-        ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
-        cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
-    popd
+    #     adb shell service list
+    #     echo "Starting the tests of the aar library..."
+    #     ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
+    #     cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
+    # popd
 popd
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
