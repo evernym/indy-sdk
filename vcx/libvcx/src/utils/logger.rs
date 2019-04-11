@@ -17,6 +17,10 @@ use std::env;
 use std::ptr;
 pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
+use std::fs::OpenOptions;
+use rand::Rng;
+use std::fs;
+use std::path::PathBuf;
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
@@ -100,16 +104,49 @@ impl log::Log for LibvcxLogger {
     }
 
     fn log(&self, record: &Record) {
+        let mut file_2 = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .append(true)
+            .open("ryan_logs.txt").unwrap();
+
+        let logDir = PathBuf::from("ryan_logs.txt");
+        let mut msg = format!("Path to Ryans log: {:?}", fs::canonicalize(&logDir));
+        println!("{:?}", msg);
+        file_2.write(msg.as_bytes()).unwrap();
+
+        let mut rng = rand::thread_rng();
+        let my_id = rng.gen::<u32>();
+        msg = format!("Ryan: Beggining of log: {:?}", my_id);
+        file_2.write(msg.as_bytes()).unwrap();
+
+        msg = format!("\nRyan: log_cb: {:?} thread:{:?}", self.log, my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let log_cb = self.log;
 
+        msg = format!("\nRyan: log_level: {:?} thread:{:?}", record.level() as u32, my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let level = record.level() as u32;
+        msg = format!("\nRyan: target: {:?} thread:{:?}", record.target(), my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let target = CString::new(record.target()).unwrap();
+        msg = format!("\nRyan: args: {:?} thread:{:?}", record.args(), my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let message = CString::new(record.args().to_string()).unwrap();
 
+        msg = format!("\nRyan: path: {:?} thread:{:?}", record.module_path(), my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let module_path = record.module_path().map(|a| CString::new(a).unwrap());
+        msg = format!("\nRyan: file: {:?} thread:{:?}", record.file(), my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let file = record.file().map(|a| CString::new(a).unwrap());
+        msg = format!("\nRyan: line: {:?} thread:{:?}", record.line(), my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         let line = record.line().unwrap_or(0);
 
+        msg = format!("\nRyan: Before CB: {:?}", my_id);
+        file_2.write(msg.as_bytes()).unwrap();
         log_cb(self.context,
                level,
                target.as_ptr(),
@@ -117,7 +154,9 @@ impl log::Log for LibvcxLogger {
                module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
                file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
                line,
-        )
+        );
+        msg = format!("\nRyan: after CB: {:?}\n\n\n\n\n", my_id);
+        file_2.write(msg.as_bytes()).unwrap();
     }
 
     fn flush(&self) {
