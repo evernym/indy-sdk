@@ -75,6 +75,7 @@ const char *vcx_error_c_message(int);
 const char *vcx_version();
 
 vcx_error_t vcx_get_current_error(const char ** error_json_p);
+vcx_error_t vcx_test_log();
 
 /**
  * Schema object
@@ -155,7 +156,7 @@ vcx_error_t vcx_connection_create_with_invite(vcx_command_handle_t command_handl
 
 /** Deletes a connection, send an API call to agency to stop sending messages from this connection */
 vcx_error_t vcx_connection_delete_connection(vcx_command_handle_t command_handle, vcx_connection_handle_t connection_handle, void (*cb)(vcx_command_handle_t, vcx_error_t err));
-    
+
 /** Send a message to the specified connection
 ///
 /// #params
@@ -181,7 +182,7 @@ vcx_error_t vcx_connection_send_message(vcx_command_handle_t command_handle,
                                         const char *msg_type,
                                         const char *msg_title,
                                         void (*cb)(vcx_command_handle_t xcommand_handle, vcx_error_t err, const char *msg_id));
-    
+
 /// Generate a signature for the specified data
 ///
 /// #params
@@ -206,7 +207,7 @@ vcx_error_t vcx_connection_sign_data(vcx_command_handle_t command_handle,
                                                vcx_error_t err,
                                                vcx_data_t *signature_raw,
                                                vcx_u32_t signature_len));
-    
+
 /// Verify the signature is valid for the specified data
 ///
 /// #params

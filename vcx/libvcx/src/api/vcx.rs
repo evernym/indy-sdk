@@ -297,6 +297,12 @@ pub extern fn vcx_get_current_error(error_json_p: *mut *const c_char) {
     trace!("vcx_get_current_error: <<<");
 }
 
+#[no_mangle]
+pub extern fn vcx_test_log() -> u32 {
+    trace!("vcx_test_log >>>");
+    2
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
