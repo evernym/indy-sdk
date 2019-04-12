@@ -153,6 +153,7 @@ if [ "$(uname)" == "Darwin" ]; then
         echo "Skipping download android-ndk-r19c-linux-x86_64.zip"
     fi
     export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r19c
+    export PREBUILT_TOOLCHAIN=${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/darwin-x86_64
     popd
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo "Downloading NDK for Linux"
@@ -167,16 +168,19 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
         echo "Skipping download android-ndk-r19c-linux-x86_64.zip"
     fi
     export ANDROID_NDK_ROOT=${TOOLCHAIN_PREFIX}/android-ndk-r19c
+    export PREBUILT_TOOLCHAIN=${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64
     popd
 fi
 
 
 LIBVCX=../../..
-CROSS_COMPILE_DIR=${CROSS_COMPILE}
-TARGET_ARCH_DIR=${TARGET_ARCH}
+CROSS_COMPILE_PREFIX=${CROSS_COMPILE}
+CROSS_COMPILE_CLANG_PREFIX=${CROSS_COMPILE_PREFIX}
 if [ "${TARGET_ARCH}" = "armv7" ]; then
-    TARGET_ARCH_DIR="arm"
-    CROSS_COMPILE_DIR="arm-linux-androideabi"
+    CROSS_COMPILE_PREFIX="arm-linux-androideabi"
+fi
+if [ "${TARGET_ARCH}" = "arm" ]; then
+    CROSS_COMPILE_CLANG_PREFIX="armv7a-linux-androideabi"
 fi
 
 export SODIUM_LIB_DIR=${SODIUM_DIR}/lib
@@ -188,20 +192,18 @@ export CARGO_INCREMENTAL=1
 export RUST_LOG=indy=trace
 export RUST_TEST_THREADS=1
 export RUST_BACKTRACE=1
-export TOOLCHAIN_DIR=${TOOLCHAIN_PREFIX}/${TARGET_ARCH_DIR}
-export PATH=${TOOLCHAIN_DIR}/bin:${PATH}
+export PATH=${PREBUILT_TOOLCHAIN}/bin:${PATH}
 export PKG_CONFIG_ALLOW_CROSS=1
-export CC=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-clang
-export AR=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-ar
-export STRIP=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-strip
-export CXX=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-clang++
-export CXXLD=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-ld
-export RANLIB=${TOOLCHAIN_DIR}/bin/${CROSS_COMPILE_DIR}-ranlib
+export CC=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_CLANG_PREFIX}${TARGET_API}-clang
+export CXX=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_CLANG_PREFIX}${TARGET_API}-clang++
+export AR=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_PREFIX}-ar
+export STRIP=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_PREFIX}-strip
+export CXXLD=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_PREFIX}-ld
+export RANLIB=${PREBUILT_TOOLCHAIN}/bin/${CROSS_COMPILE_PREFIX}-ranlib
 export TARGET=android
 
 printenv
 
-#python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --arch ${TARGET_ARCH_DIR} --api ${TARGET_API} --install-dir ${TOOLCHAIN_DIR}
 cat << EOF > ~/.cargo/config
 [target.${CROSS_COMPILE}]
 ar = "${AR}"
@@ -233,31 +235,31 @@ mkdir -p ${LIBVCX_BUILDS}
 
 echo "$CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libz.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libm.a \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/liblog.so \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libstdc++.so \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \
 ${LIBZMQ_LIB_DIR}/libzmq.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so -Wl,--no-whole-archive -z muldefs"
+-Wl,--no-whole-archive -z muldefs"
 
 $CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libz.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libm.a \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/liblog.so \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE}/${TARGET_API}/libstdc++.so \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \
 ${LIBZMQ_LIB_DIR}/libzmq.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so -Wl,--no-whole-archive -z muldefs
+-Wl,--no-whole-archive -z muldefs
 
 ${STRIP} -S -x -o ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so
 mv ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so

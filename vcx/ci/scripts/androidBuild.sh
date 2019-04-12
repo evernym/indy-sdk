@@ -70,19 +70,19 @@ generate_flags(){
     if [ $1 == "arm" ]; then
         export ARCH="arm"
         export TRIPLET="arm-linux-androideabi"
-        export PLATFORM="16"
+        export PLATFORM="21"
     elif [ $1 == "arm64" ]; then
         export ARCH="arm64"
         export TRIPLET="aarch64-linux-android"
         export PLATFORM="21"
     elif [ $1 == "armv7" ]; then
         export ARCH="armv7"
-        export TRIPLET="armv7-linux-androideabi"
-        export PLATFORM="16"
+        export TRIPLET="armv7a-linux-androideabi"
+        export PLATFORM="21"
     elif [ $1 == "x86" ]; then
         export ARCH="x86"
         export TRIPLET="i686-linux-android"
-        export PLATFORM="16"
+        export PLATFORM="21"
     elif [ $1 == "x86_64" ]; then
         export ARCH="x86_64"
         export TRIPLET="x86_64-linux-android"
