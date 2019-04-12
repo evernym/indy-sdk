@@ -77,7 +77,7 @@ generate_flags(){
         export PLATFORM="21"
     elif [ $1 == "armv7" ]; then
         export ARCH="armv7"
-        export TRIPLET="armv7a-linux-androideabi"
+        export TRIPLET="armv7-linux-androideabi"
         export PLATFORM="21"
     elif [ $1 == "x86" ]; then
         export ARCH="x86"

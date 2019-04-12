@@ -178,6 +178,7 @@ CROSS_COMPILE_PREFIX=${CROSS_COMPILE}
 CROSS_COMPILE_CLANG_PREFIX=${CROSS_COMPILE_PREFIX}
 if [ "${TARGET_ARCH}" = "armv7" ]; then
     CROSS_COMPILE_PREFIX="arm-linux-androideabi"
+    CROSS_COMPILE_CLANG_PREFIX="armv7a-linux-androideabi"
 fi
 if [ "${TARGET_ARCH}" = "arm" ]; then
     CROSS_COMPILE_CLANG_PREFIX="armv7a-linux-androideabi"
