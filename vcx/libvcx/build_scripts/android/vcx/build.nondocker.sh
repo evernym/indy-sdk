@@ -171,7 +171,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 
-LIBVCX=../../../
+LIBVCX=../../..
 CROSS_COMPILE_DIR=${CROSS_COMPILE}
 TARGET_ARCH_DIR=${TARGET_ARCH}
 if [ "${TARGET_ARCH}" = "armv7" ]; then
@@ -201,7 +201,7 @@ export TARGET=android
 
 printenv
 
-python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --arch ${TARGET_ARCH_DIR} --api ${TARGET_API} --install-dir ${TOOLCHAIN_DIR}
+#python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --arch ${TARGET_ARCH_DIR} --api ${TARGET_API} --install-dir ${TOOLCHAIN_DIR}
 cat << EOF > ~/.cargo/config
 [target.${CROSS_COMPILE}]
 ar = "${AR}"
@@ -230,6 +230,21 @@ popd
 
 LIBVCX_BUILDS=${WORKDIR}/libvcx_${TARGET_ARCH}
 mkdir -p ${LIBVCX_BUILDS}
+
+echo "$CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
+${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
+${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so \
+${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
+${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so \
+${LIBINDY_DIR}/libindy.a \
+${LIBNULLPAY_DIR}/libnullpay.a \
+${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so \
+${OPENSSL_DIR}/lib/libssl.a \
+${OPENSSL_DIR}/lib/libcrypto.a \
+${SODIUM_LIB_DIR}/libsodium.a \
+${LIBZMQ_LIB_DIR}/libzmq.a \
+${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so -Wl,--no-whole-archive -z muldefs"
+
 $CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
 ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so \
