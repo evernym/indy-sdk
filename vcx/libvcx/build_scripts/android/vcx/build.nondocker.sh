@@ -29,9 +29,9 @@ if [ -z "${CROSS_COMPILE}" ]; then
     exit 1
 fi
 
-if [ "${TARGET_ARCH}" = "x86_64" ]; then
-    NDK_LIB_DIR="lib64"
-fi
+#if [ "${TARGET_ARCH}" = "x86_64" ]; then
+#    NDK_LIB_DIR="lib64"
+#fi
 
 
 if [ -z "${OPENSSL_DIR}" ]; then
@@ -241,7 +241,7 @@ ${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGE
 ${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGET_API}/liblog.so \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
-${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGET_API}/libstdc++.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/libc++_shared.so \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \
@@ -255,7 +255,7 @@ ${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGE
 ${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGET_API}/liblog.so \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
-${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/${TARGET_API}/libstdc++.so \
+${PREBUILT_TOOLCHAIN}/sysroot/usr/${NDK_LIB_DIR}/${CROSS_COMPILE_PREFIX}/libc++_shared.so \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \
