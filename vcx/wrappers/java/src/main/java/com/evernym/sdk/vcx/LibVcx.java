@@ -6,7 +6,7 @@ import com.sun.jna.ptr.PointerByReference;
 import java.io.File;
 
 public abstract class LibVcx {
-    private static final String LIBRARY_NAME = "vcx";
+    public static final String LIBRARY_NAME = "vcx";
     /*
      * Native library interface
      */
@@ -496,16 +496,16 @@ public abstract class LibVcx {
 
     public static API api = null;
 
-    static {
+    // static {
 
-        try {
-            init();
-        } catch (UnsatisfiedLinkError ex) {
-            // Library could not be found in standard OS locations.
-            // Call init(File file) explicitly with absolute library path.
-            ex.printStackTrace();
-        }
-    }
+    //     try {
+    //         init();
+    //     } catch (UnsatisfiedLinkError ex) {
+    //         // Library could not be found in standard OS locations.
+    //         // Call init(File file) explicitly with absolute library path.
+    //         ex.printStackTrace();
+    //     }
+    // }
 
     /**
      * Initializes the API with the path to the C-Callable library.
