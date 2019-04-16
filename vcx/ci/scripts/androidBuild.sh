@@ -142,7 +142,7 @@ get_libnullpay() {
 
 build_vcx() {
     # For Jenkins
-    LIBVCX_PATH=${VCX_BASE}/libvcx/build_scripts/android/vcx/
+    LIBVCX_PATH=${VCX_BASE}/libvcx/build_scripts/android/vcx
     PREBUILT_BIN=../../../../../runtime_android_build
     # For Docker when vcx is in home dir
     #PREBUILT_BIN=../../../../ci/scripts/runtime_android_build
@@ -166,7 +166,7 @@ build_vcx() {
     ./build.nondocker.sh ${ARCH} ${PLATFORM} ${TRIPLET} ${OPENSSL_DIR} ${SODIUM_DIR} ${LIBZMQ_DIR} ${LIBINDY_DIR} ${LIBSOVTOKEN_DIR} ${LIBNULLPAY_DIR}
     popd
     rm -rf libvcx_${ARCH}
-    mv ${LIBVCX_PATH}libvcx_${ARCH} .
+    mv ${LIBVCX_PATH}/libvcx_${ARCH} .
 
 }
 

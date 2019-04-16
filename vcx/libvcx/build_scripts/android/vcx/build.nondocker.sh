@@ -252,4 +252,8 @@ ${LIBZMQ_LIB_DIR}/libzmq.a \
 ${STRIP} -S -x -o ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so
 mv ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so
 
-cp "${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a" ${LIBVCX_BUILDS}/
+cp "${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a" ${LIBVCX_BUILDS}
+cp ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so ${LIBVCX_BUILDS}
+cp ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so ${LIBVCX_BUILDS}
+cp ${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so ${LIBVCX_BUILDS}
+

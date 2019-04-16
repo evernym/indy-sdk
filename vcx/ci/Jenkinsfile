@@ -380,7 +380,7 @@ def buildAndroid(arch) {
                 }
 
                 dir("runtime_android_build/libvcx_${arch}") {
-                    stash includes: "libvcx.so", name: "libvcx_${arch}"
+                    stash includes: "libvcx.so,libz.so,liblog.so,libgnustl_shared.so", name: "libvcx_${arch}"
                 }
             }
         } catch (Exception ex) {
