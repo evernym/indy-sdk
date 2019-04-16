@@ -4,6 +4,7 @@ package com.evernym.sdk.vcx;
 import com.evernym.sdk.vcx.connection.ConnectionApi;
 import com.evernym.sdk.vcx.credential.CredentialApi;
 import com.evernym.sdk.vcx.credentialDef.CredentialDefApi;
+import com.evernym.sdk.vcx.LibVcx;
 import com.jayway.jsonpath.JsonPath;
 import java9.util.concurrent.CompletableFuture;
 import org.awaitility.Awaitility;
@@ -13,6 +14,17 @@ import java.util.concurrent.ExecutionException;
 class TestHelper {
     static boolean vcxInitialized = false;
     static String VCX_CONFIG_TEST_MODE = "ENABLE_TEST_MODE";
+
+    static {
+        try {
+            LibVcx.init();
+        } catch (UnsatisfiedLinkError ex) {
+            // Library could not be found in standard OS locations.
+            // Call init(File file) explicitly with absolute library path.
+            ex.printStackTrace();
+        }
+    }
+
     private static String getConnectionId(){
         return "testConnectionId";
     }
