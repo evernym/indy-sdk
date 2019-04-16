@@ -239,7 +239,6 @@ LIBVCX_BUILDS=${WORKDIR}/libvcx_${TARGET_ARCH}
 mkdir -p ${LIBVCX_BUILDS}
 $CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.a \
 ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
