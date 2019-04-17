@@ -70,23 +70,23 @@ generate_flags(){
     if [ $1 == "arm" ]; then
         export ARCH="arm"
         export TRIPLET="arm-linux-androideabi"
-        export PLATFORM="21"
+        export PLATFORM="23"
     elif [ $1 == "arm64" ]; then
         export ARCH="arm64"
         export TRIPLET="aarch64-linux-android"
-        export PLATFORM="21"
+        export PLATFORM="23"
     elif [ $1 == "armv7" ]; then
         export ARCH="armv7"
         export TRIPLET="armv7-linux-androideabi"
-        export PLATFORM="21"
+        export PLATFORM="23"
     elif [ $1 == "x86" ]; then
         export ARCH="x86"
         export TRIPLET="i686-linux-android"
-        export PLATFORM="21"
+        export PLATFORM="23"
     elif [ $1 == "x86_64" ]; then
         export ARCH="x86_64"
         export TRIPLET="x86_64-linux-android"
-        export PLATFORM="21"
+        export PLATFORM="23"
     else
         echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
         exit 1
