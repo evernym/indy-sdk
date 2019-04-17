@@ -220,7 +220,7 @@ rustup target add ${CROSS_COMPILE}
 pushd $LIBVCX
 export OPENSSL_STATIC=1
 #cargo clean
-cargo build --release --no-default-features --features "ci" --target=${CROSS_COMPILE}
+cargo build --release  --verbose --no-default-features --features "ci" --target=${CROSS_COMPILE}
 # TEMPORARY HACK (need to build libvcx without duplicate .o object files):
 # There are duplicate .o object files inside the libvcx.a file and these
 # lines of logic remove those duplicate .o object files
