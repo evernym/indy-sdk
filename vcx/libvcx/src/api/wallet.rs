@@ -157,13 +157,13 @@ pub extern fn vcx_wallet_add_record(command_handle: u32,
         match wallet::add_record(&type_, &id, &value, Some(&tags_json)) {
             Ok(x) => {
 //                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
-                      command_handle, error::SUCCESS.message);
+//                      command_handle, error::SUCCESS.message);
 
                 cb(command_handle, error::SUCCESS.code_num);
             },
             Err(x) => {
 //                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
-                      command_handle, x);
+//                      command_handle, x);
 
                 cb(command_handle, x.into());
             },
