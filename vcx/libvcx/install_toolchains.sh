@@ -18,10 +18,10 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     unzip android-ndk-r19c-linux-x86_64.zip
 fi
 
-echo "installing toolchains in directory ${NDK_TOOLCHAIN_DIR}"
-android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 21 --arch arm64 --install-dir ${NDK_TOOLCHAIN_DIR}/arm64
-android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 14 --arch arm --install-dir ${NDK_TOOLCHAIN_DIR}/arm
-android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 14 --arch x86 --install-dir ${NDK_TOOLCHAIN_DIR}/x86
+#echo "installing toolchains in directory ${NDK_TOOLCHAIN_DIR}"
+#android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 21 --arch arm64 --install-dir ${NDK_TOOLCHAIN_DIR}/arm64
+#android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 14 --arch arm --install-dir ${NDK_TOOLCHAIN_DIR}/arm
+#android-ndk-r19c/build/tools/make_standalone_toolchain.py  --api 14 --arch x86 --install-dir ${NDK_TOOLCHAIN_DIR}/x86
 
 echo "setting up the cargo config file"
 cat <<EOF > ~/.cargo/config
@@ -29,9 +29,13 @@ cat <<EOF > ~/.cargo/config
 ar = "${NDK_TOOLCHAIN_DIR}/arm64/bin/aarch64-linux-android-ar"
 linker = "${NDK_TOOLCHAIN_DIR}/arm64/bin/aarch64-linux-android-clang"
 
-[target.armv7-linux-androideabi]
-ar = "${NDK_TOOLCHAIN_DIR}/arm/bin/arm-linux-androideabi-ar"
-linker = "${NDK_TOOLCHAIN_DIR}/arm/bin/arm-linux-androideabi-clang"
+[target.armv7a-linux-androideabi]
+ar = "${NDK_TOOLCHAIN_DIR}/arm/bin/armv7a-linux-androideabi-ar"
+linker = "${NDK_TOOLCHAIN_DIR}/arm/bin/armv7a-linux-androideabi-clang"
+
+[target.arm-linux-androideabi]
+ar = "${NDK_TOOLCHAIN_DIR}/arm/bin/armv7a-linux-androideabi-ar"
+linker = "${NDK_TOOLCHAIN_DIR}/arm/bin/armv7a-linux-androideabi-clang"
 
 [target.i686-linux-android]
 ar = "${NDK_TOOLCHAIN_DIR}/x86/bin/i686-linux-android-ar"
