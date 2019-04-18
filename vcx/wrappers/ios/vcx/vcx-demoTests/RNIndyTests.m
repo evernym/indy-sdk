@@ -74,9 +74,9 @@
 
                                             [localIndy setWalletItem:@"passphraseSalt" value:@"UfiXxbCth0WDmbUrLsicgBQQzzRu2jvNdKyfcqUqfnw=" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = NO; }
 
-                                            [localIndy setWalletItem:@"passphraseSalt" value:@"UfiXxbCth0WDmbUrLsicgBQQzzRu2jvNdKyfcqUqfnw=" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = NO; }
+                                            [localIndy setWalletItem:@"passphraseSalt" value:@"UfiXxbCth0WDmbUrLsicgBQQzzRu2jvNdKyfcqUqfnw=" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = YES; }
 
-                                                [localIndy setWalletItem:@"passphrase" value:@"grip tremor blazer rigid cruelly angrily broiler nutty" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = NO; }
+                                                [localIndy setWalletItem:@"passphrase" value:@"grip tremor blazer rigid cruelly angrily broiler nutty" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = YES; }
 
                                                     [localIndy setWalletItem:@"STORAGE_KEY_USER_ONE_TIME_INFO" value:@"{\"oneTimeAgencyDid\":\"HQU9BdCM4Hzyv2tsETGFeX\",\"oneTimeAgencyVerificationKey\":\"9wan6s2CqDVsWvYdekex81XjWESyAxm2aV4Waw4AN6Vz\",\"myOneTimeDid\":\"6L1ff7FJKDezrDMD3zefMF\",\"myOneTimeVerificationKey\":\"3uRTpbT2gscySLvc465W4zmmVa4ZrqppYkwEwzsMuPmM\",\"myOneTimeAgentDid\":\"VkNyVpnyDqwxbBwnLg2KPC\",\"myOneTimeAgentVerificationKey\":\"Gfn8iAG2iHXX6TJPGZSB8QQCdKoEthkNY6JBziqwMesK\"}" completion:^(BOOL success){ NSLog(@"setWalletItem is successful: %@", success ? @"true" : @"false"); if(!success) { finishedSuccessfully = NO; }
 
