@@ -60,6 +60,7 @@ import com.evernym.sdk.vcx.wallet.WalletAleradyOpenException;
 import com.evernym.sdk.vcx.wallet.WalletAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemNotFoundException;
+import com.evernym.sdk.vcx.wallet.WalletApi;
 
 import com.sun.jna.ptr.PointerByReference;
 import org.json.JSONObject;
@@ -88,7 +89,7 @@ public class VcxException extends Exception {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
 
-        addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
+        WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
 //        setSdkErrorDetails();
     }
 
