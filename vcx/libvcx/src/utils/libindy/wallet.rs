@@ -96,7 +96,7 @@ pub fn delete_wallet(wallet_name: &str, wallet_type: Option<&str>, storage_confi
 }
 
 pub fn add_record(xtype: &str, id: &str, value: &str, tags: Option<&str>) -> VcxResult<()> {
-    trace!("add_record >>> xtype: {}, id: {}, value: {}, tags: {:?}", xtype, id, value, tags);
+//    trace!("add_record >>> xtype: {}, id: {}, value: {}, tags: {:?}", xtype, id, value, tags);
 
     if settings::test_indy_mode_enabled() { return Ok(()); }
 

@@ -142,7 +142,7 @@ pub extern fn vcx_wallet_add_record(command_handle: u32,
                                     value: *const c_char,
                                     tags_json: *const c_char,
                                     cb: Option<extern fn(xcommand_handle: u32, err: u32)>) -> u32 {
-    info!("vcx_wallet_add_record >>>");
+//    info!("vcx_wallet_add_record >>>");
 
     check_useful_c_str!(type_, VcxErrorKind::InvalidOption);
     check_useful_c_str!(id, VcxErrorKind::InvalidOption);
@@ -156,13 +156,13 @@ pub extern fn vcx_wallet_add_record(command_handle: u32,
     spawn(move|| {
         match wallet::add_record(&type_, &id, &value, Some(&tags_json)) {
             Ok(x) => {
-                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
+//                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
                       command_handle, error::SUCCESS.message);
 
                 cb(command_handle, error::SUCCESS.code_num);
             },
             Err(x) => {
-                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
+//                trace!("vcx_wallet_add_record(command_handle: {}, rc: {})",
                       command_handle, x);
 
                 cb(command_handle, x.into());

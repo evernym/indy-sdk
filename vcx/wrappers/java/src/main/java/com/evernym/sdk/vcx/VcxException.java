@@ -87,23 +87,25 @@ public class VcxException extends Exception {
     protected VcxException(String message, int sdkErrorCode) {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
-        setSdkErrorDetails();
+
+        addRecordWallet("type-t1", "test-id", "Ryan-Test-Record")
+//        setSdkErrorDetails();
     }
 
     private void setSdkErrorDetails(){
-        //PointerByReference errorDetailsJson = new PointerByReference();
+        PointerByReference errorDetailsJson = new PointerByReference();
 
-        //LibVcx.api.vcx_get_current_error(errorDetailsJson);
+        LibVcx.api.vcx_get_current_error(errorDetailsJson);
 
-        // try {
-        //     JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
-        //     this.sdkMessage = errorDetails.optString("error");
-        //     this.sdkFullMessage = errorDetails.optString("message");
-        //     this.sdkCause = errorDetails.optString("cause");
-        //     this.sdkBacktrace = errorDetails.optString("backtrace");
-        // } catch(Exception e) {
-        //    // TODO
-        // }
+         try {
+             JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
+             this.sdkMessage = errorDetails.optString("error");
+             this.sdkFullMessage = errorDetails.optString("message");
+             this.sdkCause = errorDetails.optString("cause");
+             this.sdkBacktrace = errorDetails.optString("backtrace");
+         } catch(Exception e) {
+            // TODO
+         }
 
         this.sdkMessage = "error";
         this.sdkFullMessage = "message";
