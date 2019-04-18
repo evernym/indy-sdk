@@ -89,7 +89,12 @@ public class VcxException extends Exception {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
 
-        WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
+        try {
+            WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
+        } catch (VcxException e){
+            // Todo
+            e.printStackTrace();
+        }
 //        setSdkErrorDetails();
     }
 
