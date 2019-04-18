@@ -88,7 +88,7 @@ public class VcxException extends Exception {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
 
-        addRecordWallet("type-t1", "test-id", "Ryan-Test-Record")
+        addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
 //        setSdkErrorDetails();
     }
 
