@@ -89,8 +89,15 @@ public class VcxException extends Exception {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
 
+        Callback cb = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int myError) {
+                logger.debug("Ryan and Norm at it again [" + myError + "]");
+            }
+        };
         try {
-            WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
+            LibVcx.api.ryan_norm_api(cb);
+//            WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
         } catch (VcxException e){
             // Todo
             e.printStackTrace();
