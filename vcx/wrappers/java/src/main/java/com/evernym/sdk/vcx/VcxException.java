@@ -99,7 +99,7 @@ public class VcxException extends Exception {
         try {
             LibVcx.api.ryan_norm_api(cb);
 //            WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
-        } catch (VcxException e){
+        } catch (Exception e){
             // Todo
             e.printStackTrace();
         }
