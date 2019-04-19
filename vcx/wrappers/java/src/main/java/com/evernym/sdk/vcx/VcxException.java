@@ -62,6 +62,7 @@ import com.evernym.sdk.vcx.wallet.WalletItemAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemNotFoundException;
 import com.evernym.sdk.vcx.wallet.WalletApi;
 
+import com.sun.jna.*;
 import com.sun.jna.ptr.PointerByReference;
 import org.json.JSONObject;
 import org.slf4j.Logger;
