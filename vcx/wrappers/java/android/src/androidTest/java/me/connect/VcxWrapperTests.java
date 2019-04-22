@@ -15,6 +15,8 @@ import android.util.Log;
 import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.utils.UtilsApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
+import com.evernym.sdk.vcx.wallet.WalletApi;
+import com.sun.jna.*;
 
 import junit.framework.Assert;
 
@@ -39,7 +41,11 @@ public class VcxWrapperTests {
     @Rule
     public final RuleChain mRuleChain = RuleChain.outerRule(readPermissionRule)
             .around(writePermissionRule);
+
     private String TAG = "VCX WRAPPER TESTS::";
+    private String type = "test";
+    private String id = "123";
+    private String value = "record value";
 
 //    @Test
 //    public void testAgentProvisionAsync(){
@@ -78,7 +84,10 @@ public class VcxWrapperTests {
             Assert.assertSame(0,result);
             result =  VcxApi.initNullPay();
             Assert.assertSame(0,result);
+            WalletApi.addRecordWallet(type,id,value);
+            WalletApi.addRecordWallet(type,id,value);
          } catch (VcxException e) {
+            Assert.fail("failed test: " + e.getMessage());
              e.printStackTrace();
          }
     }
