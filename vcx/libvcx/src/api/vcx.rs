@@ -12,10 +12,10 @@ use error::prelude::*;
 #[no_mangle]
 pub extern fn ryan_norm_api_1(cb: Option<extern fn(err: u32)>) -> u32 {
 
-     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-     spawn(move|| {
-            cb(11);
+    spawn(move|| {
+        cb(11);
         Ok(())
     });
     10
@@ -25,10 +25,10 @@ pub extern fn ryan_norm_api_1(cb: Option<extern fn(err: u32)>) -> u32 {
 #[no_mangle]
 pub extern fn ryan_norm_api_2(cb: Option<extern fn(err: u32)>) -> u32 {
 
-     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-     spawn(move|| {
-            cb(22);
+    spawn(move|| {
+        cb(22);
         Ok(())
     });
     20
@@ -38,10 +38,10 @@ pub extern fn ryan_norm_api_2(cb: Option<extern fn(err: u32)>) -> u32 {
 #[no_mangle]
 pub extern fn ryan_norm_api_3(cb: Option<extern fn(err: u32)>) -> u32 {
 
-     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-     spawn(move|| {
-            cb(33);
+    spawn(move|| {
+        cb(33);
         Ok(())
     });
     30

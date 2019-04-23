@@ -48,22 +48,30 @@ public class VcxWrapperTests {
     private String id = "123";
     private String value = "record value";
 
+    private static final Object waitForCallback = new Object();
+
 
     @Test
-    public void testNestedCallback(){
+    public void testNestedCallback() {
         Log.d(TAG, "testNestedCallback() called");
 
         Callback cb3 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                Log.d(TAG, "[3] Ryan and Norm at it again [" + myError + "]");
+                //Log.d(TAG, "[3] Ryan and Norm at it again [" + myError + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + myError + "]");
+                try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
+                synchronized(waitForCallback) {
+                    waitForCallback.notifyAll();
+                }
             }
         };
 
         Callback cb2 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                Log.d(TAG, "[2] Ryan and Norm at it again [" + myError + "]");
+                //Log.d(TAG, "[2] Ryan and Norm at it again [" + myError + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[2] Ryan and Norm at it again [" + myError + "]");
                 try {
                     LibVcx.api.ryan_norm_api_3(cb3);
                 } catch (Exception e){
@@ -76,7 +84,8 @@ public class VcxWrapperTests {
         Callback cb1 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                Log.d(TAG, "[1] Ryan and Norm at it again [" + myError + "]");
+                //Log.d(TAG, "[1] Ryan and Norm at it again [" + myError + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[1] Ryan and Norm at it again [" + myError + "]");
                 try {
                     LibVcx.api.ryan_norm_api_2(cb2);
                 } catch (Exception e){
@@ -88,9 +97,13 @@ public class VcxWrapperTests {
 
         try {
             LibVcx.api.ryan_norm_api_1(cb1);
+            synchronized(waitForCallback) {
+                waitForCallback.wait();
+            }
         } catch (Exception e){
             // Todo
             e.printStackTrace();
+            Assert.fail();
         }
     }
 

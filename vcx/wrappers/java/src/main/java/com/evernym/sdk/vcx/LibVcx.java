@@ -601,7 +601,7 @@ public abstract class LibVcx {
                     message = message.substring(0, 10240);
                 }
                 String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
-                String msg = String.format("%s:%d | %s", file, line, message);
+                String msg = String.format("yo dude: %s:%d | %s", file, line, message);
                 logMessage(loggerName, level, msg);
             }
         };
@@ -611,5 +611,6 @@ public abstract class LibVcx {
 
     private static void initLogger() {
         api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
+        //api.vcx_set_default_logger("trace");
     }
 }
