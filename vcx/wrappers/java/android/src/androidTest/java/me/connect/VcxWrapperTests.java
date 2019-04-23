@@ -47,28 +47,41 @@ public class VcxWrapperTests {
     private String id = "123";
     private String value = "record value";
 
-//    @Test
-//    public void testAgentProvisionAsync(){
+
+    @Test
+    public void testNestedCallback(){
+        Log.d(TAG, "testNestedCallback() called");
+    }
+
+
+//     @Test
+//     public void testAgentProvisionAsync(){
 //        Log.d(TAG, "testAgenctProvisionAsync() called");
 //        writeCACert(InstrumentationRegistry.getContext());
 //        String agencyConfig = "{\n" +
-//                "    \"agency_url\": \"https://cagency.pdev.evernym.com\",\n" +
-//                "    \"agency_did\": \"dTLdJqRZLwMuWSogcKfBT\",\n" +
-//                "    \"agency_verkey\": \"LsPQTDHi294TexkFmZK9Q9vW4YGtQRuLV8wuyZi94yH\",\n" +
-//                "    \"wallet_name\": \"testWallet\",\n" +
-//                "    \"wallet_key\": \"123\",\n" +
+//                "    \"agency_url\": \"https://agency-team2.pdev.evernym.com\",\n" +
+//                "    \"agency_did\": \"CV65RFpeCtPu82hNF9i61G\",\n" +
+//                "    \"agency_verkey\": \"7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2\",\n" +
+//                "    \"wallet_name\": \"LIBVCX_SDK_WALLET\",\n" +
+//                "    \"wallet_key\": \"thiskeyisforthewallet1234\",\n" +
+//                "    \"remote_to_sdk_did\": \"68S4dDbvFYacxVzRabgDcu\",\n" +
+//                "    \"remote_to_sdk_verkey\": \"3o7R6SeVKpMRjxUjmUJto8s8zFaSgQBTWQuQEbPh6rA5\",\n" +
+//                "    \"sdk_to_remote_did\": \"P1iAo88RczH9YWZ3b2htGC\",\n" +
+//                "    \"sdk_to_remote_verkey\": \"CzrKD4VUL6jJQuD6BJ5PVUnGKkHJXRFnHvDYNg9tEdkk\",\n" +
+//                "    \"payment_method\": \"null\",\n" +
 //                "    \"agent_seed\": null,\n" +
 //                "    \"enterprise_seed\": null\n" +
 //                "}";
 //        try {
-//            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
-//            Assert.assertSame(0,result);
-//            String res = UtilsApi.vcxAgentProvisionAsync(agencyConfig).get();
-//
-//            Log.d(TAG, "vcx::APP::async result Prov: " + res);
-//            Assert.assertTrue(res.contains("dTLdJqRZLwMuWSogcKfBT"));
-//
-//
+//            int result = 0;
+//            //result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+//            //Assert.assertSame(0,result);
+//            String config = UtilsApi.vcxAgentProvisionAsync(agencyConfig).get();
+
+//            Log.d(TAG, "vcx::APP::async result Prov: " + config);
+//            Assert.assertTrue(config.contains("CV65RFpeCtPu82hNF9i61G"));
+//            result =  VcxApi.vcxInitWithConfig(config).get();
+//            Assert.assertNotSame(0,result);
 //        } catch (VcxException e) {
 //            Log.e(TAG, "testAgenctProvisionAsync: ",e );
 //        } catch (InterruptedException | ExecutionException e) {
@@ -76,23 +89,28 @@ public class VcxWrapperTests {
 //        }
 //    }
 
-    @Test
-    public void testInitNullPay() {
-        Log.d(TAG, "testInitNullPay: called");
-        try {
-            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
-            Assert.assertSame(0,result);
-            result =  VcxApi.initNullPay();
-            Assert.assertSame(0,result);
-            WalletApi.addRecordWallet(type,id,value);
-            WalletApi.addRecordWallet(type,id,value);
-         } catch (VcxException e) {
-            Assert.fail("failed test: " + e.getMessage());
-             e.printStackTrace();
-         }
-    }
-//
-//
+    // @Test
+    // public void testInitNullPay() {
+    //     Log.d(TAG, "testInitNullPay: called");
+    //     try {
+    //         int result = 0;
+    //         //result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+    //         //Assert.assertSame(0,result);
+    //         result = VcxApi.initNullPay();
+
+    //         //System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
+    //         VcxApi.vcxInit("ENABLE_TEST_MODE");
+
+    //         WalletApi.addRecordWallet(type,id,value);
+    //         WalletApi.addRecordWallet(type,id,value);
+    //      } catch (VcxException e) {
+    //         Assert.fail("failed test: " + e.getMessage());
+    //          e.printStackTrace();
+    //      }
+    // }
+
+
+
 //    @Test
 //    public void testVcxSetDefaultLogger() {
 //        Log.d(TAG, "testVcxSetDefaultLogger: called");
