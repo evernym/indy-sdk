@@ -127,9 +127,9 @@ impl LibvcxLogger {
         //trace!("LibvcxLogger::init >>>");
         let logger = LibvcxLogger::new(context, enabled, log, flush);
         log::set_boxed_logger(Box::new(logger))
-            .map_err(|err| {})?;
+            .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
         log::set_max_level(LevelFilter::Trace);
-        libindy::logger::set_logger(log::logger()).map_err(|err| {})?;
+        libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
 
         unsafe {
             LOGGER_STATE = LoggerState::Custom;
