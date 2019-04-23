@@ -8,6 +8,45 @@ use std::ffi::CString;
 use utils::threadpool::spawn;
 use error::prelude::*;
 
+
+#[no_mangle]
+pub extern fn ryan_norm_api_1(cb: Option<extern fn(err: u32)>) -> u32 {
+
+     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+     spawn(move|| {
+            cb(11);
+        Ok(())
+    });
+    10
+}
+
+
+#[no_mangle]
+pub extern fn ryan_norm_api_2(cb: Option<extern fn(err: u32)>) -> u32 {
+
+     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+     spawn(move|| {
+            cb(22);
+        Ok(())
+    });
+    20
+}
+
+
+#[no_mangle]
+pub extern fn ryan_norm_api_3(cb: Option<extern fn(err: u32)>) -> u32 {
+
+     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+     spawn(move|| {
+            cb(33);
+        Ok(())
+    });
+    30
+}
+
 /// Initializes VCX with config settings
 ///
 /// example configuration is in libvcx/sample_config/config.json

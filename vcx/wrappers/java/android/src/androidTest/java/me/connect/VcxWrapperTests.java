@@ -51,6 +51,46 @@ public class VcxWrapperTests {
     @Test
     public void testNestedCallback(){
         Log.d(TAG, "testNestedCallback() called");
+
+        Callback cb3 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int myError) {
+                logger.debug("[3] Ryan and Norm at it again [" + myError + "]");
+            }
+        };
+
+        Callback cb2 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int myError) {
+                logger.debug("[2] Ryan and Norm at it again [" + myError + "]");
+                try {
+                    LibVcx.api.ryan_norm_api_3(cb3);
+                } catch (Exception e){
+                    // Todo
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Callback cb1 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int myError) {
+                logger.debug("[1] Ryan and Norm at it again [" + myError + "]");
+                try {
+                    LibVcx.api.ryan_norm_api_2(cb2);
+                } catch (Exception e){
+                    // Todo
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        try {
+            LibVcx.api.ryan_norm_api_1(cb1);
+        } catch (Exception e){
+            // Todo
+            e.printStackTrace();
+        }
     }
 
 
