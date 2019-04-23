@@ -50,10 +50,10 @@ static mut ENABLED_CB: Option<EnabledCB> = None;
 static mut LOG_CB: Option<LogCB> = None;
 static mut FLUSH_CB: Option<FlushCB> = None;
 
-static __TARGET: *const c_char = CString::new("target.as_ptr()").as_ptr();
-static __MESSAGE: *const c_char = CString::new("message.as_ptr()").as_ptr();
-static __MOD_PATH: *const c_char = CString::new("module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").as_ptr();
-static __FILE_PATH: *const c_char = CString::new("file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").as_ptr();
+static __TARGET: *const c_char = CString::new("target.as_ptr()").unwrap().as_ptr();
+static __MESSAGE: *const c_char = CString::new("message.as_ptr()").unwrap().as_ptr();
+static __MOD_PATH: *const c_char = CString::new("module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").unwrap().as_ptr();
+static __FILE_PATH: *const c_char = CString::new("file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").unwrap().as_ptr();
 
 pub struct LibvcxLogger {
     context: *const CVoid,
