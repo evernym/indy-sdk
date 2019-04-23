@@ -13,6 +13,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.evernym.sdk.vcx.VcxException;
+import com.evernym.sdk.vcx.LibVcx;
 import com.evernym.sdk.vcx.utils.UtilsApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
 import com.evernym.sdk.vcx.wallet.WalletApi;
@@ -55,14 +56,14 @@ public class VcxWrapperTests {
         Callback cb3 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                logger.debug("[3] Ryan and Norm at it again [" + myError + "]");
+                Log.d(TAG, "[3] Ryan and Norm at it again [" + myError + "]");
             }
         };
 
         Callback cb2 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                logger.debug("[2] Ryan and Norm at it again [" + myError + "]");
+                Log.d(TAG, "[2] Ryan and Norm at it again [" + myError + "]");
                 try {
                     LibVcx.api.ryan_norm_api_3(cb3);
                 } catch (Exception e){
@@ -75,7 +76,7 @@ public class VcxWrapperTests {
         Callback cb1 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
             public void callback(int myError) {
-                logger.debug("[1] Ryan and Norm at it again [" + myError + "]");
+                Log.d(TAG, "[1] Ryan and Norm at it again [" + myError + "]");
                 try {
                     LibVcx.api.ryan_norm_api_2(cb2);
                 } catch (Exception e){
