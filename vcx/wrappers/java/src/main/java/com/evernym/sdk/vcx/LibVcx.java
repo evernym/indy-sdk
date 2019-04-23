@@ -601,8 +601,28 @@ public abstract class LibVcx {
                     message = message.substring(0, 10240);
                 }
                 String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
+                org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(loggerName);
                 String msg = String.format("yo dude: %s:%d | %s", file, line, message);
-                logMessage(loggerName, level, msg);
+                //logMessage(loggerName, level, msg);
+                switch (level) {
+                    case 1:
+                        logger.error(msg);
+                        break;
+                    case 2:
+                        logger.warn(msg);
+                        break;
+                    case 3:
+                        logger.info(msg);
+                        break;
+                    case 4:
+                        logger.debug(msg);
+                        break;
+                    case 5:
+                        logger.trace(msg);
+                        break;
+                    default:
+                        break;
+                }
             }
         };
 
