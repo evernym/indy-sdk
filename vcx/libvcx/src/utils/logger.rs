@@ -50,10 +50,10 @@ static mut ENABLED_CB: Option<EnabledCB> = None;
 static mut LOG_CB: Option<LogCB> = None;
 static mut FLUSH_CB: Option<FlushCB> = None;
 
-const __TARGET: &'static [i8] = b"target.as_ptr()\n\0";
-const __MESSAGE: &'static [i8] = b"message.as_ptr()\n\0";
-const __MOD_PATH: &'static [i8] = b"module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())\n\0";
-const __FILE_PATH: &'static [i8] = b"file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())\n\0";
+const __TARGET: *const c_char = CString::new("target.as_ptr()").unwrap().as_ptr();
+const __MESSAGE: *const c_char = CString::new("message.as_ptr()").unwrap().as_ptr();
+const __MOD_PATH: *const c_char = CString::new("module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").unwrap().as_ptr();
+const __FILE_PATH: *const c_char = CString::new("file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())").unwrap().as_ptr();
 
 pub struct LibvcxLogger {
     context: *const CVoid,
@@ -103,10 +103,10 @@ impl log::Log for LibvcxLogger {
 
         log_cb(ptr::null(),
                1,
-               __TARGET.as_ptr(),
-               __MESSAGE.as_ptr(),
-               __MOD_PATH.as_ptr(),
-               __FILE_PATH.as_ptr(),
+               __TARGET,
+               __MESSAGE,
+               __MOD_PATH,
+               __FILE_PATH,
                21
         )
     }
