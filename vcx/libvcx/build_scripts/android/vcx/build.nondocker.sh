@@ -174,10 +174,17 @@ fi
 LIBVCX=../../../
 CROSS_COMPILE_DIR=${CROSS_COMPILE}
 TARGET_ARCH_DIR=${TARGET_ARCH}
+CROSS_COMPILE_ARCH=${TARGET_ARCH}
+# TARGET_ARCH is one of: arm, arm64, armv7, x86, or x86_64
 if [ "${TARGET_ARCH}" = "armv7" ]; then
     TARGET_ARCH_DIR="arm"
     CROSS_COMPILE_DIR="arm-linux-androideabi"
-fi
+    CROSS_COMPILE_ARCH="armeabi-v7a"
+elif [ "${TARGET_ARCH}" = "arm" ]; then
+    CROSS_COMPILE_ARCH="armeabi"
+elif [ "${TARGET_ARCH}" = "arm64" ]; then
+    CROSS_COMPILE_ARCH="arm64-v8a"
+fi	fi
 
 export SODIUM_LIB_DIR=${SODIUM_DIR}/lib
 export SODIUM_INCLUDE_DIR=${SODIUM_DIR}/include
@@ -232,19 +239,20 @@ LIBVCX_BUILDS=${WORKDIR}/libvcx_${TARGET_ARCH}
 mkdir -p ${LIBVCX_BUILDS}
 $CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so \
 ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
-${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so \
+${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${CROSS_COMPILE_ARCH}/libgnustl_static.a \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \
 ${LIBZMQ_LIB_DIR}/libzmq.a \
-${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so -Wl,--no-whole-archive -z muldefs
+-Wl,--no-whole-archive -z muldefs -L. -llog -lz
 
 ${STRIP} -S -x -o ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so
 mv ${LIBVCX_BUILDS}/libvcx.so.new ${LIBVCX_BUILDS}/libvcx.so
 
-cp "${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a" ${LIBVCX_BUILDS}/
+cp "${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a" ${LIBVCX_BUILDS}
+cp ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libz.so ${LIBVCX_BUILDS}
+cp ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/liblog.so ${LIBVCX_BUILDS}
+#cp ${TOOLCHAIN_DIR}/${CROSS_COMPILE_DIR}/${NDK_LIB_DIR}/libgnustl_shared.so ${LIBVCX_BUILDS}
