@@ -101,14 +101,14 @@ impl log::Log for LibvcxLogger {
         //        line,
         // )
 
-        // log_cb(ptr::null(),
-        //        1,
-        //        CString::new(__TARGET).unwrap().as_ptr(),
-        //        CString::new(__MESSAGE).unwrap().as_ptr(),
-        //        CString::new(__MOD_PATH).unwrap().as_ptr(),
-        //        CString::new(__FILE_PATH).unwrap().as_ptr(),
-        //        45
-        // )
+        log_cb(ptr::null(),
+               1,
+               CString::new(__TARGET).unwrap().as_ptr(),
+               CString::new(__MESSAGE).unwrap().as_ptr(),
+               CString::new(__MOD_PATH).unwrap().as_ptr(),
+               CString::new(__FILE_PATH).unwrap().as_ptr(),
+               45
+        )
     }
 
     fn flush(&self) {
