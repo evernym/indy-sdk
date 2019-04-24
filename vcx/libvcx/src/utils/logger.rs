@@ -51,10 +51,10 @@ static mut ENABLED_CB: Option<EnabledCB> = None;
 static mut LOG_CB: Option<LogCB> = None;
 static mut FLUSH_CB: Option<FlushCB> = None;
 
-static __TARGET: &'static str = "target.as_ptr()";
-static __MESSAGE: &'static str = "message.as_ptr()";
-static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
-static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+// static __TARGET: &'static str = "target.as_ptr()";
+// static __MESSAGE: &'static str = "message.as_ptr()";
+// static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+// static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
 
 pub struct LibvcxLogger {
     context: *const CVoid,
@@ -85,34 +85,34 @@ impl log::Log for LibvcxLogger {
     fn log(&self, record: &Record) {
         let log_cb = self.log;
 
-        // let level = record.level() as u32;
-        // let target = CString::new(record.target()).unwrap();
-        // let message = CString::new(record.args().to_string()).unwrap();
+        let level = record.level() as u32;
+        let target = CString::new(record.target()).unwrap();
+        let message = CString::new(record.args().to_string()).unwrap();
 
-        // let module_path = record.module_path().map(|a| CString::new(a).unwrap());
-        // let file = record.file().map(|a| CString::new(a).unwrap());
-        // let line = record.line().unwrap_or(0);
+        let module_path = record.module_path().map(|a| CString::new(a).unwrap());
+        let file = record.file().map(|a| CString::new(a).unwrap());
+        let line = record.line().unwrap_or(0);
 
-        // log_cb(self.context,
-        //        level,
-        //        target.as_ptr(),
-        //        message.as_ptr(),
-        //        module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
-        //        file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
-        //        line,
-        // )
+        log_cb(self.context,
+               level,
+               target.as_ptr(),
+               message.as_ptr(),
+               module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
+               file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
+               line,
+        )
 
-        spawn(move|| {
-            log_cb(ptr::null(),
-                1,
-                CString::new(__TARGET).unwrap().as_ptr(),
-                CString::new(__MESSAGE).unwrap().as_ptr(),
-                CString::new(__MOD_PATH).unwrap().as_ptr(),
-                CString::new(__FILE_PATH).unwrap().as_ptr(),
-                45
-            );
-            Ok(())
-        });
+        // spawn(move|| {
+        //     log_cb(ptr::null(),
+        //         1,
+        //         CString::new(__TARGET).unwrap().as_ptr(),
+        //         CString::new(__MESSAGE).unwrap().as_ptr(),
+        //         CString::new(__MOD_PATH).unwrap().as_ptr(),
+        //         CString::new(__FILE_PATH).unwrap().as_ptr(),
+        //         45
+        //     );
+        //     Ok(())
+        // });
     }
 
     fn flush(&self) {
