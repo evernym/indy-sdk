@@ -184,7 +184,7 @@ elif [ "${TARGET_ARCH}" = "arm" ]; then
     CROSS_COMPILE_ARCH="armeabi"
 elif [ "${TARGET_ARCH}" = "arm64" ]; then
     CROSS_COMPILE_ARCH="arm64-v8a"
-fi	fi
+fi
 
 export SODIUM_LIB_DIR=${SODIUM_DIR}/lib
 export SODIUM_INCLUDE_DIR=${SODIUM_DIR}/include
