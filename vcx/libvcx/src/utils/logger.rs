@@ -18,6 +18,7 @@ use std::ptr;
 pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
 use utils::threadpool::spawn;
+use std::io::prelude::*;
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
@@ -88,39 +89,35 @@ impl log::Log for LibvcxLogger {
         let level = record.level() as u32;
 
         let target = CString::new(record.target()).unwrap();
-        let target_p = target.as_ptr();
-        std::mem::forget(target);
-
         let message = CString::new(record.args().to_string()).unwrap();
-        let message_p = message.as_ptr();
-        std::mem::forget(message);
-
         let module_path = record.module_path().map(|a| CString::new(a).unwrap());
-        //let module_path_p = module_path.as_ptr();
-        //std::mem::forget(module_path);
-
         let file = record.file().map(|a| CString::new(a).unwrap());
-        //let file_p = file.as_ptr();
-        //std::mem::forget(file);
-
         let line = record.line().unwrap_or(0);
 
-        log_cb(self.context,
-               level,
-               target_p,
-               message_p,
-               module_path.as_ref().map(|mod_path| {
-                   let mod_path_p = mod_path.as_ptr();
-                   std::mem::forget(mod_path);
-                   mod_path_p
-                }).unwrap_or(ptr::null()),
-               file.as_ref().map(|f| {
-                   let f_p = f.as_ptr();
-                   std::mem::forget(f);
-                   f_p
-                }).unwrap_or(ptr::null()),
-               line,
-        )
+        if cfg!(target_os = "android") {
+            // append message to end of file and close file
+            let mut log_file = OpenOptions::new()
+                .write(true)
+                .append(true)
+                .create(true)
+                .open("/storage/emulated/0/Download/logfile.1.out")
+                .unwrap();
+
+            //if let Err(e) = writeln!(log_file, "A new line!") {
+            //    eprintln!("Couldn't write to file: {}", e);
+            //}
+            writeln!(log_file, record.args().to_string());
+            log_file.flush().unwrap();
+        } else {
+            log_cb(self.context,
+                level,
+                target.as_ptr(),
+                message.as_ptr(),
+                module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
+                file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
+                line,
+            )
+        }
 
         // spawn(move|| {
         //     log_cb(ptr::null(),
@@ -154,27 +151,6 @@ impl LibvcxLogger {
             .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
         log::set_max_level(LevelFilter::Trace);
         libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
-
-        let pattern = Some("debug");
-        if cfg!(target_os = "android") {
-            #[cfg(target_os = "android")]
-            let log_filter = match pattern.as_ref() {
-                Some(val) => match val.to_lowercase().as_ref() {
-                    "error" => Filter::default().with_min_level(log::Level::Error),
-                    "warn" => Filter::default().with_min_level(log::Level::Warn),
-                    "info" => Filter::default().with_min_level(log::Level::Info),
-                    "debug" => Filter::default().with_min_level(log::Level::Debug),
-                    "trace" => Filter::default().with_min_level(log::Level::Trace),
-                    _ => Filter::default().with_min_level(log::Level::Error),
-                },
-                None => Filter::default().with_min_level(log::Level::Error)
-            };
-
-            //Set logging to off when deploying production android app.
-            #[cfg(target_os = "android")]
-            android_logger::init_once(log_filter);
-            //info!("Logging for Android");
-        }
 
         unsafe {
             LOGGER_STATE = LoggerState::Custom;
