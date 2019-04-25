@@ -63,6 +63,7 @@ fn main() {
         println!("cargo:rustc-link-search=native={}",libindy_lib_path);
         println!("cargo:rustc-link-lib=static=indy");
     }else if target.contains("aarch64-linux-android") || target.contains("armv7-linux-androideabi") ||
+        target.contains("armv7a-linux-androideabi") ||
         target.contains("arm-linux-androideabi") || target.contains("i686-linux-android") ||
         target.contains("x86_64-linux-android") || target.contains("aarch64-apple-ios") ||
         target.contains("armv7-apple-ios") || target.contains("armv7s-apple-ios") ||

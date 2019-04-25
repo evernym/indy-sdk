@@ -179,7 +179,7 @@ that may be need for your applications.
 
  * `libindy.a` - This is a static library, which is compiled with NDK.
 
- [How to use instructions.](https://github.com/hyperledger/indy-sdk/blob/master/docs/android-build.md#usage)  
+ [How to use instructions.](https://github.com/hyperledger/indy-sdk/blob/master/docs/android-build.md#usage)
 
 {release channel} must be replaced with rc or stable to define corresponded release channel.
 See section "Release channels" for more details.
@@ -188,7 +188,7 @@ See section "Release channels" for more details.
 
  - [WARNING] This library should be considered as experimental as currently unit tests are *not* executed in the CI phase.
 
- - We are using the [NDK16b](https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip) because it is the last NDK to have support for `gnustl_shared` stl.
+ - We are using the [NDK16b](https://dl.google.com/android/repository/android-ndk-r19c-linux-x86_64.zip) because it is the last NDK to have support for `gnustl_shared` stl.
  gnustl_shared is deprecated in latest NDK. gnustal_shared is needed because the dependencies are compiled using gnustal_shared and you will get build errors if more than one type of stl while compiling.
 
 

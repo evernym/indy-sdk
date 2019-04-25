@@ -9,11 +9,11 @@ WORK_DIR=$(abspath "$WORK_DIR")
 NDK_DIR=$WORK_DIR/NDK
 
 declare -a archs=(
-    "arm" "arm" "16" "arm-linux-androideabi"
-    "arm" "armv7" "16" "arm-linux-androideabi"
-    "arm64" "arm64" "21" "aarch64-linux-android"
-    "x86" "x86" "16" "i686-linux-android"
-    "x86_64" "x86_64" "21" "x86_64-linux-android"
+    "arm" "arm" "23" "arm-linux-androideabi"
+    "arm" "armv7" "23" "armv7a-linux-androideabi"
+    "arm64" "arm64" "23" "aarch64-linux-android"
+    "x86" "x86" "23" "i686-linux-android"
+    "x86_64" "x86_64" "23" "x86_64-linux-android"
     )
 archslen=${#archs[@]}
 
@@ -25,15 +25,15 @@ mkdir -p $WORK_DIR/libzmq-android/zmq
 
 cd $WORK_DIR/libzmq-android/libsodium
 
-if [ ! -f "libsodium-1.0.12.tar.gz" ] ; then
-    echo "Downloading libsodium-1.0.12.tar.gz"
-    wget -q wget https://github.com/jedisct1/libsodium/releases/download/1.0.12/libsodium-1.0.12.tar.gz
+if [ ! -f "libsodium-1.0.17.tar.gz" ] ; then
+    echo "Downloading libsodium-1.0.17.tar.gz"
+    wget -q wget https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz
 else
-    echo "Skipping download libsodium-1.0.12.tar.gz"
+    echo "Skipping download libsodium-1.0.17.tar.gz"
 fi
 
-if [ ! -d "$WORK_DIR/libzmq-android/libsodium/libsodium-1.0.12" ]; then
-    tar zxf ./libsodium-1.0.12.tar.gz
+if [ ! -d "$WORK_DIR/libzmq-android/libsodium/libsodium-1.0.17" ]; then
+    tar zxf ./libsodium-1.0.17.tar.gz
 fi
 
 for (( arch=0; arch<${archslen}; arch=arch+4 ));
@@ -56,7 +56,7 @@ do
     #cd /home/sodium_user
     #echo "Building Android NDK for architecture ${target_arch}"
     #python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --arch ${ndk_arch} --api ${target_api} --install-dir ${TOOLCHAIN_DIR}
-    cd $WORK_DIR/libzmq-android/libsodium/libsodium-1.0.12
+    cd $WORK_DIR/libzmq-android/libsodium/libsodium-1.0.17
     make clean
     ./autogen.sh
     ./configure --prefix=$WORK_DIR/libzmq-android/libsodium/libsodium_${TARGET_ARCH} --disable-soname-versions --host=${CROSS_COMPILE}

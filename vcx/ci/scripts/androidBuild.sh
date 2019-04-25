@@ -39,24 +39,24 @@ retrieve_prebuilt_binaries() {
     ANDROID_BUILD_FOLDER=${PWD}
     pushd ${ANDROID_BUILD_FOLDER}
         echo -e "${GREEN}Downloading openssl for $1 ${RESET}"
-        curl -sSLO https://repo.sovrin.org/android/libindy/deps/openssl/openssl_$1.zip
-        unzip -o -qq openssl_$1.zip
-        export OPENSSL_DIR=${ANDROID_BUILD_FOLDER}/openssl_$1
+        curl -sSLO https://repo.corp.evernym.com/filely/android/openssl-1.1.1a_$1.zip
+        unzip -o -qq openssl-1.1.1a_$1.zip
+        export OPENSSL_DIR=${ANDROID_BUILD_FOLDER}/openssl-1.1.1a_$1
         echo -e "${GREEN}Done!${RESET}"
 
         echo -e "${GREEN}Downloading sodium for $1 ${RESET}"
-        curl -sSLO https://repo.sovrin.org/android/libindy/deps/sodium/libsodium_$1.zip
+        curl -sSLO https://repo.corp.evernym.com/filely/android/libsodium_$1.zip
         unzip -o -qq libsodium_$1.zip
         export SODIUM_DIR=${ANDROID_BUILD_FOLDER}/libsodium_$1
         echo -e "${GREEN}Done!${RESET}"
 
         echo -e "${GREEN}Downloading zmq for $1 ${RESET}"
-        curl -sSLO https://repo.sovrin.org/android/libindy/deps/zmq/libzmq_$1.zip
+        curl -sSLO https://repo.corp.evernym.com/filely/android/libzmq_$1.zip
         unzip -o -qq libzmq_$1.zip
         export LIBZMQ_DIR=${ANDROID_BUILD_FOLDER}/libzmq_$1
         echo -e "${GREEN}Done!${RESET}"
 
-        rm openssl_$1.zip
+        rm openssl-1.1.1a_$1.zip
         rm libsodium_$1.zip
         rm libzmq_$1.zip
     popd
@@ -70,7 +70,7 @@ generate_flags(){
     if [ $1 == "arm" ]; then
         export ARCH="arm"
         export TRIPLET="arm-linux-androideabi"
-        export PLATFORM="16"
+        export PLATFORM="21"
     elif [ $1 == "arm64" ]; then
         export ARCH="arm64"
         export TRIPLET="aarch64-linux-android"
@@ -78,11 +78,11 @@ generate_flags(){
     elif [ $1 == "armv7" ]; then
         export ARCH="armv7"
         export TRIPLET="armv7-linux-androideabi"
-        export PLATFORM="16"
+        export PLATFORM="21"
     elif [ $1 == "x86" ]; then
         export ARCH="x86"
         export TRIPLET="i686-linux-android"
-        export PLATFORM="16"
+        export PLATFORM="21"
     elif [ $1 == "x86_64" ]; then
         export ARCH="x86_64"
         export TRIPLET="x86_64-linux-android"
