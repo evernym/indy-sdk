@@ -19,6 +19,7 @@ pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
 use utils::threadpool::spawn;
 use std::io::prelude::*;
+use std::fs::{File, OpenOptions};
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
