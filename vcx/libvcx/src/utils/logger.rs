@@ -86,19 +86,39 @@ impl log::Log for LibvcxLogger {
         let log_cb = self.log;
 
         let level = record.level() as u32;
+
         let target = CString::new(record.target()).unwrap();
+        let target_p = target.as_ptr();
+        std::mem::forget(target);
+
         let message = CString::new(record.args().to_string()).unwrap();
+        let message_p = message.as_ptr();
+        std::mem::forget(message);
 
         let module_path = record.module_path().map(|a| CString::new(a).unwrap());
+        //let module_path_p = module_path.as_ptr();
+        //std::mem::forget(module_path);
+
         let file = record.file().map(|a| CString::new(a).unwrap());
+        //let file_p = file.as_ptr();
+        //std::mem::forget(file);
+
         let line = record.line().unwrap_or(0);
 
         log_cb(self.context,
                level,
-               target.as_ptr(),
-               message.as_ptr(),
-               module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
-               file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
+               target_p,
+               message_p,
+               module_path.as_ref().map(|mod_path| {
+                   let mod_path_p = mod_path.as_ptr();
+                   std::mem::forget(mod_path);
+                   mod_path_p
+                }).unwrap_or(ptr::null()),
+               file.as_ref().map(|f| {
+                   let f_p = f.as_ptr();
+                   std::mem::forget(f);
+                   f_p
+                }).unwrap_or(ptr::null()),
                line,
         )
 
