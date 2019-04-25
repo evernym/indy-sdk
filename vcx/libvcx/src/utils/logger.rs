@@ -106,7 +106,7 @@ impl log::Log for LibvcxLogger {
             //if let Err(e) = writeln!(log_file, "A new line!") {
             //    eprintln!("Couldn't write to file: {}", e);
             //}
-            writeln!(log_file, record.args().to_string());
+            writeln!(log_file, "{}", record.args().to_string());
             log_file.flush().unwrap();
         } else {
             log_cb(self.context,
