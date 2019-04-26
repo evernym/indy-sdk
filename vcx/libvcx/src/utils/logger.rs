@@ -175,9 +175,16 @@ impl LibvcxLogger {
 //OFF	The highest possible rank and is intended to turn off logging.
 //TRACE	Designates finer-grained informational events than the DEBUG.
 //WARN	Designates potentially harmful situations.
-pub struct LibvcxDefaultLogger;
+pub struct LibvcxDefaultLogger {
+    pattern: Option<String>,
+    log: LogCB,
+}
 
 impl LibvcxDefaultLogger {
+    fn new(pattern: Option<String>, log: LogCB) -> Self {
+        LibvcxDefaultLogger { pattern, log }
+    }
+
     pub fn init_testing_logger() {
         //trace!("LibvcxDefaultLogger::init_testing_logger >>>");
 
@@ -190,9 +197,14 @@ impl LibvcxDefaultLogger {
         }
     }
 
-    pub fn init(pattern: Option<String>) -> VcxResult<()> {
+    pub fn init(pattern: Option<String>, log: LogCB) -> VcxResult<()> {
         //trace!("LibvcxDefaultLogger::init >>> pattern: {:?}", pattern);
+        let logger_cb = LibvcxDefaultLogger::new(pattern, log);
+        unsafe {
+            LOG_CB = Some(log)
+        };
 
+        Ok(())
         let pattern = pattern.or(env::var("RUST_LOG").ok());
         if cfg!(target_os = "android") {
             #[cfg(target_os = "android")]

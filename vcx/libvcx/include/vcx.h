@@ -1608,7 +1608,14 @@ vcx_error_t vcx_wallet_validate_payment_address(int32_t command_handle,
                                              void (*cb)(int32_t, vcx_error_t));
 
 
-vcx_error_t vcx_set_default_logger( const char * pattern );
+vcx_error_t vcx_set_default_logger( const char * pattern,
+                            void (*logFn)(const void*  context,
+                                          vcx_u32_t level,
+                                          const char* target,
+                                          const char* message,
+                                          const char* module_path,
+                                          const char* file,
+                                          vcx_u32_t line));
 vcx_error_t vcx_set_logger( const void* context,
                             vcx_bool_t (*enabledFn)(const void*  context,
                                                       vcx_u32_t level,
