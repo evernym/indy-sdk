@@ -87,13 +87,13 @@ impl log::Log for LibvcxLogger {
     fn log(&self, record: &Record) {
         let log_cb = self.log;
 
-        let level = record.level() as u32;
+        // let level = record.level() as u32;
 
-        let target = CString::new(record.target()).unwrap();
-        let message = CString::new(record.args().to_string()).unwrap();
-        let module_path = record.module_path().map(|a| CString::new(a).unwrap());
-        let file = record.file().map(|a| CString::new(a).unwrap());
-        let line = record.line().unwrap_or(0);
+        // let target = CString::new(record.target()).unwrap();
+        // let message = CString::new(record.args().to_string()).unwrap();
+        // let module_path = record.module_path().map(|a| CString::new(a).unwrap());
+        // let file = record.file().map(|a| CString::new(a).unwrap());
+        // let line = record.line().unwrap_or(0);
 
         // if cfg!(target_os = "android") {
         //     // append message to end of file and close file
