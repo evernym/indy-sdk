@@ -57,7 +57,7 @@ public class VcxWrapperTests {
 
         Callback cb3 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(int myError) {
+            public void callback(Pointer context, String target, int myError) {
                 //Log.d(TAG, "[3] Ryan and Norm at it again [" + myError + "]");
                 LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + myError + "]");
                 try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
@@ -69,7 +69,7 @@ public class VcxWrapperTests {
 
         Callback cb2 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(int myError) {
+            public void callback(Pointer context, String target, int myError) {
                 //Log.d(TAG, "[2] Ryan and Norm at it again [" + myError + "]");
                 LibVcx.logMessage(this.getClass().getName(), 1, "[2] Ryan and Norm at it again [" + myError + "]");
                 try {
@@ -83,7 +83,7 @@ public class VcxWrapperTests {
 
         Callback cb1 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(int myError) {
+            public void callback(Pointer context, String target, int myError) {
                 //Log.d(TAG, "[1] Ryan and Norm at it again [" + myError + "]");
                 LibVcx.logMessage(this.getClass().getName(), 1, "[1] Ryan and Norm at it again [" + myError + "]");
                 try {

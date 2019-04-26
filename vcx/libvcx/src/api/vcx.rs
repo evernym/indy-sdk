@@ -9,42 +9,52 @@ use utils::threadpool::spawn;
 use error::prelude::*;
 
 
+// pub type LogCB = extern fn(context: *const c_void,
+//                            level: u32,
+//                            target: *const c_char,
+//                            message: *const c_char,
+//                            module_path: *const c_char,
+//                            file: *const c_char,
+//                            line: u32);
+
+static __TARGET: &'static str = "target.as_ptr()";
+
 #[no_mangle]
-pub extern fn ryan_norm_api_1(cb: Option<extern fn(err: u32)>) -> u32 {
+pub extern fn ryan_norm_api_1(cb: Option<extern fn(context: *const c_void, target: *const c_char, err: u32)>) -> u32 {
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(11);
+        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 11);
         Ok(())
     });
-    10
+    1111111
 }
 
 
 #[no_mangle]
-pub extern fn ryan_norm_api_2(cb: Option<extern fn(err: u32)>) -> u32 {
+pub extern fn ryan_norm_api_2(cb: Option<extern fn(context: *const c_void, target: *const c_char, err: u32)>) -> u32 {
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(22);
+        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 22);
         Ok(())
     });
-    20
+    2222222
 }
 
 
 #[no_mangle]
-pub extern fn ryan_norm_api_3(cb: Option<extern fn(err: u32)>) -> u32 {
+pub extern fn ryan_norm_api_3(cb: Option<extern fn(context: *const c_void, target: *const c_char, err: u32)>) -> u32 {
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(33);
+        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 33);
         Ok(())
     });
-    30
+    3333333
 }
 
 /// Initializes VCX with config settings
