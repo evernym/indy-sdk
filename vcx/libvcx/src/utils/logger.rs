@@ -95,30 +95,30 @@ impl log::Log for LibvcxLogger {
         let file = record.file().map(|a| CString::new(a).unwrap());
         let line = record.line().unwrap_or(0);
 
-        if cfg!(target_os = "android") {
-            // append message to end of file and close file
-            let mut log_file = OpenOptions::new()
-                .write(true)
-                .append(true)
-                .create(true)
-                .open("/storage/emulated/0/Download/logfile.1.out")
-                .unwrap();
+        // if cfg!(target_os = "android") {
+        //     // append message to end of file and close file
+        //     let mut log_file = OpenOptions::new()
+        //         .write(true)
+        //         .append(true)
+        //         .create(true)
+        //         .open("/storage/emulated/0/Download/logfile.1.out")
+        //         .unwrap();
 
-            //if let Err(e) = writeln!(log_file, "A new line!") {
-            //    eprintln!("Couldn't write to file: {}", e);
-            //}
-            writeln!(log_file, "{}", record.args().to_string());
-            log_file.flush().unwrap();
-        } else {
-            log_cb(self.context,
-                level,
-                target.as_ptr(),
-                message.as_ptr(),
-                module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
-                file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
-                line,
-            )
-        }
+        //     //if let Err(e) = writeln!(log_file, "A new line!") {
+        //     //    eprintln!("Couldn't write to file: {}", e);
+        //     //}
+        //     writeln!(log_file, "{}", record.args().to_string());
+        //     log_file.flush().unwrap();
+        // } else {
+        //     log_cb(self.context,
+        //         level,
+        //         target.as_ptr(),
+        //         message.as_ptr(),
+        //         module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
+        //         file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
+        //         line,
+        //     )
+        // }
 
         // spawn(move|| {
         //     log_cb(ptr::null(),
