@@ -35,9 +35,9 @@ pub extern fn ryan_norm_api_1(cb: Option<extern fn(context: *const c_void, level
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-    spawn(move|| {
+    //spawn(move|| {
         //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 11);
-        log_cb(ptr::null(),
+        cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
             CString::new(__MESSAGE).unwrap().as_ptr(),
@@ -46,8 +46,8 @@ pub extern fn ryan_norm_api_1(cb: Option<extern fn(context: *const c_void, level
             45
         );
 
-        Ok(())
-    });
+        //Ok(())
+    //});
     1111111
 }
 
@@ -57,9 +57,9 @@ pub extern fn ryan_norm_api_2(cb: Option<extern fn(context: *const c_void, level
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-    spawn(move|| {
+    //spawn(move|| {
         //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 22);
-        log_cb(ptr::null(),
+        cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
             CString::new(__MESSAGE).unwrap().as_ptr(),
@@ -68,8 +68,8 @@ pub extern fn ryan_norm_api_2(cb: Option<extern fn(context: *const c_void, level
             45
         );
 
-        Ok(())
-    });
+        //Ok(())
+    //});
     2222222
 }
 
@@ -79,9 +79,9 @@ pub extern fn ryan_norm_api_3(cb: Option<extern fn(context: *const c_void, level
 
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
-    spawn(move|| {
+    //spawn(move|| {
         //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 33);
-        log_cb(ptr::null(),
+        cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
             CString::new(__MESSAGE).unwrap().as_ptr(),
@@ -90,8 +90,8 @@ pub extern fn ryan_norm_api_3(cb: Option<extern fn(context: *const c_void, level
             45
         );
 
-        Ok(())
-    });
+        //Ok(())
+    //});
     3333333
 }
 
