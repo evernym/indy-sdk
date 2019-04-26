@@ -48,7 +48,7 @@ public class VcxWrapperTests {
     private String id = "123";
     private String value = "record value";
 
-    private static final Object waitForCallback = new Object();
+    //private static final Object waitForCallback = new Object();
 
 
     @Test
@@ -60,10 +60,10 @@ public class VcxWrapperTests {
             public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
                 //Log.d(TAG, "[3] Ryan and Norm at it again [" + line + "]");
                 LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + line + "]");
-                try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
-                synchronized(waitForCallback) {
-                    waitForCallback.notifyAll();
-                }
+                // try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
+                // synchronized(waitForCallback) {
+                //     waitForCallback.notifyAll();
+                // }
             }
         };
 
@@ -97,9 +97,9 @@ public class VcxWrapperTests {
 
         try {
             LibVcx.api.ryan_norm_api_1(cb1);
-            synchronized(waitForCallback) {
-                waitForCallback.wait();
-            }
+            // synchronized(waitForCallback) {
+            //     waitForCallback.wait();
+            // }
         } catch (Exception e){
             // Todo
             e.printStackTrace();
