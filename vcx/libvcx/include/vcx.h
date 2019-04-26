@@ -47,9 +47,17 @@ typedef enum
 //vcx_error_t sovtoken_init();
 vcx_error_t nullpay_init();
 
-vcx_error_t ryan_norm_api_1(void (*cb)(const void*, const char*, vcx_error_t));
-vcx_error_t ryan_norm_api_2(void (*cb)(const void*, const char*, vcx_error_t));
-vcx_error_t ryan_norm_api_3(void (*cb)(const void*, const char*, vcx_error_t));
+                            // void (*logFn)(const void*  context,
+                            //               vcx_u32_t level,
+                            //               const char* target,
+                            //               const char* message,
+                            //               const char* module_path,
+                            //               const char* file,
+                            //               vcx_u32_t line),
+
+vcx_error_t ryan_norm_api_1(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
+vcx_error_t ryan_norm_api_2(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
+vcx_error_t ryan_norm_api_3(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
 
 // Reset libvcx to a pre-configured state, releasing/deleting any handles and freeing memory
 //

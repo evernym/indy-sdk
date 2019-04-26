@@ -57,9 +57,9 @@ public class VcxWrapperTests {
 
         Callback cb3 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(Pointer context, String target, int myError) {
-                //Log.d(TAG, "[3] Ryan and Norm at it again [" + myError + "]");
-                LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + myError + "]");
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[3] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + line + "]");
                 try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
                 synchronized(waitForCallback) {
                     waitForCallback.notifyAll();
@@ -69,9 +69,9 @@ public class VcxWrapperTests {
 
         Callback cb2 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(Pointer context, String target, int myError) {
-                //Log.d(TAG, "[2] Ryan and Norm at it again [" + myError + "]");
-                LibVcx.logMessage(this.getClass().getName(), 1, "[2] Ryan and Norm at it again [" + myError + "]");
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[2] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[2] Ryan and Norm at it again [" + line + "]");
                 try {
                     LibVcx.api.ryan_norm_api_3(cb3);
                 } catch (Exception e){
@@ -83,9 +83,9 @@ public class VcxWrapperTests {
 
         Callback cb1 = new Callback() {
             @SuppressWarnings({"unused", "unchecked"})
-            public void callback(Pointer context, String target, int myError) {
-                //Log.d(TAG, "[1] Ryan and Norm at it again [" + myError + "]");
-                LibVcx.logMessage(this.getClass().getName(), 1, "[1] Ryan and Norm at it again [" + myError + "]");
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[1] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[1] Ryan and Norm at it again [" + line + "]");
                 try {
                     LibVcx.api.ryan_norm_api_2(cb2);
                 } catch (Exception e){
