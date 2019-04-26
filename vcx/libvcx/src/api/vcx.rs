@@ -1,5 +1,4 @@
 use utils::version_constants;
-use libc::c_char;
 use utils::cstring::CStringUtils;
 use utils::libindy::{wallet, pool};
 use utils::error;
@@ -7,7 +6,7 @@ use settings;
 use std::ffi::CString;
 use utils::threadpool::spawn;
 use error::prelude::*;
-use self::libc::{c_void, c_char};
+use libc::{c_void, c_char};
 use std::ptr;
 
 // pub type LogCB = extern fn(context: *const c_void,
