@@ -53,10 +53,10 @@ static mut ENABLED_CB: Option<EnabledCB> = None;
 static mut LOG_CB: Option<LogCB> = None;
 static mut FLUSH_CB: Option<FlushCB> = None;
 
-// static __TARGET: &'static str = "target.as_ptr()";
-// static __MESSAGE: &'static str = "message.as_ptr()";
-// static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
-// static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+static __TARGET: &'static str = "target.as_ptr()";
+static __MESSAGE: &'static str = "message.as_ptr()";
+static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
 
 pub struct LibvcxLogger {
     context: *const CVoid,
@@ -121,14 +121,14 @@ impl log::Log for LibvcxLogger {
         // }
 
         // spawn(move|| {
-        //     log_cb(ptr::null(),
-        //         1,
-        //         CString::new(__TARGET).unwrap().as_ptr(),
-        //         CString::new(__MESSAGE).unwrap().as_ptr(),
-        //         CString::new(__MOD_PATH).unwrap().as_ptr(),
-        //         CString::new(__FILE_PATH).unwrap().as_ptr(),
-        //         45
-        //     );
+            log_cb(ptr::null(),
+                1,
+                CString::new(__TARGET).unwrap().as_ptr(),
+                CString::new(__MESSAGE).unwrap().as_ptr(),
+                CString::new(__MOD_PATH).unwrap().as_ptr(),
+                CString::new(__FILE_PATH).unwrap().as_ptr(),
+                45
+            )
         //     Ok(())
         // });
     }
