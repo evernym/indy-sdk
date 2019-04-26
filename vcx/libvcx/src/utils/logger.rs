@@ -204,7 +204,6 @@ impl LibvcxDefaultLogger {
             LOG_CB = Some(log)
         };
 
-        Ok(())
         let pattern = pattern.or(env::var("RUST_LOG").ok());
         if cfg!(target_os = "android") {
             #[cfg(target_os = "android")]
