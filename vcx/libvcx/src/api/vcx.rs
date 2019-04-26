@@ -7,7 +7,8 @@ use settings;
 use std::ffi::CString;
 use utils::threadpool::spawn;
 use error::prelude::*;
-
+use self::libc::{c_void, c_char};
+use std::ptr;
 
 // pub type LogCB = extern fn(context: *const c_void,
 //                            level: u32,
