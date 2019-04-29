@@ -191,7 +191,7 @@ impl LibvcxDefaultLogger {
         // ensures that the test that is calling this wont fail simply because
         // the user did not set the RUST_LOG env var.
         let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
-        match LibvcxDefaultLogger::init(pattern, LOG_CB) {
+        match LibvcxDefaultLogger::init(pattern) {
             Ok(_) => (),
             Err(_) => (),
         }
