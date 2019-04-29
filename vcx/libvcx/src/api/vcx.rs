@@ -36,7 +36,7 @@ pub extern fn ryan_norm_api_1(cb: Option<extern fn(context: *const c_void, level
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 11);
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 11);
         cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
@@ -58,7 +58,7 @@ pub extern fn ryan_norm_api_2(cb: Option<extern fn(context: *const c_void, level
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 22);
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 22);
         cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
@@ -80,7 +80,7 @@ pub extern fn ryan_norm_api_3(cb: Option<extern fn(context: *const c_void, level
     check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
 
     spawn(move|| {
-        cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 33);
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 33);
         cb(ptr::null(),
             1,
             CString::new(__TARGET).unwrap().as_ptr(),
