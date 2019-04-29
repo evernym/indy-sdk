@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/android/indy-sdk.evernym
+cd /home/vagrant/indy-sdk.evernym
 #git checkout -- .
 #git pull
 
