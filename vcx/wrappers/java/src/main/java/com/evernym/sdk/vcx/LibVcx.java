@@ -488,7 +488,7 @@ public abstract class LibVcx {
 
         /** Set custom logger implementation.. */
         int vcx_set_logger(Pointer context, Callback enabled, Callback log, Callback flush);
-        int vcx_set_default_logger(String log_level, Callback log);
+        int vcx_set_default_logger(String log_level);
 
         /**
          * Evernym extensions
@@ -625,7 +625,7 @@ public abstract class LibVcx {
     }
 
     private static void initLogger() {
-        //api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
-        api.vcx_set_default_logger("trace", Logger.log);
+        api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
+        //api.vcx_set_default_logger("trace");
     }
 }

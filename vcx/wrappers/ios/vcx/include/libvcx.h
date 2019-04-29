@@ -155,7 +155,7 @@ vcx_error_t vcx_connection_create_with_invite(vcx_command_handle_t command_handl
 
 /** Deletes a connection, send an API call to agency to stop sending messages from this connection */
 vcx_error_t vcx_connection_delete_connection(vcx_command_handle_t command_handle, vcx_connection_handle_t connection_handle, void (*cb)(vcx_command_handle_t, vcx_error_t err));
-
+    
 /** Send a message to the specified connection
 ///
 /// #params
@@ -181,7 +181,7 @@ vcx_error_t vcx_connection_send_message(vcx_command_handle_t command_handle,
                                         const char *msg_type,
                                         const char *msg_title,
                                         void (*cb)(vcx_command_handle_t xcommand_handle, vcx_error_t err, const char *msg_id));
-
+    
 /// Generate a signature for the specified data
 ///
 /// #params
@@ -206,7 +206,7 @@ vcx_error_t vcx_connection_sign_data(vcx_command_handle_t command_handle,
                                                vcx_error_t err,
                                                vcx_data_t *signature_raw,
                                                vcx_u32_t signature_len));
-
+    
 /// Verify the signature is valid for the specified data
 ///
 /// #params
@@ -438,14 +438,7 @@ vcx_error_t vcx_ledger_get_fees(vcx_command_handle_t command_handle, void(*cb)(v
 /**
  * logging
  **/
-vcx_error_t vcx_set_default_logger(const char* pattern,
-                            void (*logFn)(const void*  context,
-                                          vcx_u32_t level,
-                                          const char* target,
-                                          const char* message,
-                                          const char* module_path,
-                                          const char* file,
-                                          vcx_u32_t line));
+vcx_error_t vcx_set_default_logger(const char* pattern);
 
 vcx_error_t vcx_set_logger( const void* context,
                             vcx_bool_t (*enabledFn)(const void*  context,

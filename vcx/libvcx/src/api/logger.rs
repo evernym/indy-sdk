@@ -17,15 +17,14 @@ use error::prelude::*;
 /// #Returns
 /// u32 error code
 #[no_mangle]
-pub extern fn vcx_set_default_logger(pattern: *const c_char, log: Option<LogCB>) -> u32 {
+pub extern fn vcx_set_default_logger(pattern: *const c_char) -> u32 {
     info!("vcx_set_default_logger >>>");
 
     check_useful_opt_c_str!(pattern, VcxErrorKind::InvalidConfiguration);
-    check_useful_c_callback!(log, VcxErrorKind::InvalidOption);
 
     trace!("vcx_set_default_logger(pattern: {:?})", pattern);
 
-    match LibvcxDefaultLogger::init(pattern, log) {
+    match LibvcxDefaultLogger::init(pattern) {
         Ok(_) => {
             debug!("Logger Successfully Initialized");
             SUCCESS.code_num
