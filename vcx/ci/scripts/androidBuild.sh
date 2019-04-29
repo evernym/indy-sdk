@@ -166,7 +166,7 @@ build_vcx() {
     ./build.nondocker.sh ${ARCH} ${PLATFORM} ${TRIPLET} ${OPENSSL_DIR} ${SODIUM_DIR} ${LIBZMQ_DIR} ${LIBINDY_DIR} ${LIBSOVTOKEN_DIR} ${LIBNULLPAY_DIR}
     popd
     #rm -rf libvcx_${ARCH}
-    mv ${LIBVCX_PATH}/libvcx_${ARCH} .
+    #mv ${LIBVCX_PATH}/libvcx_${ARCH} .
 
 }
 
