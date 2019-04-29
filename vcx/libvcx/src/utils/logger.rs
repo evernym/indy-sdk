@@ -17,9 +17,9 @@ use std::env;
 use std::ptr;
 pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
-//use utils::threadpool::spawn;
-//use std::io::prelude::*;
-//use std::fs::{File, OpenOptions};
+use utils::threadpool::spawn;
+use std::io::prelude::*;
+use std::fs::{File, OpenOptions};
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
@@ -191,7 +191,7 @@ impl LibvcxDefaultLogger {
         // ensures that the test that is calling this wont fail simply because
         // the user did not set the RUST_LOG env var.
         let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
-        match LibvcxDefaultLogger::init(pattern, LOG_CB.unwrap()) {
+        match LibvcxDefaultLogger::init(pattern, LOG_CB) {
             Ok(_) => (),
             Err(_) => (),
         }
