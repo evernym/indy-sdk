@@ -21,11 +21,11 @@ cd /home/android/indy-sdk.evernym
 # cp -f ./vcx/libvcx/build_scripts/android/vcx/libvcx_armv7/*.so ./vcx/wrappers/java/android/src/main/jniLibs/armeabi-v7
 # cp -f ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86/*.so ./vcx/wrappers/java/android/src/main/jniLibs/x86
 # cp -f ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86_64/*.so ./vcx/wrappers/java/android/src/main/jniLibs/x86_64
-rm -rf ./runtime_android_build/libvcx_arm;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_arm ./runtime_android_build
-rm -rf ./runtime_android_build/libvcx_arm64;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_arm64 ./runtime_android_build
-rm -rf ./runtime_android_build/libvcx_armv7;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_armv7 ./runtime_android_build
-rm -rf ./runtime_android_build/libvcx_x86;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86 ./runtime_android_build
-rm -rf ./runtime_android_build/libvcx_x86_64;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86_64 ./runtime_android_build
+# rm -rf ./runtime_android_build/libvcx_arm;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_arm ./runtime_android_build
+# rm -rf ./runtime_android_build/libvcx_arm64;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_arm64 ./runtime_android_build
+# rm -rf ./runtime_android_build/libvcx_armv7;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_armv7 ./runtime_android_build
+# rm -rf ./runtime_android_build/libvcx_x86;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86 ./runtime_android_build
+# rm -rf ./runtime_android_build/libvcx_x86_64;cp -rf ./vcx/libvcx/build_scripts/android/vcx/libvcx_x86_64 ./runtime_android_build
 
 ./vcx/ci/scripts/androidPackage.sh
 # ANDROID_JNI_LIB=./vcx/wrappers/java/android/src/main/jniLibs
