@@ -208,7 +208,7 @@ export TARGET=android
 
 printenv
 
-python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --arch ${TARGET_ARCH_DIR} --api ${TARGET_API} --install-dir ${TOOLCHAIN_DIR}
+python3 ${ANDROID_NDK_ROOT}/build/tools/make_standalone_toolchain.py --force --arch ${TARGET_ARCH_DIR} --api ${TARGET_API} --install-dir ${TOOLCHAIN_DIR}
 cat << EOF > ~/.cargo/config
 [target.${CROSS_COMPILE}]
 ar = "${AR}"
