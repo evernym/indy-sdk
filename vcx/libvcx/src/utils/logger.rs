@@ -147,30 +147,10 @@ unsafe impl Send for LibvcxLogger {}
 impl LibvcxLogger {
     pub fn init(context: *const CVoid, enabled: Option<EnabledCB>, log: LogCB, flush: Option<FlushCB>) -> VcxResult<()> {
         //trace!("LibvcxLogger::init >>>");
-        // let logger = LibvcxLogger::new(context, enabled, log, flush);
-        // log::set_boxed_logger(Box::new(logger))
-        //     .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
-        // log::set_max_level(LevelFilter::Trace);
-        let pattern = Some("DEBUG");
-        if cfg!(target_os = "android") {
-            #[cfg(target_os = "android")]
-            let log_filter = match pattern.as_ref() {
-                Some(val) => match val.to_lowercase().as_ref() {
-                    "error" => Filter::default().with_min_level(log::Level::Error),
-                    "warn" => Filter::default().with_min_level(log::Level::Warn),
-                    "info" => Filter::default().with_min_level(log::Level::Info),
-                    "debug" => Filter::default().with_min_level(log::Level::Debug),
-                    "trace" => Filter::default().with_min_level(log::Level::Trace),
-                    _ => Filter::default().with_min_level(log::Level::Error),
-                },
-                None => Filter::default().with_min_level(log::Level::Error)
-            };
-
-            //Set logging to off when deploying production android app.
-            #[cfg(target_os = "android")]
-            android_logger::init_once(log_filter);
-            //info!("Logging for Android");
-        }
+        let logger = LibvcxLogger::new(context, enabled, log, flush);
+        log::set_boxed_logger(Box::new(logger))
+            .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
+        log::set_max_level(LevelFilter::Trace);
         libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
         
         unsafe {
