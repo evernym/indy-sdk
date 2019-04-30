@@ -175,22 +175,33 @@ impl LibvcxLogger {
 //OFF	The highest possible rank and is intended to turn off logging.
 //TRACE	Designates finer-grained informational events than the DEBUG.
 //WARN	Designates potentially harmful situations.
+
 pub struct LibvcxDefaultLogger;
+// pub struct LibvcxDefaultLogger {
+//     pattern: Option<String>,
+//     log: Option<LogCB>,
+// }
+
+// impl LibvcxDefaultLogger {
+//     fn new(pattern: Option<String>, log: Option<LogCB>) -> Self {
+//         LibvcxDefaultLogger { pattern, log }
+//     }
+// }
 
 impl LibvcxDefaultLogger {
-    pub fn init_testing_logger() {
-        //trace!("LibvcxDefaultLogger::init_testing_logger >>>");
+    // pub fn init_testing_logger() {
+    //     //trace!("LibvcxDefaultLogger::init_testing_logger >>>");
 
-        // ensures that the test that is calling this wont fail simply because
-        // the user did not set the RUST_LOG env var.
-        let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
-        match LibvcxDefaultLogger::init(pattern) {
-            Ok(_) => (),
-            Err(_) => (),
-        }
-    }
+    //     // ensures that the test that is calling this wont fail simply because
+    //     // the user did not set the RUST_LOG env var.
+    //     let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
+    //     match LibvcxDefaultLogger::init(pattern) {
+    //         Ok(_) => (),
+    //         Err(_) => (),
+    //     }
+    // }
 
-    pub fn init(pattern: Option<String>) -> VcxResult<()> {
+    pub fn init(pattern: Option<String>, log: LogCB) -> VcxResult<()> {
         //trace!("LibvcxDefaultLogger::init >>> pattern: {:?}", pattern);
 
         let pattern = pattern.or(env::var("RUST_LOG").ok());
@@ -270,6 +281,16 @@ impl LibvcxDefaultLogger {
                 .line(Some(line))
                 .build(),
         );
+        
+        // log_cb(self.context,
+        //     level,
+        //     target.as_ptr(),
+        //     message.as_ptr(),
+        //     module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
+        //     file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
+        //     line,
+        // );
+
     }
 
     extern fn flush(_context: *const CVoid) {
@@ -343,9 +364,9 @@ mod tests {
         }
     }
 
-    #[test]
-    fn test_logger_for_testing() {
-        LibvcxDefaultLogger::init_testing_logger();
-        LibvcxDefaultLogger::init_testing_logger();
-    }
+    // #[test]
+    // fn test_logger_for_testing() {
+    //     LibvcxDefaultLogger::init_testing_logger();
+    //     LibvcxDefaultLogger::init_testing_logger();
+    // }
 }

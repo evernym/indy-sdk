@@ -109,9 +109,9 @@ public class VcxApi extends VcxJava.API {
         return result;
     }
 
-    public static int vcxSetDefaultLogger(String logLevel) throws VcxException {
+    public static int vcxSetDefaultLogger(String logLevel, Callback log) throws VcxException {
         logger.debug("vcxSetDefaultLogger()");
-        int result = LibVcx.api.vcx_set_default_logger(logLevel);
+        int result = LibVcx.api.vcx_set_default_logger(logLevel, log);
         checkResult(result);
         return result;
     }

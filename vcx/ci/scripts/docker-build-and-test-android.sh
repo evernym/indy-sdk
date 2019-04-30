@@ -13,6 +13,17 @@ cd /home/android/indy-sdk.evernym
 ###############################################################################################
 # First time through run these steps
 ###############################################################################################
+# These steps are only for vagrant
+# wget -c http://download.virtualbox.org/virtualbox/6.0.6/VBoxGuestAdditions_6.0.6.iso -O /home/android/VBoxGuestAdditions_6.0.6.iso
+# sudo -i
+# mount /home/android/VBoxGuestAdditions_6.0.6.iso -o loop /mnt
+# cd /mnt
+# sh VBoxLinuxAdditions.run --nox11
+# /etc/init.d/vboxadd setup
+# chkconfig --add vboxadd
+# chkconfig vboxadd on
+# exit
+# END vagrant steps
 # if [ ! -d "/home/android/android-sdk-linux/android-ndk-r16b" ] ; then
 #     echo "Downloading android-ndk-r16b-darwin-x86_64.zip"
 #     cd /home/android/android-sdk-linux
