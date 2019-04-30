@@ -46,6 +46,7 @@ cd /home/android/indy-sdk.evernym
 ###############################################################################################
 # Use this command to start the emulator image
 # ANDROID_SDK_ROOT=${ANDROID_SDK} ANDROID_HOME=${ANDROID_SDK} ${ANDROID_HOME}/tools/emulator -avd x86 -netdelay none -partition-size 4096 -netspeed full -no-audio -no-window -no-snapshot -no-accel &
+# adb shell service list
 ANDROID_JNI_LIB=./vcx/wrappers/java/android/src/main/jniLibs
 
 cd /home/android/indy-sdk.evernym
