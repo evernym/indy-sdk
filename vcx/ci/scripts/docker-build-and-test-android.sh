@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/vagrant/indy-sdk.evernym
+cd /home/android/indy-sdk.evernym
 #git checkout -- .
 #git pull
 
@@ -34,8 +34,8 @@ pushd ./vcx/wrappers/java/android
        rm local.properties
     fi
 cat <<EOT >> local.properties
-ndk.dir=/home/vagrant/android-sdk-linux/ndk-bundle
-sdk.dir=/home/vagrant/android-sdk-linux
+ndk.dir=/home/android/android-sdk-linux/ndk-bundle
+sdk.dir=/home/android/android-sdk-linux
 EOT
 popd
 rm ./vcx/wrappers/java/android/build/outputs/apk/androidTest/debug/*.apk
