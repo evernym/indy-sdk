@@ -151,7 +151,8 @@ impl LibvcxLogger {
         log::set_boxed_logger(Box::new(logger))
             .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
         log::set_max_level(LevelFilter::Trace);
-        libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
+        //libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
+        libindy::logger::set_default_logger(Some("DEBUG"));
 
         unsafe {
             LOGGER_STATE = LoggerState::Custom;
