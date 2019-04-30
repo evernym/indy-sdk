@@ -44,6 +44,8 @@ cd /home/android/indy-sdk.evernym
 ###############################################################################################
 # In subsequent runs you can use these faster steps to test
 ###############################################################################################
+# Use this command to start the emulator image
+# ANDROID_SDK_ROOT=${ANDROID_SDK} ANDROID_HOME=${ANDROID_SDK} ${ANDROID_HOME}/tools/emulator -avd x86 -netdelay none -partition-size 4096 -netspeed full -no-audio -no-window -no-snapshot -no-accel &
 ANDROID_JNI_LIB=./vcx/wrappers/java/android/src/main/jniLibs
 
 cd /home/android/indy-sdk.evernym
