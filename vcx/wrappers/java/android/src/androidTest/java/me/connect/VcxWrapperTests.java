@@ -11,10 +11,13 @@ import android.support.test.filters.SmallTest;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
+import android.content.Context;
 
 import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.utils.UtilsApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
+import com.evernym.sdk.vcx.LibVcx;
+import com.getkeepsafe.relinker.ReLinker;
 
 import junit.framework.Assert;
 
@@ -40,6 +43,31 @@ public class VcxWrapperTests {
     public final RuleChain mRuleChain = RuleChain.outerRule(readPermissionRule)
             .around(writePermissionRule);
     private String TAG = "VCX WRAPPER TESTS::";
+
+
+    private static ReLinker.Logger logcatLogger = new ReLinker.Logger() {
+        @Override
+        public void log(String message) {
+            Log.d("ReLinker", message);
+        }
+    };
+
+    static {
+        Context appContext = InstrumentationRegistry.getContext();
+        ReLinker.log(logcatLogger)
+            .force()
+            .recursively()
+            .loadLibrary(appContext, LibVcx.LIBRARY_NAME);
+
+        try {
+            LibVcx.init();
+        } catch (UnsatisfiedLinkError ex) {
+            // Library could not be found in standard OS locations.
+            // Call init(File file) explicitly with absolute library path.
+            ex.printStackTrace();
+        }
+    }
+
 
 //    @Test
 //    public void testAgentProvisionAsync(){

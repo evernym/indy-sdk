@@ -99,7 +99,7 @@ public class VcxApi extends VcxJava.API {
     }
 
     public static void logMessage(String loggerName, int level, String message) {
-        LibVcx.logMessage(loggerName, level, message);
+        //LibVcx.logMessage(loggerName, level, message);
     }
 
     public static int vcxSetLogger(Pointer context, Callback enabled, Callback log, Callback flush) throws VcxException {

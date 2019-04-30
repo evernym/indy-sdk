@@ -70,23 +70,23 @@ generate_flags(){
     if [ $1 == "arm" ]; then
         export ARCH="arm"
         export TRIPLET="arm-linux-androideabi"
-        export PLATFORM="16"
+        export PLATFORM="26"
     elif [ $1 == "arm64" ]; then
         export ARCH="arm64"
         export TRIPLET="aarch64-linux-android"
-        export PLATFORM="21"
+        export PLATFORM="26"
     elif [ $1 == "armv7" ]; then
         export ARCH="armv7"
         export TRIPLET="armv7-linux-androideabi"
-        export PLATFORM="16"
+        export PLATFORM="26"
     elif [ $1 == "x86" ]; then
         export ARCH="x86"
         export TRIPLET="i686-linux-android"
-        export PLATFORM="16"
+        export PLATFORM="26"
     elif [ $1 == "x86_64" ]; then
         export ARCH="x86_64"
         export TRIPLET="x86_64-linux-android"
-        export PLATFORM="21"
+        export PLATFORM="26"
     else
         echo "please provide the arch e.g arm, arm64, armv7, x86, or x86_64"
         exit 1
@@ -142,7 +142,7 @@ get_libnullpay() {
 
 build_vcx() {
     # For Jenkins
-    LIBVCX_PATH=${VCX_BASE}/libvcx/build_scripts/android/vcx/
+    LIBVCX_PATH=${VCX_BASE}/libvcx/build_scripts/android/vcx
     PREBUILT_BIN=../../../../../runtime_android_build
     # For Docker when vcx is in home dir
     #PREBUILT_BIN=../../../../ci/scripts/runtime_android_build
@@ -166,7 +166,7 @@ build_vcx() {
     ./build.nondocker.sh ${ARCH} ${PLATFORM} ${TRIPLET} ${OPENSSL_DIR} ${SODIUM_DIR} ${LIBZMQ_DIR} ${LIBINDY_DIR} ${LIBSOVTOKEN_DIR} ${LIBNULLPAY_DIR}
     popd
     rm -rf libvcx_${ARCH}
-    mv ${LIBVCX_PATH}libvcx_${ARCH} .
+    mv ${LIBVCX_PATH}/libvcx_${ARCH} .
 
 }
 
