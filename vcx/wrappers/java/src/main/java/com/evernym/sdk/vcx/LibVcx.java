@@ -580,19 +580,19 @@ public abstract class LibVcx {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(loggerName);
         switch (level) {
             case 1:
-                logger.error(message);
+                logger.error("yo yo: " + message);
                 break;
             case 2:
-                logger.warn(message);
+                logger.warn("yo yo: " + message);
                 break;
             case 3:
-                logger.info(message);
+                logger.info("yo yo: " + message);
                 break;
             case 4:
-                logger.debug(message);
+                logger.debug("yo yo: " + message);
                 break;
             case 5:
-                logger.trace(message);
+                logger.trace("yo yo: " + message);
                 break;
             default:
                 break;
