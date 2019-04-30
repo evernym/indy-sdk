@@ -60,7 +60,9 @@ import com.evernym.sdk.vcx.wallet.WalletAleradyOpenException;
 import com.evernym.sdk.vcx.wallet.WalletAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemAlreadyExistsException;
 import com.evernym.sdk.vcx.wallet.WalletItemNotFoundException;
+import com.evernym.sdk.vcx.wallet.WalletApi;
 
+import com.sun.jna.*;
 import com.sun.jna.ptr.PointerByReference;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -87,23 +89,37 @@ public class VcxException extends Exception {
     protected VcxException(String message, int sdkErrorCode) {
         super(message);
         this.sdkErrorCode = sdkErrorCode;
-        setSdkErrorDetails();
+
+        Callback cb = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(int myError) {
+                logger.debug("Ryan and Norm at it again [" + myError + "]");
+            }
+        };
+        try {
+            LibVcx.api.ryan_norm_api(cb);
+//            WalletApi.addRecordWallet("type-t1", "test-id", "Ryan-Test-Record");
+        } catch (Exception e){
+            // Todo
+            e.printStackTrace();
+        }
+//        setSdkErrorDetails();
     }
 
     private void setSdkErrorDetails(){
-        //PointerByReference errorDetailsJson = new PointerByReference();
+        PointerByReference errorDetailsJson = new PointerByReference();
 
-        //LibVcx.api.vcx_get_current_error(errorDetailsJson);
+        LibVcx.api.vcx_get_current_error(errorDetailsJson);
 
-        // try {
-        //     JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
-        //     this.sdkMessage = errorDetails.optString("error");
-        //     this.sdkFullMessage = errorDetails.optString("message");
-        //     this.sdkCause = errorDetails.optString("cause");
-        //     this.sdkBacktrace = errorDetails.optString("backtrace");
-        // } catch(Exception e) {
-        //    // TODO
-        // }
+         try {
+             JSONObject errorDetails = new JSONObject(errorDetailsJson.getValue().getString(0));
+             this.sdkMessage = errorDetails.optString("error");
+             this.sdkFullMessage = errorDetails.optString("message");
+             this.sdkCause = errorDetails.optString("cause");
+             this.sdkBacktrace = errorDetails.optString("backtrace");
+         } catch(Exception e) {
+            // TODO
+         }
 
         this.sdkMessage = "error";
         this.sdkFullMessage = "message";

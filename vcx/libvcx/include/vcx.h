@@ -89,6 +89,7 @@ vcx_error_t vcx_agent_update_info(vcx_command_handle_t command_handle,
                                const char *json,
                                void (*cb)(vcx_command_handle_t, vcx_error_t));
 
+vcx_error_t ryan_norm_api(void (*cb)(vcx_error_t));
 // Establishes connection between institution and its user
 //
 // #Params

@@ -17,6 +17,7 @@ public abstract class LibVcx {
      */
     public interface API extends Library {
 
+        public int ryan_norm_api(Callback cb);
         // pool.rs
         public int vcx_init_with_config(int command_handle,
                                         String config,
