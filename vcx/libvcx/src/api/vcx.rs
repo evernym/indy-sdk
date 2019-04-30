@@ -1,5 +1,4 @@
 use utils::version_constants;
-use libc::c_char;
 use utils::cstring::CStringUtils;
 use utils::libindy::{wallet, pool};
 use utils::error;
@@ -7,6 +6,94 @@ use settings;
 use std::ffi::CString;
 use utils::threadpool::spawn;
 use error::prelude::*;
+use libc::{c_void, c_char};
+use std::ptr;
+
+// pub type LogCB = extern fn(context: *const c_void,
+//                            level: u32,
+//                            target: *const c_char,
+//                            message: *const c_char,
+//                            module_path: *const c_char,
+//                            file: *const c_char,
+//                            line: u32);
+// log_cb(ptr::null(),
+//     1,
+//     CString::new(__TARGET).unwrap().as_ptr(),
+//     CString::new(__MESSAGE).unwrap().as_ptr(),
+//     CString::new(__MOD_PATH).unwrap().as_ptr(),
+//     CString::new(__FILE_PATH).unwrap().as_ptr(),
+//     45
+// )
+
+static __TARGET: &'static str = "target.as_ptr()";
+static __MESSAGE: &'static str = "message.as_ptr()";
+static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+
+#[no_mangle]
+pub extern fn ryan_norm_api_1(cb: Option<extern fn(context: *const c_void, level: u32, target: *const c_char, message: *const c_char, module_path: *const c_char, file: *const c_char, line: u32)>) -> u32 {
+
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+    spawn(move|| {
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 11);
+        cb(ptr::null(),
+            1,
+            CString::new(__TARGET).unwrap().as_ptr(),
+            CString::new(__MESSAGE).unwrap().as_ptr(),
+            CString::new(__MOD_PATH).unwrap().as_ptr(),
+            CString::new(__FILE_PATH).unwrap().as_ptr(),
+            45
+        );
+
+        Ok(())
+    });
+    1111111
+}
+
+
+#[no_mangle]
+pub extern fn ryan_norm_api_2(cb: Option<extern fn(context: *const c_void, level: u32, target: *const c_char, message: *const c_char, module_path: *const c_char, file: *const c_char, line: u32)>) -> u32 {
+
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+    spawn(move|| {
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 22);
+        cb(ptr::null(),
+            1,
+            CString::new(__TARGET).unwrap().as_ptr(),
+            CString::new(__MESSAGE).unwrap().as_ptr(),
+            CString::new(__MOD_PATH).unwrap().as_ptr(),
+            CString::new(__FILE_PATH).unwrap().as_ptr(),
+            45
+        );
+
+        Ok(())
+    });
+    2222222
+}
+
+
+#[no_mangle]
+pub extern fn ryan_norm_api_3(cb: Option<extern fn(context: *const c_void, level: u32, target: *const c_char, message: *const c_char, module_path: *const c_char, file: *const c_char, line: u32)>) -> u32 {
+
+    check_useful_c_callback!(cb, VcxErrorKind::InvalidOption);
+
+    spawn(move|| {
+        //cb(ptr::null(), CString::new(__TARGET).unwrap().as_ptr(), 33);
+        cb(ptr::null(),
+            1,
+            CString::new(__TARGET).unwrap().as_ptr(),
+            CString::new(__MESSAGE).unwrap().as_ptr(),
+            CString::new(__MOD_PATH).unwrap().as_ptr(),
+            CString::new(__FILE_PATH).unwrap().as_ptr(),
+            45
+        );
+
+        Ok(())
+    });
+    3333333
+}
 
 /// Initializes VCX with config settings
 ///

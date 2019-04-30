@@ -47,6 +47,18 @@ typedef enum
 //vcx_error_t sovtoken_init();
 vcx_error_t nullpay_init();
 
+                            // void (*logFn)(const void*  context,
+                            //               vcx_u32_t level,
+                            //               const char* target,
+                            //               const char* message,
+                            //               const char* module_path,
+                            //               const char* file,
+                            //               vcx_u32_t line),
+
+vcx_error_t ryan_norm_api_1(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
+vcx_error_t ryan_norm_api_2(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
+vcx_error_t ryan_norm_api_3(void (*cb)(const void*, vcx_u32_t, const char*, const char*, const char*, const char*, vcx_u32_t));
+
 // Reset libvcx to a pre-configured state, releasing/deleting any handles and freeing memory
 //
 // libvcx will be inoperable and must be initialized again with vcx_init_with_config
@@ -1596,7 +1608,14 @@ vcx_error_t vcx_wallet_validate_payment_address(int32_t command_handle,
                                              void (*cb)(int32_t, vcx_error_t));
 
 
-vcx_error_t vcx_set_default_logger( const char * pattern );
+vcx_error_t vcx_set_default_logger( const char * pattern,
+                            void (*logFn)(const void*  context,
+                                          vcx_u32_t level,
+                                          const char* target,
+                                          const char* message,
+                                          const char* module_path,
+                                          const char* file,
+                                          vcx_u32_t line) );
 vcx_error_t vcx_set_logger( const void* context,
                             vcx_bool_t (*enabledFn)(const void*  context,
                                                       vcx_u32_t level,

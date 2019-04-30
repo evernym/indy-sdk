@@ -17,6 +17,9 @@ use std::env;
 use std::ptr;
 pub use self::indy_sys::{CVoid, logger::{EnabledCB, LogCB, FlushCB}};
 use std::ffi::CString;
+use utils::threadpool::spawn;
+use std::io::prelude::*;
+use std::fs::{File, OpenOptions};
 
 #[allow(unused_imports)]
 #[cfg(target_os = "android")]
@@ -28,11 +31,6 @@ use error::prelude::*;
 use utils::libindy;
 
 pub static mut LOGGER_STATE: LoggerState = LoggerState::Default;
-static LOGGER_INIT: Once = ONCE_INIT;
-static mut CONTEXT: *const CVoid = ptr::null();
-static mut ENABLED_CB: Option<EnabledCB> = None;
-static mut LOG_CB: Option<LogCB> = None;
-static mut FLUSH_CB: Option<FlushCB> = None;
 
 #[derive(Debug, PartialEq)]
 pub enum LoggerState {
@@ -49,6 +47,17 @@ impl LoggerState {
     }
 }
 
+static LOGGER_INIT: Once = ONCE_INIT;
+static mut CONTEXT: *const CVoid = ptr::null();
+static mut ENABLED_CB: Option<EnabledCB> = None;
+static mut LOG_CB: Option<LogCB> = None;
+static mut FLUSH_CB: Option<FlushCB> = None;
+
+// static __TARGET: &'static str = "target.as_ptr()";
+// static __MESSAGE: &'static str = "message.as_ptr()";
+// static __MOD_PATH: &'static str = "module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+// static __FILE_PATH: &'static str = "file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null())";
+
 pub struct LibvcxLogger {
     context: *const CVoid,
     enabled: Option<EnabledCB>,
@@ -60,31 +69,7 @@ impl LibvcxLogger {
     fn new(context: *const CVoid, enabled: Option<EnabledCB>, log: LogCB, flush: Option<FlushCB>) -> Self {
         LibvcxLogger { context, enabled, log, flush }
     }
-
-    pub fn init(context: *const CVoid, enabled: Option<EnabledCB>, log: LogCB, flush: Option<FlushCB>) -> VcxResult<()> {
-        trace!("LibvcxLogger::init >>>");
-        let logger = LibvcxLogger::new(context, enabled, log, flush);
-        log::set_boxed_logger(Box::new(logger))
-            .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
-        log::set_max_level(LevelFilter::Trace);
-        libindy::logger::set_logger(log::logger())
-            .map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
-
-        unsafe {
-            LOGGER_STATE = LoggerState::Custom;
-            CONTEXT = context;
-            ENABLED_CB = enabled;
-            LOG_CB = Some(log);
-            FLUSH_CB = flush
-        }
-
-        Ok(())
-    }
 }
-
-unsafe impl Sync for LibvcxLogger {}
-
-unsafe impl Send for LibvcxLogger {}
 
 impl log::Log for LibvcxLogger {
     fn enabled(&self, metadata: &Metadata) -> bool {
@@ -103,21 +88,49 @@ impl log::Log for LibvcxLogger {
         let log_cb = self.log;
 
         let level = record.level() as u32;
+
         let target = CString::new(record.target()).unwrap();
         let message = CString::new(record.args().to_string()).unwrap();
-
         let module_path = record.module_path().map(|a| CString::new(a).unwrap());
         let file = record.file().map(|a| CString::new(a).unwrap());
         let line = record.line().unwrap_or(0);
 
-        log_cb(self.context,
-               level,
-               target.as_ptr(),
-               message.as_ptr(),
-               module_path.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
-               file.as_ref().map(|p| p.as_ptr()).unwrap_or(ptr::null()),
-               line,
-        )
+        // if cfg!(target_os = "android") {
+        //     // append message to end of file and close file
+        //     let mut log_file = OpenOptions::new()
+        //         .write(true)
+        //         .append(true)
+        //         .create(true)
+        //         .open("/storage/emulated/0/Download/logfile.1.out")
+        //         .unwrap();
+
+        //     //if let Err(e) = writeln!(log_file, "A new line!") {
+        //     //    eprintln!("Couldn't write to file: {}", e);
+        //     //}
+        //     writeln!(log_file, "{}", record.args().to_string());
+        //     log_file.flush().unwrap();
+        // } else {
+            log_cb(self.context,
+                level,
+                target.as_ptr(),
+                message.as_ptr(),
+                module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
+                file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
+                line,
+            )
+        // }
+
+        // spawn(move|| {
+            // log_cb(ptr::null(),
+            //     1,
+            //     CString::new(__TARGET).unwrap().as_ptr(),
+            //     CString::new(__MESSAGE).unwrap().as_ptr(),
+            //     CString::new(__MOD_PATH).unwrap().as_ptr(),
+            //     CString::new(__FILE_PATH).unwrap().as_ptr(),
+            //     45
+            // )
+        //     Ok(())
+        // });
     }
 
     fn flush(&self) {
@@ -126,6 +139,32 @@ impl log::Log for LibvcxLogger {
         }
     }
 }
+
+unsafe impl Sync for LibvcxLogger {}
+
+unsafe impl Send for LibvcxLogger {}
+
+impl LibvcxLogger {
+    pub fn init(context: *const CVoid, enabled: Option<EnabledCB>, log: LogCB, flush: Option<FlushCB>) -> VcxResult<()> {
+        //trace!("LibvcxLogger::init >>>");
+        let logger = LibvcxLogger::new(context, enabled, log, flush);
+        log::set_boxed_logger(Box::new(logger))
+            .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
+        log::set_max_level(LevelFilter::Trace);
+        libindy::logger::set_logger(log::logger()).map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
+        
+        unsafe {
+            LOGGER_STATE = LoggerState::Custom;
+            CONTEXT = context;
+            ENABLED_CB = enabled;
+            LOG_CB = Some(log);
+            FLUSH_CB = flush
+        };
+
+        Ok(())
+    }
+}
+
 
 // From: https://www.tutorialspoint.com/log4j/log4j_logging_levels.htm
 //
@@ -136,23 +175,34 @@ impl log::Log for LibvcxLogger {
 //OFF	The highest possible rank and is intended to turn off logging.
 //TRACE	Designates finer-grained informational events than the DEBUG.
 //WARN	Designates potentially harmful situations.
+
 pub struct LibvcxDefaultLogger;
+// pub struct LibvcxDefaultLogger {
+//     pattern: Option<String>,
+//     log: Option<LogCB>,
+// }
+
+// impl LibvcxDefaultLogger {
+//     fn new(pattern: Option<String>, log: Option<LogCB>) -> Self {
+//         LibvcxDefaultLogger { pattern, log }
+//     }
+// }
 
 impl LibvcxDefaultLogger {
-    pub fn init_testing_logger() {
-        trace!("LibvcxDefaultLogger::init_testing_logger >>>");
+    // pub fn init_testing_logger() {
+    //     //trace!("LibvcxDefaultLogger::init_testing_logger >>>");
 
-        // ensures that the test that is calling this wont fail simply because
-        // the user did not set the RUST_LOG env var.
-        let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
-        match LibvcxDefaultLogger::init(pattern) {
-            Ok(_) => (),
-            Err(_) => (),
-        }
-    }
+    //     // ensures that the test that is calling this wont fail simply because
+    //     // the user did not set the RUST_LOG env var.
+    //     let pattern = Some(env::var("RUST_LOG").unwrap_or("trace".to_string()));
+    //     match LibvcxDefaultLogger::init(pattern) {
+    //         Ok(_) => (),
+    //         Err(_) => (),
+    //     }
+    // }
 
-    pub fn init(pattern: Option<String>) -> VcxResult<()> {
-        trace!("LibvcxDefaultLogger::init >>> pattern: {:?}", pattern);
+    pub fn init(pattern: Option<String>, log: LogCB) -> VcxResult<()> {
+        //trace!("LibvcxDefaultLogger::init >>> pattern: {:?}", pattern);
 
         let pattern = pattern.or(env::var("RUST_LOG").ok());
         if cfg!(target_os = "android") {
@@ -172,7 +222,7 @@ impl LibvcxDefaultLogger {
             //Set logging to off when deploying production android app.
             #[cfg(target_os = "android")]
             android_logger::init_once(log_filter);
-            info!("Logging for Android");
+            //info!("Logging for Android");
         } else {
             // This calls
             // log::set_max_level(logger.filter());
@@ -185,7 +235,7 @@ impl LibvcxDefaultLogger {
                 .try_init() {
                 Ok(_) => {}
                 Err(e) => {
-                    error!("Error in logging init: {:?}", e);
+                    //error!("Error in logging init: {:?}", e);
                     return Err(VcxError::from_msg(VcxErrorKind::LoggingError, format!("Cannot init logger: {:?}", e)))
                 }
             }
@@ -231,6 +281,16 @@ impl LibvcxDefaultLogger {
                 .line(Some(line))
                 .build(),
         );
+        
+        // log_cb(self.context,
+        //     level,
+        //     target.as_ptr(),
+        //     message.as_ptr(),
+        //     module_path.as_ref().map(|mod_path| mod_path.as_ptr()).unwrap_or(ptr::null()),
+        //     file.as_ref().map(|f| f.as_ptr()).unwrap_or(ptr::null()),
+        //     line,
+        // );
+
     }
 
     extern fn flush(_context: *const CVoid) {
@@ -304,9 +364,9 @@ mod tests {
         }
     }
 
-    #[test]
-    fn test_logger_for_testing() {
-        LibvcxDefaultLogger::init_testing_logger();
-        LibvcxDefaultLogger::init_testing_logger();
-    }
+    // #[test]
+    // fn test_logger_for_testing() {
+    //     LibvcxDefaultLogger::init_testing_logger();
+    //     LibvcxDefaultLogger::init_testing_logger();
+    // }
 }

@@ -21,7 +21,7 @@ RUN apt-get update -y && apt-get install -y \
     curl \
     libffi-dev \
     ruby \
-    ruby-dev \ 
+    ruby-dev \
     rubygems \
     libzmq5 \
     python3 \

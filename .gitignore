@@ -11,6 +11,9 @@ package-lock.json
 Podfile.lock
 .vscode
 .pytest_cache
+runtime_android_build
+*.so
+*.dylib
 
 /wrappers/python/venv/
 .vscode

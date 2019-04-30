@@ -80,7 +80,7 @@ tasks.withType(JavaCompile) {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -96,8 +96,8 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 23
+        minSdkVersion 24
+        targetSdkVersion 24
         versionCode 1
         versionName "${fullVersionName()}"
 
@@ -144,6 +144,7 @@ dependencies {
     implementation('com.github.bright:slf4android:0.1.5'){
         transitive = true
     }
+    //implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     implementation 'net.java.dev.jna:jna:4.5.0@aar'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version:'3.5'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.2'

@@ -17,6 +17,10 @@ public abstract class LibVcx {
      */
     public interface API extends Library {
 
+        public int ryan_norm_api_1(Callback cb);
+        public int ryan_norm_api_2(Callback cb);
+        public int ryan_norm_api_3(Callback cb);
+
         // pool.rs
         public int vcx_init_with_config(int command_handle,
                                         String config,
@@ -484,7 +488,7 @@ public abstract class LibVcx {
 
         /** Set custom logger implementation.. */
         int vcx_set_logger(Pointer context, Callback enabled, Callback log, Callback flush);
-        int vcx_set_default_logger(String log_level);
+        int vcx_set_default_logger(String log_level, Callback log);
 
         /**
          * Evernym extensions
@@ -576,19 +580,19 @@ public abstract class LibVcx {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(loggerName);
         switch (level) {
             case 1:
-                logger.error(message);
+                logger.error("yo yo: " + message);
                 break;
             case 2:
-                logger.warn(message);
+                logger.warn("yo yo: " + message);
                 break;
             case 3:
-                logger.info(message);
+                logger.info("yo yo: " + message);
                 break;
             case 4:
-                logger.debug(message);
+                logger.debug("yo yo: " + message);
                 break;
             case 5:
-                logger.trace(message);
+                logger.trace("yo yo: " + message);
                 break;
             default:
                 break;
@@ -612,7 +616,7 @@ public abstract class LibVcx {
                     message = message.substring(0, 10240);
                 }
                 String loggerName = String.format("%s.native.%s", LibVcx.class.getName(), target.replace("::", "."));
-                String msg = String.format("%s:%d | %s", file, line, message);
+                String msg = String.format("yo dude: %s:%d | %s", file, line, message);
                 logMessage(loggerName, level, msg);
             }
         };
@@ -622,5 +626,6 @@ public abstract class LibVcx {
 
     private static void initLogger() {
         api.vcx_set_logger(null, Logger.enabled, Logger.log, Logger.flush);
+        //api.vcx_set_default_logger("trace", Logger.log);
     }
 }

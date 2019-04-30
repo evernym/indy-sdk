@@ -3,7 +3,8 @@
 set -e
 ANDROID_JNI_LIB=vcx/wrappers/java/android/src/main/jniLibs
 
-for arch in arm arm64 armv7 x86 x86_64
+#for arch in arm arm64 armv7 x86 x86_64
+for arch in x86
 do
     arch_folder=${arch}
     if [ "${arch}" = "armv7" ]; then
@@ -11,6 +12,9 @@ do
     fi
     mkdir -p ${ANDROID_JNI_LIB}/${arch_folder}
     cp -v runtime_android_build/libvcx_${arch}/libvcx.so ${ANDROID_JNI_LIB}/${arch_folder}/libvcx.so
+    cp -v runtime_android_build/libvcx_${arch}/libz.so ${ANDROID_JNI_LIB}/${arch_folder}/libz.so
+    cp -v runtime_android_build/libvcx_${arch}/liblog.so ${ANDROID_JNI_LIB}/${arch_folder}/liblog.so
+    #cp -v runtime_android_build/libvcx_${arch}/libgnustl_shared.so ${ANDROID_JNI_LIB}/${arch_folder}/libgnustl_shared.so
 done
 
 pushd vcx/wrappers/java/android

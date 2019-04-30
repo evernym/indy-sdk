@@ -13,8 +13,11 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.evernym.sdk.vcx.VcxException;
+import com.evernym.sdk.vcx.LibVcx;
 import com.evernym.sdk.vcx.utils.UtilsApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
+import com.evernym.sdk.vcx.wallet.WalletApi;
+import com.sun.jna.*;
 
 import junit.framework.Assert;
 
@@ -39,30 +42,102 @@ public class VcxWrapperTests {
     @Rule
     public final RuleChain mRuleChain = RuleChain.outerRule(readPermissionRule)
             .around(writePermissionRule);
-    private String TAG = "VCX WRAPPER TESTS::";
 
-//    @Test
-//    public void testAgentProvisionAsync(){
+    private String TAG = "VCX WRAPPER TESTS::";
+    private String type = "test";
+    private String id = "123";
+    private String value = "record value";
+
+    private static final Object waitForCallback = new Object();
+
+
+    @Test
+    public void testNestedCallback() {
+        Log.d(TAG, "testNestedCallback() called");
+
+        Callback cb3 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[3] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[3] Ryan and Norm at it again [" + line + "]");
+                try { Thread.sleep(5000); } catch(Exception ex) { ex.printStackTrace(); }
+                synchronized(waitForCallback) {
+                    LibVcx.logMessage(this.getClass().getName(), 1, "Done waiting for last callback!!");
+                    waitForCallback.notifyAll();
+                }
+            }
+        };
+
+        Callback cb2 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[2] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[2] Ryan and Norm at it again [" + line + "]");
+                try {
+                    LibVcx.api.ryan_norm_api_3(cb3);
+                } catch (Exception e){
+                    // Todo
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Callback cb1 = new Callback() {
+            @SuppressWarnings({"unused", "unchecked"})
+            public void callback(Pointer context, int level, String target, String message, String module_path, String file, int line) {
+                //Log.d(TAG, "[1] Ryan and Norm at it again [" + line + "]");
+                LibVcx.logMessage(this.getClass().getName(), 1, "[1] Ryan and Norm at it again [" + line + "]");
+                try {
+                    LibVcx.api.ryan_norm_api_2(cb2);
+                } catch (Exception e){
+                    // Todo
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        try {
+            LibVcx.api.ryan_norm_api_1(cb1);
+            synchronized(waitForCallback) {
+                LibVcx.logMessage(this.getClass().getName(), 1, "Waiting for last callback!!");
+                waitForCallback.wait();
+            }
+        } catch (Exception e){
+            // Todo
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+
+//     @Test
+//     public void testAgentProvisionAsync(){
 //        Log.d(TAG, "testAgenctProvisionAsync() called");
 //        writeCACert(InstrumentationRegistry.getContext());
 //        String agencyConfig = "{\n" +
-//                "    \"agency_url\": \"https://cagency.pdev.evernym.com\",\n" +
-//                "    \"agency_did\": \"dTLdJqRZLwMuWSogcKfBT\",\n" +
-//                "    \"agency_verkey\": \"LsPQTDHi294TexkFmZK9Q9vW4YGtQRuLV8wuyZi94yH\",\n" +
-//                "    \"wallet_name\": \"testWallet\",\n" +
-//                "    \"wallet_key\": \"123\",\n" +
+//                "    \"agency_url\": \"https://agency-team2.pdev.evernym.com\",\n" +
+//                "    \"agency_did\": \"CV65RFpeCtPu82hNF9i61G\",\n" +
+//                "    \"agency_verkey\": \"7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2\",\n" +
+//                "    \"wallet_name\": \"LIBVCX_SDK_WALLET\",\n" +
+//                "    \"wallet_key\": \"thiskeyisforthewallet1234\",\n" +
+//                "    \"remote_to_sdk_did\": \"68S4dDbvFYacxVzRabgDcu\",\n" +
+//                "    \"remote_to_sdk_verkey\": \"3o7R6SeVKpMRjxUjmUJto8s8zFaSgQBTWQuQEbPh6rA5\",\n" +
+//                "    \"sdk_to_remote_did\": \"P1iAo88RczH9YWZ3b2htGC\",\n" +
+//                "    \"sdk_to_remote_verkey\": \"CzrKD4VUL6jJQuD6BJ5PVUnGKkHJXRFnHvDYNg9tEdkk\",\n" +
+//                "    \"payment_method\": \"null\",\n" +
 //                "    \"agent_seed\": null,\n" +
 //                "    \"enterprise_seed\": null\n" +
 //                "}";
 //        try {
-//            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
-//            Assert.assertSame(0,result);
-//            String res = UtilsApi.vcxAgentProvisionAsync(agencyConfig).get();
-//
-//            Log.d(TAG, "vcx::APP::async result Prov: " + res);
-//            Assert.assertTrue(res.contains("dTLdJqRZLwMuWSogcKfBT"));
-//
-//
+//            int result = 0;
+//            //result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+//            //Assert.assertSame(0,result);
+//            String config = UtilsApi.vcxAgentProvisionAsync(agencyConfig).get();
+
+//            Log.d(TAG, "vcx::APP::async result Prov: " + config);
+//            Assert.assertTrue(config.contains("CV65RFpeCtPu82hNF9i61G"));
+//            result =  VcxApi.vcxInitWithConfig(config).get();
+//            Assert.assertNotSame(0,result);
 //        } catch (VcxException e) {
 //            Log.e(TAG, "testAgenctProvisionAsync: ",e );
 //        } catch (InterruptedException | ExecutionException e) {
@@ -70,20 +145,28 @@ public class VcxWrapperTests {
 //        }
 //    }
 
-    @Test
-    public void testInitNullPay() {
-        Log.d(TAG, "testInitNullPay: called");
-        try {
-            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
-            Assert.assertSame(0,result);
-            result =  VcxApi.initNullPay();
-            Assert.assertSame(0,result);
-         } catch (VcxException e) {
-             e.printStackTrace();
-         }
-    }
-//
-//
+    // @Test
+    // public void testInitNullPay() {
+    //     Log.d(TAG, "testInitNullPay: called");
+    //     try {
+    //         int result = 0;
+    //         //result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+    //         //Assert.assertSame(0,result);
+    //         result = VcxApi.initNullPay();
+
+    //         //System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
+    //         VcxApi.vcxInit("ENABLE_TEST_MODE");
+
+    //         WalletApi.addRecordWallet(type,id,value);
+    //         WalletApi.addRecordWallet(type,id,value);
+    //      } catch (VcxException e) {
+    //         Assert.fail("failed test: " + e.getMessage());
+    //          e.printStackTrace();
+    //      }
+    // }
+
+
+
 //    @Test
 //    public void testVcxSetDefaultLogger() {
 //        Log.d(TAG, "testVcxSetDefaultLogger: called");
