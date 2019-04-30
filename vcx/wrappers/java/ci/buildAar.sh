@@ -6,7 +6,7 @@ SCRIPT_NAME=${SCRIPT_PATH##*/}       # basename of script (strip path)
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
 
 export ANDROID_BUILD_TOOLS="/home/android/android-sdk-linux/build-tools/27.0.3"
-export ANDROID_BUILD_FOLDER="/home/android/android_build"
+export ANDROID_BUILD_FOLDER="/tmp/android_build"
 echo "ANDROID_BUILD_FOLDER: ${ANDROID_BUILD_FOLDER}"
 ANDROID_SDK=${ANDROID_BUILD_FOLDER}/sdk
 mkdir -p ${ANDROID_SDK}
