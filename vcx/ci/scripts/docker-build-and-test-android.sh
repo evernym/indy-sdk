@@ -10,13 +10,34 @@ cd /home/android/indy-sdk.evernym
 ./vcx/ci/scripts/androidBuild.sh x86 stable 1.8.2 stable 1.8.2 libsovtoken_0.9.6-201811211720-4901e95_all.zip
 # ./vcx/ci/scripts/androidBuild.sh x86_64 stable 1.8.2 stable 1.8.2 libsovtoken_0.9.6-201811211720-4901e95_all.zip
 
-# First time through run this script
-#./vcx/ci/scripts/androidPackage.sh
+###############################################################################################
+# First time through run these steps
+###############################################################################################
+# if [ ! -d "/home/android/android-sdk-linux/android-ndk-r16b" ] ; then
+#     echo "Downloading android-ndk-r16b-darwin-x86_64.zip"
+#     cd /home/android/android-sdk-linux
+#     wget -q https://dl.google.com/android/repository/android-ndk-r16b-darwin-x86_64.zip
+#     unzip -qq android-ndk-r16b-darwin-x86_64.zip
+#     ln -s android-ndk-r16b ndk-bundle
+#     cd /home/android/indy-sdk.evernym
+# else
+#     echo "Skipping download android-ndk-r16b-linux-x86_64.zip"
+# fi
+# touch /home/android/.android/repositories.cfg
+# yes | /home/android/android-sdk-linux/tools/bin/sdkmanager "build-tools;27.0.3"
+# yes | /home/android/android-sdk-linux/tools/bin/sdkmanager "platforms;android-24"
+# ./vcx/ci/scripts/androidPackage.sh
+###############################################################################################
 
+
+###############################################################################################
 # In subsequent runs you can use these faster steps to test
+###############################################################################################
 ANDROID_JNI_LIB=./vcx/wrappers/java/android/src/main/jniLibs
 
-for arch in arm arm64 armv7 x86 x86_64
+cd /home/android/indy-sdk.evernym
+#for arch in arm arm64 armv7 x86 x86_64
+for arch in x86
 do
     arch_folder=${arch}
     if [ "${arch}" = "armv7" ]; then
@@ -41,6 +62,10 @@ popd
 rm ./vcx/wrappers/java/android/build/outputs/apk/androidTest/debug/*.apk
 cd ./vcx/wrappers/java
 ./gradlew --no-daemon clean build --project-dir=android -x test
-/tmp/android_build/platform-tools/adb logcat -b all -c
-/tmp/android_build/platform-tools/adb logcat > logcat.tmp.1.out 2>&1 &
+/home/android/android-sdk-linux/platform-tools/adb logcat -b all -c
+/home/android/android-sdk-linux/platform-tools/adb logcat > /home/android/indy-sdk.evernym/logcat.tmp.1.out 2>&1 &
+LOGCAT_PID=$!
 RUST_LOG=trace RUST_BACKTRACE=full ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
+kill -9 ${LOGCAT_PID}
+echo "Output from the test is located at: /home/android/indy-sdk.evernym/logcat.tmp.1.out"
+###############################################################################################
