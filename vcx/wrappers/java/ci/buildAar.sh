@@ -85,33 +85,58 @@ pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
     pushd ../android
         npm install
     popd
-    # pushd ..
-    #     echo "Running :assembleDebugAndroidTest to see if it passes..."
 
-    #     # Run the tests first
-    #     ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
+    # This pushd/popd block is for running the tests
+    pushd ..
+        ANDROID_JNI_LIB=android/src/main/jniLibs
+        for arch in arm arm64 armv7 x86 x86_64
+        do
+            arch_folder=${arch}
+            if [ "${arch}" = "armv7" ]; then
+                arch_folder="armeabi-v7a"
+            elif [ "${arch}" = "arm64" ]; then
+                arch_folder="arm64-v8a"
+            fi
+            rm ${ANDROID_JNI_LIB}/${arch_folder}/libgnustl_shared.so
+        done
 
-    #     echo "Installing the android test apk that will test the aar library..."
-    #     i=0
-    #     while
-    #         sleep 10
-    #         : ${start=$i}
-    #         i="$((i+1))"
-    #         ADB_INSTALL=$(adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk 2>&1)
-    #         echo "ADB_INSTALL -- ${ADB_INSTALL}"
-    #         FAILED_INSTALL=$(echo ${ADB_INSTALL}|grep "adb: failed to install")
-    #         [ "${FAILED_INSTALL}" != "" ] && [ "$i" -lt 70 ]            # test the limit of the loop.
-    #     do :;  done
+        echo "Running :assembleDebugAndroidTest to see if it passes..."
 
-    #     if [ "${FAILED_INSTALL}" != "" ]; then
-    #         exit 1
-    #     fi
+        # Run the tests first
+        ./gradlew --no-daemon :assembleDebugAndroidTest --project-dir=android -x test
 
-    #     adb shell service list
-    #     echo "Starting the tests of the aar library..."
-    #     ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
-    #     cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
-    # popd
+        echo "Installing the android test apk that will test the aar library..."
+        i=0
+        while
+            sleep 10
+            : ${start=$i}
+            i="$((i+1))"
+            ADB_INSTALL=$(adb install ./android/build/outputs/apk/androidTest/debug/com.evernym-vcx_1.0.0-*_x86-armv7-debug-androidTest.apk 2>&1)
+            echo "ADB_INSTALL -- ${ADB_INSTALL}"
+            FAILED_INSTALL=$(echo ${ADB_INSTALL}|grep "adb: failed to install")
+            [ "${FAILED_INSTALL}" != "" ] && [ "$i" -lt 70 ]            # test the limit of the loop.
+        do :;  done
+
+        if [ "${FAILED_INSTALL}" != "" ]; then
+            exit 1
+        fi
+
+        adb shell service list
+        echo "Starting the tests of the aar library..."
+        ./gradlew --full-stacktrace --debug --no-daemon :connectedCheck --project-dir=android
+        cat ./android/build/reports/androidTests/connected/me.connect.VcxWrapperTests.html
+
+        for arch in arm arm64 armv7 x86 x86_64
+        do
+            arch_folder=${arch}
+            if [ "${arch}" = "armv7" ]; then
+                arch_folder="armeabi-v7a"
+            elif [ "${arch}" = "arm64" ]; then
+                arch_folder="arm64-v8a"
+            fi
+            cp -v ../../../runtime_android_build/libvcx_${arch}/libgnustl_shared.so ${ANDROID_JNI_LIB}/${arch_folder}/libgnustl_shared.so
+        done
+    popd
 popd
 
 pushd ${SCRIPT_DIR} # we will work on relative paths from the script directory
