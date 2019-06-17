@@ -72,4 +72,5 @@ ARG LIBSOVTOKEN_VER
 
 RUN apt-get update && apt-get install -y \
     libindy=${LIBINDY_VER} \
-    libnullpay=${LIBNULL_VER}
+    libnullpay=${LIBNULL_VER} \
+    libsovtoken=${LIBSOVTOKEN_VER}

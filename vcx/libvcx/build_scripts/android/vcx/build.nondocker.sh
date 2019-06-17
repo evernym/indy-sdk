@@ -97,25 +97,25 @@ if [ -d "${LIBINDY_DIR}/lib" ] ; then
     LIBINDY_DIR="${LIBINDY_DIR}/lib"
 fi
 
-#if [ -z "${LIBSOVTOKEN_DIR}" ] ; then
-#    LIBSOVTOKEN_DIR="libsovtoken"
-#    if [ -d "${LIBSOVTOKEN_DIR}" ] ; then
-#        echo "Found ${LIBSOVTOKEN_DIR}"
-#    elif [ -z "$8" ] ; then
-#        echo STDERR "Missing LIBSOVTOKEN_DIR argument and environment variable"
-#        echo STDERR "e.g. set LIBSOVTOKEN_DIR=<path> for environment or libsovtoken"
-#        exit 1
-#    else
-#        LIBSOVTOKEN_DIR=$8
-#    fi
-#    if [ -d "${LIBSOVTOKEN_DIR}/${CROSS_COMPILE}" ] ; then
-#        LIBSOVTOKEN_DIR=${LIBSOVTOKEN_DIR}/${CROSS_COMPILE}
-#    fi
-#    export LIBSOVTOKEN_DIR=${LIBSOVTOKEN_DIR}
-#fi
-#if [ -d "${LIBSOVTOKEN_DIR}/lib" ] ; then
-#    LIBSOVTOKEN_DIR="${LIBSOVTOKEN_DIR}/lib"
-#fi
+if [ -z "${LIBSOVTOKEN_DIR}" ] ; then
+    LIBSOVTOKEN_DIR="libsovtoken"
+    if [ -d "${LIBSOVTOKEN_DIR}" ] ; then
+        echo "Found ${LIBSOVTOKEN_DIR}"
+    elif [ -z "$8" ] ; then
+        echo STDERR "Missing LIBSOVTOKEN_DIR argument and environment variable"
+        echo STDERR "e.g. set LIBSOVTOKEN_DIR=<path> for environment or libsovtoken"
+        exit 1
+    else
+        LIBSOVTOKEN_DIR=$8
+    fi
+    if [ -d "${LIBSOVTOKEN_DIR}/${CROSS_COMPILE}" ] ; then
+        LIBSOVTOKEN_DIR=${LIBSOVTOKEN_DIR}/${CROSS_COMPILE}
+    fi
+    export LIBSOVTOKEN_DIR=${LIBSOVTOKEN_DIR}
+fi
+if [ -d "${LIBSOVTOKEN_DIR}/lib" ] ; then
+    LIBSOVTOKEN_DIR="${LIBSOVTOKEN_DIR}/lib"
+fi
 
 if [ -z "${LIBNULLPAY_DIR}" ] ; then
     LIBNULLPAY_DIR="libnullpay"
@@ -235,6 +235,7 @@ ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
 ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
 ${LIBINDY_DIR}/libindy.a \
 ${LIBNULLPAY_DIR}/libnullpay.a \
+${LIBSOVTOKEN_DIR}/libsovtoken.a \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
 ${SODIUM_LIB_DIR}/libsodium.a \

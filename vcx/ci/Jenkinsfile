@@ -25,11 +25,11 @@ class Globals {
 
     static String nullpayTag = ""
 
-    static String libsovtokenVersion = "0.9.6~-.1.126"
+    static String libsovtokenVersion = "0.10.0"
 
-    static String androidSovtokenArtifact = "libsovtoken_0.9.6-201811211720-4901e95_all.zip"
+    static String androidSovtokenArtifact = "libsovtoken_0.10.0-201905312046-e820bba_all.zip"
 
-    static String iosSovtokenArtifact = "libsovtoken_0.9.6-201811211710-4901e95_all.zip"
+    static String iosSovtokenArtifact = "libsovtoken_0.10.0-201905312039-e820bba_all.zip"
 
     static String indyBranch = 'stable'
 

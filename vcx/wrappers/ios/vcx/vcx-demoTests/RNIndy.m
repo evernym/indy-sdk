@@ -181,7 +181,7 @@
 }
 
 -(int)initSovToken {
-    //return [[[ConnectMeVcx alloc] init] initSovToken];
+    return [[[ConnectMeVcx alloc] init] initSovToken];
     return 0;
 }
 

@@ -30,7 +30,7 @@ public abstract class LibVcx {
         /**
          * Sovtoken & nullpay
          */
-//        public int sovtoken_init();
+        public int sovtoken_init();
         public int nullpay_init();
 
         /**
