@@ -8,7 +8,7 @@
 
 # NOTE: UPDATE ME: versions of libraries in this cocoapod
 # libindy 1.9.0 stable
-# libnullpay 1.8.2 stable
+# libnullpay 1.9.0 stable
 # libsovtoken 0.10.0~-4 stable
 # libvcx 0.3.45051037-10bf2c4
 
