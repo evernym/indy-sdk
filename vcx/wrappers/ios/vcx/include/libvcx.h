@@ -53,7 +53,7 @@ typedef struct
 
 /** Initialize Sovtoken & nullpay*/
 vcx_error_t sovtoken_init();
-vcx_error_t nullpay_init();
+//vcx_error_t nullpay_init();
 
 /**
  * Initialize the SDK

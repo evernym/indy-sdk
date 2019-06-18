@@ -77,7 +77,7 @@ extern void VcxWrapperCommonNumberStringCallback(vcx_command_handle_t xcommand_h
 
 - (int)initSovToken;
 
-- (int)initNullPay;
+//- (int)initNullPay;
 
 - (void)initWithConfig:(NSString *)config
             completion:(void (^)(NSError *error))completion;

@@ -176,9 +176,9 @@
     [self setLastShutdownVcx:[[[ConnectMeVcx alloc] init] vcxShutdown: deletePool]];
 }
 
--(int)initNullPay {
-    return [[[ConnectMeVcx alloc] init] initNullPay];
-}
+//-(int)initNullPay {
+//   return [[[ConnectMeVcx alloc] init] initNullPay];
+//}
 
 -(int)initSovToken {
     return [[[ConnectMeVcx alloc] init] initSovToken];

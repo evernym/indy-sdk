@@ -24,12 +24,12 @@ public class VcxApi extends VcxJava.API {
         return result;
     }
 
-     public static int initNullPay() throws VcxException {
-         logger.debug("initNullPay()");
-         int result = LibVcx.api.nullpay_init();
-         checkResult(result);
-         return result;
-     }
+//     public static int initNullPay() throws VcxException {
+//         logger.debug("initNullPay()");
+//         int result = LibVcx.api.nullpay_init();
+//         checkResult(result);
+//         return result;
+//     }
 
     private static Callback vcxIniWithConfigCB = new Callback() {
         @SuppressWarnings({"unused", "unchecked"})
