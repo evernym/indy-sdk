@@ -82,6 +82,19 @@ public class VcxWrapperTests {
 //             e.printStackTrace();
 //         }
 //    }
+
+    @Test
+    public void testInitSovToken() {
+        Log.d(TAG, "testInitSov: called");
+        try {
+            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+            Assert.assertSame(0,result);
+            result =  VcxApi.initSovToken();
+            Assert.assertSame(0,result);
+        } catch (VcxException e) {
+            e.printStackTrace();
+        }
+    }
 //
 //
 //    @Test
