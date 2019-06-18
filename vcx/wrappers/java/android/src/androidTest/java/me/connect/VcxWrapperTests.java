@@ -70,18 +70,18 @@ public class VcxWrapperTests {
 //        }
 //    }
 
-    @Test
-    public void testInitNullPay() {
-        Log.d(TAG, "testInitNullPay: called");
-        try {
-            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
-            Assert.assertSame(0,result);
-            result =  VcxApi.initNullPay();
-            Assert.assertSame(0,result);
-         } catch (VcxException e) {
-             e.printStackTrace();
-         }
-    }
+//    @Test
+//    public void testInitNullPay() {
+//        Log.d(TAG, "testInitNullPay: called");
+//        try {
+//            int result =  VcxApi.vcxSetLogger(callbackLogger.context, callbackLogger.enabled, callbackLogger.log, callbackLogger.flush);
+//            Assert.assertSame(0,result);
+//            result =  VcxApi.initNullPay();
+//            Assert.assertSame(0,result);
+//         } catch (VcxException e) {
+//             e.printStackTrace();
+//         }
+//    }
 //
 //
 //    @Test
