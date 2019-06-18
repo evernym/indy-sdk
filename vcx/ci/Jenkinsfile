@@ -283,10 +283,10 @@ def android() {
                 packageAndroid(android)
             }
             stage('Android Publishing') {
-                if (env.BRANCH_NAME == "master") {
+                // if (env.BRANCH_NAME == "master") {
                     //Publish package on aptly
                     publishAndroid(android)
-                }
+                // }
             }
         } catch (Exception ex) {
             currentBuild.result = "FAILED"
@@ -319,7 +319,7 @@ def ios() {
                     ${Globals.nullBranch} ${Globals.libnullVersion}${nullTag} ${Globals.iosSovtokenArtifact} \
                     ${Globals.rustVersion} ${full_vcx_version()}"
 
-                if (env.BRANCH_NAME == "master") {
+                // if (env.BRANCH_NAME == "master") {
                     withCredentials([usernameColonPassword(credentialsId: 'jenkins-kraken-svc', variable: 'KRAKEN_CREDENTIALS')]) {
                         // ******** Archive with Jenkins ********
                         archiveArtifacts allowEmptyArchive: true, artifacts: "/Users/jenkins/IOSBuilds/libvcxpartial/vcx.libvcxpartial_${full_vcx_version()}_universal.zip"
@@ -332,7 +332,7 @@ def ios() {
                         sh "find /Users/jenkins/IOSBuilds/libvcxall/ -type f -name 'vcx.libvcxall_*_universal.zip' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                         sh "find /Users/jenkins/IOSBuilds/libvcxall/ -type f -name 'libvcx.a.libvcxall_*_universal.tar.gz' -exec curl -u \"${KRAKEN_CREDENTIALS}\" -X POST  https://kraken.corp.evernym.com/repo/ios/upload -F 'file=@{}' \\;"
                     }
-                }
+                // }
             } catch (Exception ex) {
                 currentBuild.result = "FAILED"
                 if (env.BRANCH_NAME == "master") {

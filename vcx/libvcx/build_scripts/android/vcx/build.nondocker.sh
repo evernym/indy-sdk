@@ -117,26 +117,26 @@ if [ -d "${LIBSOVTOKEN_DIR}/lib" ] ; then
     LIBSOVTOKEN_DIR="${LIBSOVTOKEN_DIR}/lib"
 fi
 
-if [ -z "${LIBNULLPAY_DIR}" ] ; then
-    LIBNULLPAY_DIR="libnullpay"
-    if [ -d "${LIBNULLPAY_DIR}" ] ; then
-        echo "Found ${LIBNULLPAY_DIR}"
-    elif [ -z "$9" ] ; then
-        echo STDERR "Missing LIBNULLPAY_DIR argument and environment variable"
-        echo STDERR "e.g. set LIBNULLPAY_DIR=<path> for environment or libnullpay"
-        exit 1
-    else
-        LIBNULLPAY_DIR=$9
-    fi
-    if [ -d "${LIBNULLPAY_DIR}/${CROSS_COMPILE}" ] ; then
-        LIBNULLPAY_DIR=${LIBNULLPAY_DIR}/${CROSS_COMPILE}
-    fi
-    export LIBNULLPAY_DIR=${LIBNULLPAY_DIR}
-fi
-if [ -d "${LIBNULLPAY_DIR}/lib" ] ; then
-    LIBNULLPAY_DIR="${LIBNULLPAY_DIR}/lib"
-    echo ${LIBNULLPAY_DIR}
-fi
+# if [ -z "${LIBNULLPAY_DIR}" ] ; then
+#     LIBNULLPAY_DIR="libnullpay"
+#     if [ -d "${LIBNULLPAY_DIR}" ] ; then
+#         echo "Found ${LIBNULLPAY_DIR}"
+#     elif [ -z "$9" ] ; then
+#         echo STDERR "Missing LIBNULLPAY_DIR argument and environment variable"
+#         echo STDERR "e.g. set LIBNULLPAY_DIR=<path> for environment or libnullpay"
+#         exit 1
+#     else
+#         LIBNULLPAY_DIR=$9
+#     fi
+#     if [ -d "${LIBNULLPAY_DIR}/${CROSS_COMPILE}" ] ; then
+#         LIBNULLPAY_DIR=${LIBNULLPAY_DIR}/${CROSS_COMPILE}
+#     fi
+#     export LIBNULLPAY_DIR=${LIBNULLPAY_DIR}
+# fi
+# if [ -d "${LIBNULLPAY_DIR}/lib" ] ; then
+#     LIBNULLPAY_DIR="${LIBNULLPAY_DIR}/lib"
+#     echo ${LIBNULLPAY_DIR}
+# fi
 
 
 
@@ -234,7 +234,6 @@ $CC -v -shared -o ${LIBVCX_BUILDS}/libvcx.so -Wl,--whole-archive \
 ${LIBVCX}/target/${CROSS_COMPILE}/release/libvcx.a \
 ${TOOLCHAIN_DIR}/sysroot/usr/${NDK_LIB_DIR}/libm.a \
 ${LIBINDY_DIR}/libindy.a \
-${LIBNULLPAY_DIR}/libnullpay.a \
 ${LIBSOVTOKEN_DIR}/libsovtoken.a \
 ${OPENSSL_DIR}/lib/libssl.a \
 ${OPENSSL_DIR}/lib/libcrypto.a \
