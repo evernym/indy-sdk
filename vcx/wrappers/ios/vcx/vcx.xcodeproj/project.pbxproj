@@ -782,6 +782,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				"OTHER_LDFLAGS[arch=*]" = (
+					"-all_load",
 					"-ObjC",
 					"-lvcx",
 				);
@@ -823,6 +824,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				"OTHER_LDFLAGS[arch=*]" = (
+					"-all_load",
 					"-ObjC",
 					"-lvcx",
 				);
