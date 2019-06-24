@@ -65,21 +65,25 @@ impl LibvcxLogger {
         //trace!("LibvcxLogger::init >>>");
         let logger = LibvcxLogger::new(context, enabled, log, flush);
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // These lines cause Android to crash when invoked in a nested Java Callback
-        // This is not a long term fix BUT we need to prevent crashing of the mobile app
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        //log::set_boxed_logger(Box::new(logger))
-        //    .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
-        //log::set_max_level(LevelFilter::Trace);
-        //libindy::logger::set_logger(log::logger())
-        //    .map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // Temporary fix for the Android crashing
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        libindy::logger::set_default_logger(Some("DEBUG"))?;
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-
+        if cfg!(target_os = "android") {
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            // Temporary fix for the Android crashing
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            #[cfg(target_os = "android")]
+            libindy::logger::set_default_logger(Some("DEBUG"))?;
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+        } else {
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            // These lines cause Android to crash when invoked in a nested Java Callback
+            // This is not a long term fix BUT we need to prevent crashing of the mobile app
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            log::set_boxed_logger(Box::new(logger))
+                .map_err(|err| VcxError::from_msg(VcxErrorKind::LoggingError, format!("Setting logger failed with: {}", err)))?;
+            log::set_max_level(LevelFilter::Trace);
+            libindy::logger::set_logger(log::logger())
+                .map_err(|err| err.map(VcxErrorKind::LoggingError, "Setting logger failed"))?;
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+        }
 
         unsafe {
             LOGGER_STATE = LoggerState::Custom;
